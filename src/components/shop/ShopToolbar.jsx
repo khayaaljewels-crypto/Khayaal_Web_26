@@ -29,14 +29,14 @@ export default function ShopToolbar({ filtersApi, total, onOpenMobileFilters }) 
         />
       </div>
 
-      <div className="flex items-center justify-between gap-3 sm:justify-end">
+      <div className="flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap sm:justify-end">
         <p className="text-xs text-text/60 sm:mr-2">
           <span className="font-medium text-brown">{total}</span> Products
         </p>
 
         <button
           onClick={onOpenMobileFilters}
-          className="flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-xs font-medium text-brown lg:hidden"
+          className="flex shrink-0 items-center gap-1.5 rounded-full border border-border px-4 py-2 text-xs font-medium text-brown lg:hidden"
         >
           <HiOutlineAdjustmentsHorizontal /> Filters
         </button>
@@ -44,7 +44,7 @@ export default function ShopToolbar({ filtersApi, total, onOpenMobileFilters }) 
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="rounded-full border border-border bg-white px-4 py-2 text-xs font-medium text-brown focus:border-gold focus:outline-none"
+          className="min-w-0 max-w-38 shrink rounded-full border border-border bg-white px-3 py-2 text-xs font-medium text-brown focus:border-gold focus:outline-none sm:max-w-none sm:px-4"
         >
           {SORT_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>

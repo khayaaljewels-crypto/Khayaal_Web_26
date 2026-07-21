@@ -57,12 +57,12 @@ export default function CategoryManager() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-gold">Catalogue</p>
           <h1 className="mt-2 font-heading text-3xl text-brown">Categories ({categories.length})</h1>
         </div>
-        <button onClick={() => setModalFor('new')} className="flex items-center gap-1.5 rounded-full bg-brown px-5 py-3 text-sm font-medium text-white hover:bg-gold">
+        <button onClick={() => setModalFor('new')} className="flex w-fit items-center gap-1.5 rounded-full bg-brown px-5 py-3 text-sm font-medium text-white hover:bg-gold">
           <HiOutlinePlus /> Add Category
         </button>
       </div>

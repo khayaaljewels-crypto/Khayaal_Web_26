@@ -6,11 +6,11 @@ import Reveal from '@/components/animations/Reveal';
 import { useSettings } from '@/context/SettingsContext';
 
 const SHOP_LINKS = [
-  { label: 'Necklace Sets', to: '/shop?category=necklace-sets' },
-  { label: 'Earrings', to: '/shop?category=earrings' },
-  { label: 'Bangles', to: '/shop?category=bangles' },
   { label: 'Bridal Sets', to: '/shop?category=bridal-sets' },
-  { label: 'Rings', to: '/shop?category=rings' },
+  { label: 'Kundan Sets', to: '/shop?category=kundan-sets' },
+  { label: 'Polki Sets', to: '/shop?category=polki-sets' },
+  { label: 'Temple Jewellery Sets', to: '/shop?category=temple-jewellery-sets' },
+  { label: 'Victorian Sets', to: '/shop?category=victorian-sets' },
 ];
 
 const HELP_LINKS = [

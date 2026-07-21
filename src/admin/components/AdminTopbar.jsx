@@ -28,8 +28,8 @@ export default function AdminTopbar({ onOpenMobile }) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-border bg-white/90 px-6 backdrop-blur-xl">
-      <button onClick={onOpenMobile} className="text-brown lg:hidden" aria-label="Open menu">
+    <header className="sticky top-0 z-30 flex h-20 items-center justify-between gap-3 border-b border-border bg-white/90 px-4 backdrop-blur-xl sm:px-6">
+      <button onClick={onOpenMobile} className="shrink-0 text-brown lg:hidden" aria-label="Open menu">
         <HiOutlineBars3 className="text-2xl" />
       </button>
 
@@ -67,19 +67,21 @@ export default function AdminTopbar({ onOpenMobile }) {
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex shrink-0 items-center gap-2 sm:gap-3">
         <Link
           to="/"
           target="_blank"
-          className="flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-xs font-medium text-brown hover:border-gold"
+          className="flex items-center gap-1.5 rounded-full border border-border px-2.5 py-2 text-xs font-medium text-brown hover:border-gold sm:px-4"
+          aria-label="View Site"
         >
-          <HiOutlineGlobeAlt /> View Site
+          <HiOutlineGlobeAlt className="text-base" /> <span className="hidden sm:inline">View Site</span>
         </Link>
         <button
           onClick={logout}
-          className="flex items-center gap-1.5 rounded-full bg-brown px-4 py-2 text-xs font-medium text-white hover:bg-gold"
+          className="flex items-center gap-1.5 rounded-full bg-brown px-2.5 py-2 text-xs font-medium text-white hover:bg-gold sm:px-4"
+          aria-label="Logout"
         >
-          <HiOutlineArrowRightOnRectangle /> Logout
+          <HiOutlineArrowRightOnRectangle className="text-base" /> <span className="hidden sm:inline">Logout</span>
         </button>
       </div>
     </header>

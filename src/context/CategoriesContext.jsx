@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { CATEGORY_SEED } from '@/data/categorySeed';
 
 const CategoriesContext = createContext(null);
-const STORAGE_KEY = 'khayaal_categories_v1';
+const STORAGE_KEY = 'khayaal_categories_v2';
 
 function readStored() {
   try {

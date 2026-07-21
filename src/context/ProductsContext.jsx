@@ -3,7 +3,7 @@ import { SEED_PRODUCTS } from '@/data/productSeed';
 import { MATERIALS, STONES, COLORS, OCCASION_OPTIONS } from '@/data/constants';
 
 const ProductsContext = createContext(null);
-const STORAGE_KEY = 'khayaal_products_v1';
+const STORAGE_KEY = 'khayaal_products_v2';
 
 function readStored() {
   try {

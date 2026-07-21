@@ -38,13 +38,13 @@ export default function OrderDetail() {
 
   return (
     <div className="space-y-6 print:space-y-4">
-      <div className="flex items-center justify-between print:hidden">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-4 print:hidden sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-3">
           <Link to="/admin/orders" className="text-text/50 hover:text-brown"><HiOutlineArrowLeft className="text-xl" /></Link>
-          <h1 className="font-heading text-3xl text-brown">{order.id}</h1>
+          <h1 className="font-heading text-2xl text-brown sm:text-3xl">{order.id}</h1>
           <StatusBadge status={order.status} />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <a
             href={buildWhatsAppOrderLink(order, settings.whatsappNumber)}
             target="_blank"

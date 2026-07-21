@@ -34,6 +34,21 @@ export default function ProductDetail() {
     if (product) recordRecentlyViewed(product.id);
   }, [product]);
 
+  useEffect(() => {
+    if (!product) return;
+    const prevTitle = document.title;
+    document.title = product.seoTitle || `${product.name} | Khayaal Jewels`;
+    const metaDescription = document.querySelector('meta[name="description"]');
+    const prevDescription = metaDescription?.getAttribute('content');
+    if (metaDescription && product.seoDescription) {
+      metaDescription.setAttribute('content', product.seoDescription);
+    }
+    return () => {
+      document.title = prevTitle;
+      if (metaDescription && prevDescription) metaDescription.setAttribute('content', prevDescription);
+    };
+  }, [product]);
+
   const recentlyViewed = useRecentlyViewed(product?.id);
   const related = useMemo(() => (product ? getRelatedProducts(product) : []), [product]);
   const completeTheLook = useMemo(() => (product ? getCompleteTheLook(product) : []), [product]);

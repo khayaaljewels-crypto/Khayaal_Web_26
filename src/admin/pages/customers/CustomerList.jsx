@@ -27,12 +27,12 @@ export default function CustomerList() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-gold">Customers</p>
           <h1 className="mt-2 font-heading text-3xl text-brown">Customers ({customers.length})</h1>
         </div>
-        <button onClick={handleExport} className="flex items-center gap-1.5 rounded-full border border-border px-4 py-2.5 text-xs font-medium text-brown hover:border-gold">
+        <button onClick={handleExport} className="flex w-fit items-center gap-1.5 rounded-full border border-border px-4 py-2.5 text-xs font-medium text-brown hover:border-gold">
           <HiOutlineArrowDownTray /> Export CSV
         </button>
       </div>

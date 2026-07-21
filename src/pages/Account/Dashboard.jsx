@@ -60,7 +60,7 @@ export default function AccountDashboard() {
           {loading && <p className="text-sm text-text/50">Loading orders...</p>}
           {!loading && orders.length === 0 && <p className="text-sm text-text/50">No orders yet.</p>}
           {orders.slice(0, 3).map((o) => (
-            <div key={o.id} className="flex items-center justify-between rounded-xl bg-beige/40 p-3 text-sm">
+            <div key={o.id} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 rounded-xl bg-beige/40 p-3 text-sm">
               <div>
                 <p className="font-medium text-brown">{o.orderNumber}</p>
                 <p className="text-xs text-text/50">{new Date(o.createdAt).toLocaleDateString('en-IN')}</p>

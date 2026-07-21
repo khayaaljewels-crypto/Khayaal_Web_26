@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { COLLECTION_SEED } from '@/data/productSeed';
 
 const CollectionsContext = createContext(null);
-const STORAGE_KEY = 'khayaal_collections_v1';
+const STORAGE_KEY = 'khayaal_collections_v2';
 
 function readStored() {
   try {

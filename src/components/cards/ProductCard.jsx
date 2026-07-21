@@ -251,7 +251,7 @@ export default function ProductCard({ product, index = 0, view = 'grid', onQuick
           ))}
           <span className="ml-1 text-[11px] text-text/50">({product.reviewCount})</span>
         </div>
-        <div className="mt-1.5 flex items-center gap-2">
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
           <span className="relative overflow-hidden font-medium text-brown">
             {formatPrice(product.price)}
             <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/60 to-transparent group-hover:animate-[shimmer_1.2s_ease]" />

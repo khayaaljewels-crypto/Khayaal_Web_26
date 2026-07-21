@@ -44,12 +44,12 @@ function OrderRow({ order }) {
 
   return (
     <div className="rounded-2xl border border-border bg-white">
-      <button onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between p-5 text-left">
+      <button onClick={() => setOpen((o) => !o)} className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 p-5 text-left">
         <div>
           <p className="font-heading text-brown">{order.orderNumber}</p>
           <p className="text-xs text-text/50">{new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex shrink-0 items-center gap-2.5 sm:gap-4">
           <OrderStatusBadge status={order.status} />
           <p className="font-medium text-brown">{formatPrice(order.grandTotal)}</p>
           <motion.span animate={{ rotate: open ? 180 : 0 }}><HiOutlineChevronDown className="text-text/40" /></motion.span>

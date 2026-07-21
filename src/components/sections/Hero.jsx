@@ -12,7 +12,7 @@ export default function Hero() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
-    <section ref={ref} className="relative flex h-[100svh] min-h-[640px] w-full items-center overflow-hidden bg-brown">
+    <section ref={ref} className="relative flex h-[100svh] min-h-135 w-full items-center overflow-hidden bg-brown sm:min-h-160">
       <motion.div
         className="absolute inset-0"
         style={{ y: imageY }}
