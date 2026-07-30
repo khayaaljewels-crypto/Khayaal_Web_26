@@ -1,16 +1,91 @@
-# React + Vite
+# Khayaal Jewels — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React (Vite) storefront + admin dashboard for Khayaal Jewels, a premium imitation jewellery
+e-commerce site. This repository is the **frontend only** — it deploys independently to Vercel
+and talks to a separate backend repository over HTTP.
 
-Currently, two official plugins are available:
+> Looking for the backend? It lives in its own repository (Express + PostgreSQL, deployed to
+> Railway). See `VITE_API_URL` below for how the two are connected.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- React 19 + Vite
+- Tailwind CSS v4
+- React Router DOM
+- Framer Motion / GSAP (animations)
+- Firebase (Auth + Firestore/Storage SDK — used only by the `/admin` dashboard's own login)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## What lives here vs. the backend
 
-## Expanding the Oxlint configuration
+Most of this app is self-contained and needs **no backend at all**:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- Product/category/collection catalog, cart, wishlist, compare — all `localStorage`-backed
+  (see `src/context/`), seeded from `src/data/*.js`.
+- `/admin` dashboard auth — Firebase email/password, independent of the backend repo.
+
+Only these features call the separate backend (via `src/utils/apiClient.js`, base URL from
+`VITE_API_URL`):
+
+- Customer-facing Google sign-in (`src/context/CustomerAuthContext.jsx`)
+- Customer orders, addresses, profile (`/my-account/*`, `src/hooks/useMyOrders.js`,
+  `src/hooks/useAddressBook.js`)
+- Checkout order submission (`src/pages/Checkout/Checkout.jsx`)
+- Admin product image uploads (`src/admin/components/ImageUploader.jsx`,
+  `SingleImageUpload.jsx`, `src/admin/pages/media/MediaLibrary.jsx`)
+
+If the backend is unreachable, everything above will show errors, but browsing the catalog,
+cart, and wishlist keeps working.
+
+## Getting Started
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
+
+## Environment Variables
+
+See `.env.example` for the full list with explanations. Summary:
+
+| Variable | Purpose |
+|---|---|
+| `VITE_FIREBASE_*` | Firebase web app config, used by `/admin` login |
+| `VITE_ADMIN_EMAIL` | The only account allowed into `/admin` |
+| `VITE_API_URL` | Base URL of the backend repo — `http://localhost:4000` locally, your Railway URL in production |
+
+**Production:** set `VITE_API_URL` in Vercel → Project Settings → Environment Variables to the
+backend's deployed Railway URL (e.g. `https://your-backend.up.railway.app`). Do not commit real
+values to `.env` — it's gitignored.
+
+## Scripts
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start the Vite dev server |
+| `npm run build` | Production build (outputs to `dist/`) |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run Oxlint |
+
+## Deployment (Vercel)
+
+1. Import this repository into Vercel.
+2. Framework preset: **Vite**.
+3. Set the environment variables listed above (all `VITE_*` ones) in the Vercel dashboard.
+4. `vercel.json` already rewrites all routes to `index.html` (this is a client-rendered SPA —
+   both the storefront and `/admin` are handled by React Router, not server routing).
+
+## Routes
+
+Storefront: `/`, `/shop`, `/product/:slug`, `/cart`, `/wishlist`, `/checkout`, `/order-success`,
+`/about`, `/contact`, `/faq`, `/track-order`, `/my-account` (+ `profile`, `orders`, `addresses`
+sub-routes; `/profile` and `/orders` redirect here for backward compatibility).
+
+Admin: `/admin/*` — see `src/admin/AdminApp.jsx`.
+
+## Further Documentation
+
+`PROJECT_DOCUMENTATION/` has an in-depth breakdown of the folder structure, component map,
+pages, admin system, auth, state management, API usage, styling, and a running TODO list.
+Note it predates this frontend/backend split, so treat anything it says about `server/`
+living inside this repo as historical.
