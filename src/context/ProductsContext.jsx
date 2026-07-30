@@ -3,7 +3,7 @@ import { SEED_PRODUCTS } from '@/data/productSeed';
 import { MATERIALS, STONES, COLORS, OCCASION_OPTIONS } from '@/data/constants';
 
 const ProductsContext = createContext(null);
-const STORAGE_KEY = 'khayaal_products_v2';
+const STORAGE_KEY = 'khayaal_products_v3';
 
 function readStored() {
   try {
@@ -69,7 +69,10 @@ export function ProductsProvider({ children }) {
   const products = useMemo(() => allProducts.filter((p) => p.isPublished !== false), [allProducts]);
 
   const addProduct = (data) => {
-    const id = `kj-${Date.now().toString(36)}`;
+    // Allows the admin form to pre-generate an id before the product is
+    // actually saved, so uploaded images can be associated with the product
+    // (via product_images.product_id) while the form is still being filled in.
+    const id = data.id || `kj-${Date.now().toString(36)}`;
     const slug = data.slug?.trim() || slugify(data.name || 'new-product');
     const record = { ...NEW_PRODUCT_DEFAULTS, ...data, id, slug };
     setRawProducts((prev) => [record, ...prev]);

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import GoldButton from '@/components/buttons/GoldButton';
 
-export default function EmptyState({ onClearAll }) {
+export default function EmptyState({ onClearAll, catalogEmpty = false }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -13,15 +13,26 @@ export default function EmptyState({ onClearAll }) {
       <span className="flex h-16 w-16 items-center justify-center rounded-full bg-beige">
         <HiOutlineMagnifyingGlass className="text-2xl text-gold" />
       </span>
-      <h3 className="mt-6 font-heading text-xl text-brown">No products found</h3>
-      <p className="mt-2 max-w-xs text-sm text-text/60">
-        Try adjusting your filters or search terms to find what you're looking for.
-      </p>
-      <div className="mt-6">
-        <GoldButton onClick={onClearAll} variant="outline">
-          Clear All Filters
-        </GoldButton>
-      </div>
+      {catalogEmpty ? (
+        <>
+          <h3 className="mt-6 font-heading text-xl text-brown">No products available.</h3>
+          <p className="mt-2 max-w-xs text-sm text-text/60">
+            New arrivals are on their way — please check back soon.
+          </p>
+        </>
+      ) : (
+        <>
+          <h3 className="mt-6 font-heading text-xl text-brown">No products found</h3>
+          <p className="mt-2 max-w-xs text-sm text-text/60">
+            Try adjusting your filters or search terms to find what you're looking for.
+          </p>
+          <div className="mt-6">
+            <GoldButton onClick={onClearAll} variant="outline">
+              Clear All Filters
+            </GoldButton>
+          </div>
+        </>
+      )}
     </motion.div>
   );
 }

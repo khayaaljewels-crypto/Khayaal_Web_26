@@ -5,16 +5,15 @@ import {
   HiOutlineMagnifyingGlass,
   HiOutlineHeart,
   HiOutlineShoppingBag,
-  HiOutlineUser,
   HiOutlineBars3,
 } from 'react-icons/hi2';
 import { navLinks } from './navLinks';
 import MegaMenu from './MegaMenu';
 import SearchOverlay from './SearchOverlay';
 import MobileMenu from './MobileMenu';
+import AccountDropdown from './AccountDropdown';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
-import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 const HERO_ROUTES = ['/'];
 
@@ -26,7 +25,6 @@ export default function Navbar() {
   const location = useLocation();
   const { count: cartCount } = useCart();
   const { count: wishlistCount } = useWishlist();
-  const { user: customerUser } = useCustomerAuth();
 
   const isTransparentRoute = HERO_ROUTES.includes(location.pathname);
   const transparent = isTransparentRoute && !scrolled;
@@ -103,13 +101,7 @@ export default function Navbar() {
             >
               <HiOutlineMagnifyingGlass className="text-xl" />
             </button>
-            <Link to="/my-account" aria-label="Account" className="hidden transition-transform hover:scale-110 lg:block">
-              {customerUser?.profileImage ? (
-                <img src={customerUser.profileImage} alt="" className="h-6 w-6 rounded-full object-cover" referrerPolicy="no-referrer" />
-              ) : (
-                <HiOutlineUser className="text-xl" />
-              )}
-            </Link>
+            <AccountDropdown textColor={textColor} />
             <Link to="/wishlist" aria-label="Wishlist" className="relative transition-transform hover:scale-110">
               <HiOutlineHeart className="text-xl" />
               {wishlistCount > 0 && (

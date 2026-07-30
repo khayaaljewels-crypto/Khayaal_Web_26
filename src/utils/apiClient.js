@@ -1,19 +1,84 @@
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
-async function request(path, options = {}) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json', ...options.headers },
-    ...options,
-  });
+// Lets CustomerAuthContext react to a session going invalid (expired/revoked
+// JWT) no matter which API call surfaces it, without apiClient importing
+// the context (which would be circular — the context itself calls `api`).
+let unauthorizedHandler = null;
+export function setUnauthorizedHandler(fn) {
+  unauthorizedHandler = fn;
+}
+
+async function request(path, options = {}, isRetry = false) {
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', ...options.headers },
+      ...options,
+    });
+  } catch (networkErr) {
+    // `fetch` only throws for a genuine network-level failure (server
+    // unreachable, DNS failure, offline) — never for HTTP error responses,
+    // which resolve normally with res.ok === false. One retry after a short
+    // pause handles a transient blip without looping forever.
+    if (isRetry) throw new Error('Network error — please check your connection and try again.');
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return request(path, options, true);
+  }
 
   const isJson = res.headers.get('content-type')?.includes('application/json');
   const body = isJson ? await res.json() : null;
 
+  if (res.status === 401) unauthorizedHandler?.();
+
   if (!res.ok) {
-    throw new Error(body?.error || `Request failed (${res.status})`);
+    throw new Error(body?.error || body?.message || `Request failed (${res.status})`);
   }
   return body;
+}
+
+// Multipart upload — deliberately bypasses `request()`'s JSON handling.
+// The browser must set its own multipart Content-Type (with boundary), so
+// this never sets a Content-Type header manually.
+async function requestFormData(path, formData, method = 'POST') {
+  const res = await fetch(`${API_BASE}${path}`, { method, credentials: 'include', body: formData });
+  const isJson = res.headers.get('content-type')?.includes('application/json');
+  const body = isJson ? await res.json() : null;
+  if (!res.ok) throw new Error(body?.error || `Upload failed (${res.status})`);
+  return body;
+}
+
+// `fetch` has no upload-progress event, so a real progress bar needs XHR.
+// Kept separate from `requestFormData` above rather than replacing it —
+// most upload call sites don't need a progress bar and XHR is more
+// verbose to work with than fetch.
+function uploadWithProgress(path, formData, { method = 'POST', onProgress } = {}) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, `${API_BASE}${path}`);
+    xhr.withCredentials = true;
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100));
+    };
+
+    xhr.onload = () => {
+      let body = null;
+      try {
+        body = JSON.parse(xhr.responseText);
+      } catch {
+        // non-JSON response — body stays null
+      }
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(body);
+      } else {
+        reject(new Error(body?.error || `Upload failed (${xhr.status})`));
+      }
+    };
+    xhr.onerror = () => reject(new Error('Upload failed — check your connection.'));
+
+    xhr.send(formData);
+  });
 }
 
 export const api = {
@@ -21,6 +86,9 @@ export const api = {
   post: (path, data) => request(path, { method: 'POST', body: data ? JSON.stringify(data) : undefined }),
   put: (path, data) => request(path, { method: 'PUT', body: data ? JSON.stringify(data) : undefined }),
   delete: (path) => request(path, { method: 'DELETE' }),
+  upload: (path, formData) => requestFormData(path, formData, 'POST'),
+  uploadPut: (path, formData) => requestFormData(path, formData, 'PUT'),
+  uploadWithProgress: (path, formData, onProgress) => uploadWithProgress(path, formData, { method: 'POST', onProgress }),
 };
 
 export const GOOGLE_LOGIN_URL = `${API_BASE}/auth/google`;

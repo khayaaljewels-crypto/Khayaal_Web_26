@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { CATEGORY_SEED } from '@/data/categorySeed';
 
 const CategoriesContext = createContext(null);
-const STORAGE_KEY = 'khayaal_categories_v2';
+const STORAGE_KEY = 'khayaal_categories_v3';
 
 function readStored() {
   try {
@@ -18,18 +18,20 @@ function slugify(name) {
 }
 
 export function CategoriesProvider({ children }) {
-  const [categories, setCategories] = useState(() => readStored() ?? CATEGORY_SEED);
+  const [rawCategories, setCategories] = useState(() => readStored() ?? CATEGORY_SEED);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
-  }, [categories]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rawCategories));
+  }, [rawCategories]);
 
+  const byDisplayOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
+  const categories = [...rawCategories].sort(byDisplayOrder);
   const visibleCategories = categories.filter((c) => c.hidden !== true);
 
   const addCategory = (data) => {
     const id = `cat-${Date.now().toString(36)}`;
     const slug = data.slug?.trim() || slugify(data.name);
-    setCategories((prev) => [...prev, { id, slug, image: '', description: '', hidden: false, ...data }]);
+    setCategories((prev) => [...prev, { id, slug, image: '', description: '', hidden: false, displayOrder: 0, ...data }]);
     return id;
   };
 

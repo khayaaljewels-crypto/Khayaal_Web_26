@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { COLLECTION_SEED } from '@/data/productSeed';
 
 const CollectionsContext = createContext(null);
-const STORAGE_KEY = 'khayaal_collections_v2';
+const STORAGE_KEY = 'khayaal_collections_v4';
 
 function readStored() {
   try {
@@ -13,24 +13,50 @@ function readStored() {
   }
 }
 
-const DEFAULT_COLLECTIONS = COLLECTION_SEED.map((name, i) => ({ id: `col-${i}`, name, hidden: false }));
+function slugify(name) {
+  return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+// COLLECTION_SEED is just a list of names (legacy shape) — normalized into
+// the full object shape every collection now carries.
+const DEFAULT_COLLECTIONS = COLLECTION_SEED.map((name, i) => ({
+  id: `col-${i}`,
+  name,
+  slug: slugify(name),
+  description: '',
+  image: '',
+  hidden: false,
+  displayOrder: 0,
+}));
 
 export function CollectionsProvider({ children }) {
-  const [collections, setCollections] = useState(() => readStored() ?? DEFAULT_COLLECTIONS);
+  const [rawCollections, setCollections] = useState(() => readStored() ?? DEFAULT_COLLECTIONS);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(collections));
-  }, [collections]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rawCollections));
+  }, [rawCollections]);
 
+  const byDisplayOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
+  const collections = [...rawCollections].sort(byDisplayOrder);
   const visibleCollections = collections.filter((c) => c.hidden !== true);
 
-  const addCollection = (name) => {
+  const addCollection = (data) => {
     const id = `col-${Date.now().toString(36)}`;
-    setCollections((prev) => [...prev, { id, name, hidden: false }]);
+    const name = (typeof data === 'string' ? data : data.name)?.trim() ?? '';
+    const rest = typeof data === 'string' ? {} : data;
+    const slug = rest.slug?.trim() || slugify(name);
+    setCollections((prev) => [
+      ...prev,
+      { id, name, slug, description: '', image: '', hidden: false, displayOrder: 0, ...rest },
+    ]);
     return id;
   };
 
-  const updateCollection = (id, patch) => setCollections((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  const updateCollection = (id, patch) =>
+    setCollections((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, ...patch, slug: patch.slug?.trim() || (patch.name ? slugify(patch.name) : c.slug) } : c))
+    );
+
   const deleteCollection = (id) => setCollections((prev) => prev.filter((c) => c.id !== id));
   const toggleHidden = (id) => setCollections((prev) => prev.map((c) => (c.id === id ? { ...c, hidden: !c.hidden } : c)));
 

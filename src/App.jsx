@@ -11,6 +11,7 @@ import { OrdersProvider } from '@/context/OrdersContext';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { AdminAuthProvider } from '@/admin/context/AdminAuthContext';
 import { CustomerAuthProvider } from '@/context/CustomerAuthContext';
+import { ToastProvider } from '@/context/ToastContext';
 import { useLenis } from '@/hooks/useLenis';
 import Navbar from '@/components/layout/navbar/Navbar';
 import Footer from '@/components/layout/footer/Footer';
@@ -64,17 +65,19 @@ function Root() {
   }
 
   return (
-    <CustomerAuthProvider>
-      <UIProvider>
-        <CartProvider>
-          <WishlistProvider>
-            <CompareProvider>
-              <StorefrontShell />
-            </CompareProvider>
-          </WishlistProvider>
-        </CartProvider>
-      </UIProvider>
-    </CustomerAuthProvider>
+    <ToastProvider>
+      <CustomerAuthProvider>
+        <UIProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <CompareProvider>
+                <StorefrontShell />
+              </CompareProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </UIProvider>
+      </CustomerAuthProvider>
+    </ToastProvider>
   );
 }
 

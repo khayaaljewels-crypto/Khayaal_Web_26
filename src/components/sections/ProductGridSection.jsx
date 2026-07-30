@@ -7,6 +7,8 @@ import QuickViewModal from '@/components/shop/QuickViewModal';
 export default function ProductGridSection({ eyebrow, title, products, viewAllTo, tint = false }) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
+  if (!products.length) return null;
+
   return (
     <section className={`py-20 lg:py-28 ${tint ? 'bg-beige/50' : ''}`}>
       <div className="container-luxury">

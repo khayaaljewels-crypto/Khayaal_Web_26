@@ -4,7 +4,7 @@ import { HiOutlineUserCircle } from 'react-icons/hi2';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 export default function GoogleSignInPrompt({ title = 'Sign in to continue', description }) {
-  const { signInWithGoogle } = useCustomerAuth();
+  const { signInWithGoogle, signingIn } = useCustomerAuth();
 
   return (
     <motion.div
@@ -21,10 +21,15 @@ export default function GoogleSignInPrompt({ title = 'Sign in to continue', desc
 
       <button
         onClick={signInWithGoogle}
-        className="mt-6 flex items-center gap-3 rounded-full border border-border bg-white px-6 py-3 text-sm font-medium text-brown shadow-sm transition-colors hover:border-gold"
+        disabled={signingIn}
+        className="mt-6 flex items-center gap-3 rounded-full border border-border bg-white px-6 py-3 text-sm font-medium text-brown shadow-sm transition-colors hover:border-gold disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <FcGoogle className="text-xl" />
-        Continue with Google
+        {signingIn ? (
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-border border-t-gold" />
+        ) : (
+          <FcGoogle className="text-xl" />
+        )}
+        {signingIn ? 'Redirecting to Google...' : 'Continue with Google'}
       </button>
     </motion.div>
   );

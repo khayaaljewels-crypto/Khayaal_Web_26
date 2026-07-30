@@ -20,9 +20,16 @@ const NAV_ITEMS = [
 ];
 
 export default function AccountLayout() {
-  const { user, checkingAuth, logout } = useCustomerAuth();
+  const { user, checkingAuth, loggingOut, logout } = useCustomerAuth();
 
-  if (checkingAuth) return <div className="min-h-[70svh] bg-bg pt-32" />;
+  if (checkingAuth) {
+    return (
+      <div className="flex min-h-[70svh] flex-col items-center justify-center gap-3 bg-bg pt-32">
+        <span className="h-8 w-8 animate-spin rounded-full border-2 border-gold/30 border-t-gold" />
+        <p className="text-xs uppercase tracking-[0.3em] text-text/40">Loading your account</p>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -71,10 +78,15 @@ export default function AccountLayout() {
               ))}
               <button
                 onClick={logout}
-                className="flex shrink-0 items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-medium text-brown/70 hover:bg-beige"
+                disabled={loggingOut}
+                className="flex shrink-0 items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-medium text-brown/70 hover:bg-beige disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <HiOutlineArrowRightOnRectangle className="text-base" />
-                Logout
+                {loggingOut ? (
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-border border-t-brown" />
+                ) : (
+                  <HiOutlineArrowRightOnRectangle className="text-base" />
+                )}
+                {loggingOut ? 'Logging out...' : 'Logout'}
               </button>
             </nav>
           </aside>

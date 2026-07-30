@@ -9,6 +9,7 @@ const ProductList = lazy(() => import('@/admin/pages/products/ProductList'));
 const ProductForm = lazy(() => import('@/admin/pages/products/ProductForm'));
 const CategoryManager = lazy(() => import('@/admin/pages/categories/CategoryManager'));
 const CollectionManager = lazy(() => import('@/admin/pages/categories/CollectionManager'));
+const MediaLibrary = lazy(() => import('@/admin/pages/media/MediaLibrary'));
 const OrderList = lazy(() => import('@/admin/pages/orders/OrderList'));
 const OrderDetail = lazy(() => import('@/admin/pages/orders/OrderDetail'));
 const CustomerList = lazy(() => import('@/admin/pages/customers/CustomerList'));
@@ -33,6 +34,7 @@ export default function AdminApp() {
           <Route path="/admin/products/:id/edit" element={<ProductForm />} />
           <Route path="/admin/categories" element={<CategoryManager />} />
           <Route path="/admin/collections" element={<CollectionManager />} />
+          <Route path="/admin/media" element={<MediaLibrary />} />
           <Route path="/admin/orders" element={<OrderList />} />
           <Route path="/admin/orders/:id" element={<OrderDetail />} />
           <Route path="/admin/customers" element={<CustomerList />} />

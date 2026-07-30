@@ -90,7 +90,7 @@ export default function Shop() {
               {loading ? (
                 <ProductGridSkeleton view={filtersApi.view} count={filtersApi.view === 'grid' ? 8 : 4} />
               ) : filtersApi.filtered.length === 0 ? (
-                <EmptyState onClearAll={filtersApi.clearAll} />
+                <EmptyState onClearAll={filtersApi.clearAll} catalogEmpty={baseProducts.length === 0} />
               ) : (
                 <>
                   <motion.div

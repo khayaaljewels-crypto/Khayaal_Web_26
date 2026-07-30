@@ -86,7 +86,9 @@ export default function ReviewsSection({ product }) {
   const baseReviews = getReviewsForProduct(product);
   const reviews = [...extraReviews, ...baseReviews];
   const distribution = getRatingDistribution(reviews);
-  const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+  const avgRating = reviews.length
+    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    : '0.0';
 
   const handleSubmitReview = ({ rating, name, comment }) => {
     setExtraReviews((prev) => [
@@ -154,6 +156,12 @@ export default function ReviewsSection({ product }) {
               </div>
             )}
           </AnimatePresence>
+
+          {reviews.length === 0 && !showForm && (
+            <p className="rounded-2xl border border-border bg-white p-8 text-center text-sm text-text/50">
+              No reviews yet — be the first to write one.
+            </p>
+          )}
 
           <div className="space-y-6">
             {reviews.slice(0, visibleCount).map((review) => (

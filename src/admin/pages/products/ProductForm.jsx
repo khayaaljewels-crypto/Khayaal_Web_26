@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { HiOutlineArrowLeft, HiOutlineTrash, HiOutlineArrowUp, HiOutlineArrowDown, HiOutlinePlus } from 'react-icons/hi2';
+import { HiOutlineArrowLeft } from 'react-icons/hi2';
 import { useProducts } from '@/context/ProductsContext';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
 import { MATERIALS, STONES, COLORS, OCCASION_OPTIONS, COLOR_HEX } from '@/data/constants';
-import { Field, inputClass, Toggle } from '@/admin/components/AdminField';
+import { Field, inputClass, Toggle, ToggleList } from '@/admin/components/AdminField';
+import ImageUploader from '@/admin/components/ImageUploader';
+import { api } from '@/utils/apiClient';
+import { useToast } from '@/admin/context/ToastContext';
 
 const emptyForm = {
   name: '', sku: '', brand: 'Khayaal Jewels', category: '', collection: '', occasion: OCCASION_OPTIONS[0],
@@ -15,7 +18,6 @@ const emptyForm = {
   weight: '', dimensions: '', packageIncludes: '', warranty: '6 Months Against Manufacturing Defects', countryOfOrigin: 'India',
   deliveryDays: 5, returnDays: 7, codAvailable: true,
   isFeatured: false, isTrending: false, isNewArrival: false, isBestSeller: false, isComingSoon: false, isPublished: true,
-  images: [''],
 };
 
 export default function ProductForm() {
@@ -25,8 +27,15 @@ export default function ProductForm() {
   const { getById, addProduct, updateProduct } = useProducts();
   const { visibleCategories } = useCategories();
   const { visibleCollections } = useCollections();
+  const toast = useToast();
 
   const existing = isEdit ? getById(id) : null;
+
+  // Generated once and reused for the lifetime of this form — for a brand
+  // new product this is the id the product will be saved under, so images
+  // uploaded before the first "Create Product" click already have somewhere
+  // real to attach to (product_images.product_id).
+  const [productId] = useState(() => existing?.id ?? `kj-${Date.now().toString(36)}`);
 
   const [form, setForm] = useState(() => {
     if (!existing) return emptyForm;
@@ -39,31 +48,42 @@ export default function ProductForm() {
       packageIncludes: existing.specs?.packageIncludes ?? '',
       warranty: existing.specs?.warranty ?? emptyForm.warranty,
       countryOfOrigin: existing.specs?.countryOfOrigin ?? 'India',
-      images: existing.images?.length ? existing.images : [''],
     };
   });
   const [saving, setSaving] = useState(false);
 
-  const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
+  // Authoritative image list lives in Postgres (product_images), not in
+  // form state — ImageUploader talks to the upload API directly and reports
+  // back the current, server-confirmed list.
+  const [images, setImages] = useState([]);
+  const [imagesLoading, setImagesLoading] = useState(isEdit);
+  const [imagesUploading, setImagesUploading] = useState(false);
+  const [imageError, setImageError] = useState('');
 
-  const setImage = (i, value) => setForm((f) => ({ ...f, images: f.images.map((img, idx) => (idx === i ? value : img)) }));
-  const addImage = () => setForm((f) => ({ ...f, images: [...f.images, ''] }));
-  const removeImage = (i) => setForm((f) => ({ ...f, images: f.images.filter((_, idx) => idx !== i) }));
-  const moveImage = (i, dir) =>
-    setForm((f) => {
-      const images = [...f.images];
-      const j = i + dir;
-      if (j < 0 || j >= images.length) return f;
-      [images[i], images[j]] = [images[j], images[i]];
-      return { ...f, images };
-    });
+  useEffect(() => {
+    if (!isEdit) return;
+    api.get(`/api/admin/products/${productId}/images`)
+      .then(({ images: fetched }) => setImages(fetched))
+      .catch(() => {})
+      .finally(() => setImagesLoading(false));
+  }, [isEdit, productId]);
+
+  const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (images.length === 0) {
+      setImageError('A product thumbnail is required — upload at least one image below.');
+      toast.error('Add a product thumbnail before saving.');
+      return;
+    }
+    setImageError('');
     setSaving(true);
 
-    const images = form.images.map((s) => s.trim()).filter(Boolean);
+    const imageUrls = images.map((img) => img.url);
     const payload = {
+      id: productId,
       name: form.name.trim(),
       sku: form.sku.trim() || `KJ-${Date.now().toString().slice(-6)}`,
       brand: form.brand.trim(),
@@ -90,7 +110,7 @@ export default function ProductForm() {
       isBestSeller: form.isBestSeller,
       isComingSoon: form.isComingSoon,
       isPublished: form.isPublished,
-      images: images.length ? images : ['https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=900&auto=format&fit=crop'],
+      images: imageUrls,
       specs: {
         metal: form.material,
         stone: form.stone,
@@ -104,7 +124,7 @@ export default function ProductForm() {
       },
       variants: existing?.variants?.length
         ? existing.variants
-        : [{ id: form.color.toLowerCase().replace(/\s+/g, '-'), label: form.color, hex: COLOR_HEX[form.color] ?? '#B8864A', image: images[0], priceDelta: 0 }],
+        : [{ id: form.color.toLowerCase().replace(/\s+/g, '-'), label: form.color, hex: COLOR_HEX[form.color] ?? '#B8864A', image: imageUrls[0], priceDelta: 0 }],
       ringSizes: existing?.ringSizes ?? null,
       rating: existing?.rating ?? 0,
       reviewCount: existing?.reviewCount ?? 0,
@@ -116,6 +136,7 @@ export default function ProductForm() {
       addProduct(payload);
     }
 
+    toast.success(isEdit ? 'Product updated.' : 'Product created.');
     navigate('/admin/products');
   };
 
@@ -185,7 +206,9 @@ export default function ProductForm() {
                 <input type="number" min="0" className={inputClass} value={form.returnDays} onChange={(e) => set('returnDays', e.target.value)} />
               </Field>
             </div>
-            <Toggle label="Cash on Delivery Available" checked={form.codAvailable} onChange={(v) => set('codAvailable', v)} />
+            <ToggleList>
+              <Toggle label="Cash on Delivery Available" checked={form.codAvailable} onChange={(v) => set('codAvailable', v)} />
+            </ToggleList>
           </section>
 
           <section className="space-y-4 rounded-2xl border border-border bg-white p-6">
@@ -241,42 +264,43 @@ export default function ProductForm() {
         <div className="space-y-6">
           <section className="space-y-3 rounded-2xl border border-border bg-white p-6">
             <p className="font-heading text-lg text-brown">Visibility &amp; Tags</p>
-            <Toggle label="Published (visible on site)" checked={form.isPublished} onChange={(v) => set('isPublished', v)} />
-            <Toggle label="Featured" checked={form.isFeatured} onChange={(v) => set('isFeatured', v)} />
-            <Toggle label="Trending" checked={form.isTrending} onChange={(v) => set('isTrending', v)} />
-            <Toggle label="New Arrival" checked={form.isNewArrival} onChange={(v) => set('isNewArrival', v)} />
-            <Toggle label="Best Seller" checked={form.isBestSeller} onChange={(v) => set('isBestSeller', v)} />
-            <Toggle label="Coming Soon" checked={form.isComingSoon} onChange={(v) => set('isComingSoon', v)} />
+            <ToggleList>
+              <Toggle label="Published (visible on site)" checked={form.isPublished} onChange={(v) => set('isPublished', v)} />
+              <Toggle label="Featured" checked={form.isFeatured} onChange={(v) => set('isFeatured', v)} />
+              <Toggle label="Trending" checked={form.isTrending} onChange={(v) => set('isTrending', v)} />
+              <Toggle label="New Arrival" checked={form.isNewArrival} onChange={(v) => set('isNewArrival', v)} />
+              <Toggle label="Best Seller" checked={form.isBestSeller} onChange={(v) => set('isBestSeller', v)} />
+              <Toggle label="Coming Soon" checked={form.isComingSoon} onChange={(v) => set('isComingSoon', v)} />
+            </ToggleList>
           </section>
 
           <section className="space-y-3 rounded-2xl border border-border bg-white p-6">
-            <div className="flex items-center justify-between">
-              <p className="font-heading text-lg text-brown">Images</p>
-              <button type="button" onClick={addImage} className="flex items-center gap-1 text-xs font-medium text-gold hover:underline">
-                <HiOutlinePlus /> Add
-              </button>
-            </div>
-            <p className="text-xs text-text/50">Paste image URLs. First image is the primary image.</p>
-            <div className="space-y-2">
-              {form.images.map((img, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  {img && <img src={img} alt="" className="h-10 w-10 shrink-0 rounded-lg object-cover" />}
-                  <input
-                    className={inputClass}
-                    value={img}
-                    onChange={(e) => setImage(i, e.target.value)}
-                    placeholder="https://..."
-                  />
-                  <button type="button" onClick={() => moveImage(i, -1)} disabled={i === 0} className="text-text/40 hover:text-brown disabled:opacity-30"><HiOutlineArrowUp /></button>
-                  <button type="button" onClick={() => moveImage(i, 1)} disabled={i === form.images.length - 1} className="text-text/40 hover:text-brown disabled:opacity-30"><HiOutlineArrowDown /></button>
-                  <button type="button" onClick={() => removeImage(i)} className="text-text/40 hover:text-red-500"><HiOutlineTrash /></button>
-                </div>
-              ))}
-            </div>
+            <p className="font-heading text-lg text-brown">
+              Images <span className="text-red-500">*</span>
+            </p>
+            {imagesLoading ? (
+              <p className="text-xs text-text/50">Loading images...</p>
+            ) : (
+              <ImageUploader
+                productId={productId}
+                folder={form.category}
+                images={images}
+                onImagesChange={(next) => { setImages(next); if (next.length) setImageError(''); }}
+                onUploadingChange={setImagesUploading}
+              />
+            )}
+            {imageError && <p className="text-xs text-red-500">{imageError}</p>}
           </section>
 
-          <button type="submit" disabled={saving} className="w-full rounded-full bg-brown py-4 text-sm font-medium text-white hover:bg-gold disabled:opacity-60">
-            {isEdit ? 'Save Changes' : 'Create Product'}
+          <button
+            type="submit"
+            disabled={saving || imagesUploading}
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-brown py-4 text-sm font-medium text-white hover:bg-gold disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {(saving || imagesUploading) && (
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+            )}
+            {imagesUploading ? 'Uploading images...' : saving ? 'Saving...' : isEdit ? 'Save Changes' : 'Create Product'}
           </button>
         </div>
       </form>
