@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { HiOutlinePlus, HiOutlinePencilSquare, HiOutlineTrash, HiOutlineEye, HiOutlineEyeSlash, HiOutlineXMark } from 'react-icons/hi2';
-import { useCollections } from '@/context/CollectionsContext';
-import { useProducts } from '@/context/ProductsContext';
+import { useTaxonomyAdmin } from '@/admin/hooks/useTaxonomyAdmin';
 import { Field, inputClass } from '@/admin/components/AdminField';
 import SingleImageUpload from '@/admin/components/SingleImageUpload';
 import { useToast } from '@/admin/context/ToastContext';
@@ -97,28 +96,32 @@ function CollectionModal({ collection, onClose, onSave }) {
 }
 
 export default function CollectionManager() {
-  const { collections, addCollection, updateCollection, deleteCollection, toggleHidden } = useCollections();
-  const { products } = useProducts();
+  const { items: collections, loading, error, create, update, remove, toggleHidden } = useTaxonomyAdmin('collections');
   const toast = useToast();
   const [modalFor, setModalFor] = useState(null); // null closed, 'new', or collection object
 
-  const countFor = (name) => products.filter((p) => p.collection === name).length;
-
   const handleSave = async (form) => {
-    if (modalFor === 'new') {
-      addCollection(form);
-      toast.success('Collection created.');
-    } else {
-      updateCollection(modalFor.id, form);
-      toast.success('Collection updated.');
+    try {
+      if (modalFor === 'new') {
+        await create(form);
+        toast.success('Collection created.');
+      } else {
+        await update(modalFor.id, form);
+        toast.success('Collection updated.');
+      }
+      setModalFor(null);
+    } catch (err) {
+      toast.error(err.message || 'Failed to save collection.');
     }
-    setModalFor(null);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Delete this collection? Products already assigned to it will keep the old value.')) {
-      deleteCollection(id);
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this collection? Products already assigned to it will keep the old value.')) return;
+    try {
+      await remove(id);
       toast.success('Collection deleted.');
+    } catch (err) {
+      toast.error(err.message || 'Failed to delete collection.');
     }
   };
 
@@ -134,7 +137,11 @@ export default function CollectionManager() {
         </button>
       </div>
 
-      {collections.length === 0 ? (
+      {error && <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>}
+
+      {loading ? (
+        <p className="p-10 text-center text-sm text-text/50">Loading…</p>
+      ) : collections.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-white p-12 text-center">
           <p className="font-heading text-lg text-brown">No collections yet</p>
           <p className="mt-1 text-sm text-text/50">Add your first collection to start curating themed product groups.</p>
@@ -158,7 +165,7 @@ export default function CollectionManager() {
                   </span>
                 </div>
                 {c.description && <p className="mt-1 line-clamp-2 text-xs text-text/50">{c.description}</p>}
-                <p className="mt-1 text-xs text-text/50">{countFor(c.name)} products · Order {c.displayOrder ?? 0}</p>
+                <p className="mt-1 text-xs text-text/50">Order {c.displayOrder ?? 0}</p>
                 <div className="mt-3 flex items-center gap-3 text-text/50">
                   <button onClick={() => setModalFor(c)} className="hover:text-gold" aria-label="Edit"><HiOutlinePencilSquare /></button>
                   <button onClick={() => toggleHidden(c.id)} className="hover:text-gold" aria-label="Toggle visibility">

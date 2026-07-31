@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   HiOutlineSparkles,
@@ -14,9 +15,8 @@ import {
   HiOutlinePlus,
   HiOutlineChartBar,
 } from 'react-icons/hi2';
-import { useProducts } from '@/context/ProductsContext';
-import { useCategories } from '@/context/CategoriesContext';
-import { useCollections } from '@/context/CollectionsContext';
+import { fetchAdminProducts } from '@/services/productsApi';
+import { useTaxonomyAdmin } from '@/admin/hooks/useTaxonomyAdmin';
 import { useOrders } from '@/context/OrdersContext';
 import { formatPrice } from '@/utils/format';
 import StatCard from '@/admin/components/StatCard';
@@ -28,13 +28,29 @@ function monthLabel(date) {
 }
 
 export default function Dashboard() {
-  const { allProducts } = useProducts();
-  const { categories } = useCategories();
-  const { collections } = useCollections();
+  const { items: categories } = useTaxonomyAdmin('categories');
+  const { items: collections } = useTaxonomyAdmin('collections');
   const { orders, customers } = useOrders();
 
+  // Counts only — pageSize: 1 keeps each request cheap regardless of
+  // catalogue size; meta.total (a SQL window-function count) is the actual
+  // number of matching rows, not just what's on this "page".
+  const [productCounts, setProductCounts] = useState({ total: 0, lowStock: 0, outOfStock: 0 });
+
+  useEffect(() => {
+    Promise.all([
+      fetchAdminProducts({ pageSize: 1 }),
+      fetchAdminProducts({ pageSize: 1, stock: 'low' }),
+      fetchAdminProducts({ pageSize: 1, stock: 'out' }),
+    ])
+      .then(([all, low, out]) => {
+        setProductCounts({ total: all.meta.total, lowStock: low.meta.total, outOfStock: out.meta.total });
+      })
+      .catch(() => {});
+  }, []);
+
   const stats = {
-    totalProducts: allProducts.length,
+    totalProducts: productCounts.total,
     totalCategories: categories.length,
     totalCollections: collections.length,
     totalOrders: orders.length,
@@ -42,8 +58,8 @@ export default function Dashboard() {
     confirmed: orders.filter((o) => o.status === 'Confirmed').length,
     delivered: orders.filter((o) => o.status === 'Delivered').length,
     cancelled: orders.filter((o) => o.status === 'Cancelled').length,
-    lowStock: allProducts.filter((p) => p.lowStock).length,
-    outOfStock: allProducts.filter((p) => !p.inStock).length,
+    lowStock: productCounts.lowStock,
+    outOfStock: productCounts.outOfStock,
     totalCustomers: customers.length,
   };
 

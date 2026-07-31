@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useProducts } from '@/context/ProductsContext';
+import { useProductsByIds } from '@/hooks/useProductsByIds';
 
 const STORAGE_KEY = 'khayaal_recently_viewed';
 const MAX_ITEMS = 12;
@@ -21,7 +21,6 @@ export function recordRecentlyViewed(productId) {
 
 export function useRecentlyViewed(excludeId) {
   const [ids, setIds] = useState(readStored);
-  const { products } = useProducts();
 
   useEffect(() => {
     const onStorage = () => setIds(readStored());
@@ -29,8 +28,11 @@ export function useRecentlyViewed(excludeId) {
     return () => window.removeEventListener('storage', onStorage);
   }, []);
 
-  return ids
-    .filter((id) => id !== excludeId)
-    .map((id) => products.find((p) => p.id === id))
-    .filter(Boolean);
+  const lookupIds = ids.filter((id) => id !== excludeId);
+  const { products } = useProductsByIds(lookupIds);
+
+  // Batch-fetched, so re-sort into the original most-recent-first order and
+  // drop any id that no longer resolves (deleted/unpublished product) —
+  // same behavior as the old products.find(...).filter(Boolean) re-lookup.
+  return lookupIds.map((id) => products.find((p) => p.id === id)).filter(Boolean);
 }

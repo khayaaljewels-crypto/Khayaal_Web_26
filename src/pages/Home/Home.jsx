@@ -6,10 +6,14 @@ import ShopByOccasion from '@/components/sections/ShopByOccasion';
 import Testimonials from '@/components/sections/Testimonials';
 import InstagramGallery from '@/components/sections/InstagramGallery';
 import Newsletter from '@/components/sections/Newsletter';
-import { useProducts } from '@/context/ProductsContext';
+import { useProductList } from '@/hooks/useProductList';
+
+const BEST_SELLERS_FILTER = { isBestSeller: true, pageSize: 8 };
+const NEW_ARRIVALS_FILTER = { isNewArrival: true, pageSize: 8 };
 
 export default function Home() {
-  const { bestSellers, newArrivals } = useProducts();
+  const bestSellers = useProductList(BEST_SELLERS_FILTER);
+  const newArrivals = useProductList(NEW_ARRIVALS_FILTER);
 
   return (
     <>
@@ -19,14 +23,16 @@ export default function Home() {
       <ProductGridSection
         eyebrow="Most Loved"
         title="Best Sellers"
-        products={bestSellers}
+        products={bestSellers.products}
+        loading={bestSellers.loading}
         viewAllTo="/shop?filter=bestsellers"
       />
       <ShopByOccasion />
       <ProductGridSection
         eyebrow="Just Landed"
         title="New Arrivals"
-        products={newArrivals}
+        products={newArrivals.products}
+        loading={newArrivals.loading}
         viewAllTo="/shop?filter=new"
         tint
       />

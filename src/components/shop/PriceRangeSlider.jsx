@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useProducts } from '@/context/ProductsContext';
+import { useProductFacets } from '@/hooks/useProductFacets';
 import { formatPrice } from '@/utils/format';
 
 export default function PriceRangeSlider({ value, onChange }) {
-  const [local, setLocal] = useState(value);
-  const { priceBounds } = useProducts();
+  const [local, setLocal] = useState(value ?? [0, 0]);
+  const { priceBounds } = useProductFacets();
 
-  useEffect(() => setLocal(value), [value]);
+  useEffect(() => {
+    if (value) setLocal(value);
+  }, [value]);
 
   const { min, max } = priceBounds;
   const [lo, hi] = local;

@@ -1,51 +1,40 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { CATEGORY_SEED } from '@/data/categorySeed';
+import { fetchCategories } from '@/services/categoriesApi';
 
 const CategoriesContext = createContext(null);
-const STORAGE_KEY = 'khayaal_categories_v3';
 
-function readStored() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
-
-function slugify(name) {
-  return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
-
+// Read-only, storefront-facing: fetched once from the public API (visible
+// categories only) and shared via context so every consumer (mega menu,
+// search overlay, home sections, breadcrumbs) doesn't each fire their own
+// request. Admin management (including hidden categories) lives separately
+// in src/admin/hooks/useTaxonomyAdmin.js, since that needs full CRUD against
+// a different, auth-gated endpoint.
 export function CategoriesProvider({ children }) {
-  const [rawCategories, setCategories] = useState(() => readStored() ?? CATEGORY_SEED);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(rawCategories));
-  }, [rawCategories]);
-
-  const byDisplayOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
-  const categories = [...rawCategories].sort(byDisplayOrder);
-  const visibleCategories = categories.filter((c) => c.hidden !== true);
-
-  const addCategory = (data) => {
-    const id = `cat-${Date.now().toString(36)}`;
-    const slug = data.slug?.trim() || slugify(data.name);
-    setCategories((prev) => [...prev, { id, slug, image: '', description: '', hidden: false, displayOrder: 0, ...data }]);
-    return id;
-  };
-
-  const updateCategory = (id, patch) =>
-    setCategories((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, ...patch, slug: patch.slug?.trim() || (patch.name ? slugify(patch.name) : c.slug) } : c))
-    );
-
-  const deleteCategory = (id) => setCategories((prev) => prev.filter((c) => c.id !== id));
-  const toggleHidden = (id) => setCategories((prev) => prev.map((c) => (c.id === id ? { ...c, hidden: !c.hidden } : c)));
+    let cancelled = false;
+    setLoading(true);
+    fetchCategories()
+      .then((rows) => {
+        if (!cancelled) setCategories(rows);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const getBySlug = (slug) => categories.find((c) => c.slug === slug);
 
-  const value = { categories, visibleCategories, addCategory, updateCategory, deleteCategory, toggleHidden, getBySlug };
+  const value = { categories, visibleCategories: categories, loading, error, getBySlug };
 
   return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>;
 }

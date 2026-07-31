@@ -1,21 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { HiOutlineBars3, HiOutlineArrowRightOnRectangle, HiOutlineGlobeAlt, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { useAdminAuth } from '@/admin/context/AdminAuthContext';
-import { useProducts } from '@/context/ProductsContext';
+import { fetchAdminProducts } from '@/services/productsApi';
 import { useOrders } from '@/context/OrdersContext';
 
 export default function AdminTopbar({ onOpenMobile }) {
   const { logout } = useAdminAuth();
-  const { products } = useProducts();
   const { orders, customers } = useOrders();
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
+  const [productResults, setProductResults] = useState([]);
+
+  // Debounced server-side search — the product catalogue is no longer held
+  // in memory, so this can't filter a local array the way orders/customers
+  // (still localStorage-backed) do below.
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) {
+      setProductResults([]);
+      return;
+    }
+    const timer = setTimeout(() => {
+      fetchAdminProducts({ search: q, pageSize: 4 })
+        .then(({ products }) => setProductResults(products))
+        .catch(() => setProductResults([]));
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [query]);
 
   const results = query.trim()
     ? {
-        products: products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase())).slice(0, 4),
+        products: productResults,
         orders: orders.filter((o) => o.id.toLowerCase().includes(query.toLowerCase())).slice(0, 4),
         customers: customers.filter((c) => c.name.toLowerCase().includes(query.toLowerCase())).slice(0, 4),
       }

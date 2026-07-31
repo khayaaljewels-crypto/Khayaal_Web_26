@@ -1,5 +1,6 @@
-import { useMemo, useState, useCallback } from 'react';
-import { useProducts } from '@/context/ProductsContext';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useProductFacets } from '@/hooks/useProductFacets';
+import { fetchProducts } from '@/services/productsApi';
 
 const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
@@ -12,47 +13,71 @@ const SORT_OPTIONS = [
 
 export { SORT_OPTIONS };
 
+const SORT_TO_API = {
+  featured: 'newest',
+  newest: 'newest',
+  'price-asc': 'price-asc',
+  'price-desc': 'price-desc',
+  rating: 'rating',
+  discount: 'discount',
+};
+
 function toggleInArray(arr, value) {
   return arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
 }
 
-export function useProductFilters(products, initial = {}) {
-  const { priceBounds } = useProducts();
+const BASE_FILTERS = {
+  search: '',
+  categories: [],
+  collections: [],
+  materials: [],
+  stones: [],
+  colors: [],
+  occasions: [],
+  availability: 'all', // all | in-stock | out-of-stock
+  minRating: 0,
+  minDiscount: 0,
+  priceRange: null, // adopts the real bounds once facets load — see below
+};
 
-  const defaultFilters = useMemo(
-    () => ({
-      search: '',
-      categories: [],
-      collections: [],
-      materials: [],
-      stones: [],
-      colors: [],
-      occasions: [],
-      availability: 'all', // all | in-stock | out-of-stock
-      minRating: 0,
-      minDiscount: 0,
-      priceRange: [priceBounds.min, priceBounds.max],
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  const [filters, setFilters] = useState({ ...defaultFilters, ...initial });
+// baseParams: extra fixed filters merged into every request (e.g. Shop.jsx
+// passes { isBestSeller: true } for the "?filter=bestsellers" view).
+// Filtering/sorting/pagination all happen server-side now — this hook never
+// holds more than one page of products in memory, so it keeps working the
+// same way at 20 products or 20,000.
+export function useProductFilters(baseParams = {}, { pageSize = 12 } = {}) {
+  const facets = useProductFacets();
+  const [filters, setFilters] = useState(BASE_FILTERS);
   const [sort, setSort] = useState('featured');
   const [view, setView] = useState('grid');
 
+  const [mode, setMode] = useState('infinite'); // 'infinite' | 'pages'
+  const [page, setPage] = useState(1);
+  const [loadedPages, setLoadedPages] = useState(1);
+  const [accumulated, setAccumulated] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Adopts the real price bounds once facets load, unless the user already
+  // moved the slider (priceRange stays non-null after their first change).
+  useEffect(() => {
+    if (!facets.loading && filters.priceRange === null) {
+      setFilters((f) => ({ ...f, priceRange: [facets.priceBounds.min, facets.priceBounds.max] }));
+    }
+  }, [facets.loading, facets.priceBounds, filters.priceRange]);
+
   const setSearch = useCallback((search) => setFilters((f) => ({ ...f, search })), []);
-
-  const toggleFilter = useCallback((key, value) => {
-    setFilters((f) => ({ ...f, [key]: toggleInArray(f[key], value) }));
-  }, []);
-
+  const toggleFilter = useCallback((key, value) => setFilters((f) => ({ ...f, [key]: toggleInArray(f[key], value) })), []);
   const setAvailability = useCallback((availability) => setFilters((f) => ({ ...f, availability })), []);
   const setMinRating = useCallback((minRating) => setFilters((f) => ({ ...f, minRating })), []);
   const setMinDiscount = useCallback((minDiscount) => setFilters((f) => ({ ...f, minDiscount })), []);
   const setPriceRange = useCallback((priceRange) => setFilters((f) => ({ ...f, priceRange })), []);
 
-  const clearAll = useCallback(() => setFilters({ ...defaultFilters }), [defaultFilters]);
+  const clearAll = useCallback(
+    () => setFilters({ ...BASE_FILTERS, priceRange: [facets.priceBounds.min, facets.priceBounds.max] }),
+    [facets.priceBounds]
+  );
 
   const patchFilters = useCallback((partial) => setFilters((f) => ({ ...f, ...partial })), []);
 
@@ -62,63 +87,122 @@ export function useProductFilters(products, initial = {}) {
         if (key === 'availability') return { ...f, availability: 'all' };
         if (key === 'minRating') return { ...f, minRating: 0 };
         if (key === 'minDiscount') return { ...f, minDiscount: 0 };
-        if (key === 'priceRange') return { ...f, priceRange: [priceBounds.min, priceBounds.max] };
+        if (key === 'priceRange') return { ...f, priceRange: [facets.priceBounds.min, facets.priceBounds.max] };
         if (key === 'search') return { ...f, search: '' };
         return { ...f, [key]: f[key].filter((v) => v !== value) };
       });
     },
-    [priceBounds]
+    [facets.priceBounds]
   );
 
-  const filtered = useMemo(() => {
-    let list = products.filter((p) => {
-      if (filters.search.trim()) {
-        const q = filters.search.trim().toLowerCase();
-        if (
-          !p.name.toLowerCase().includes(q) &&
-          !p.category.toLowerCase().includes(q) &&
-          !p.material.toLowerCase().includes(q) &&
-          !p.stone.toLowerCase().includes(q)
-        ) {
-          return false;
-        }
-      }
-      if (filters.categories.length && !filters.categories.includes(p.category)) return false;
-      if (filters.collections.length && !filters.collections.includes(p.collection)) return false;
-      if (filters.materials.length && !filters.materials.includes(p.material)) return false;
-      if (filters.stones.length && !filters.stones.includes(p.stone)) return false;
-      if (filters.colors.length && !filters.colors.includes(p.color)) return false;
-      if (filters.occasions.length && !filters.occasions.includes(p.occasion)) return false;
-      if (filters.availability === 'in-stock' && !p.inStock) return false;
-      if (filters.availability === 'out-of-stock' && p.inStock) return false;
-      if (filters.minRating > 0 && p.rating < filters.minRating) return false;
-      if (filters.minDiscount > 0 && p.discount < filters.minDiscount) return false;
-      if (p.price < filters.priceRange[0] || p.price > filters.priceRange[1]) return false;
-      return true;
-    });
+  const requestKey = useMemo(
+    () =>
+      JSON.stringify({
+        baseParams,
+        search: filters.search,
+        categories: filters.categories,
+        collections: filters.collections,
+        materials: filters.materials,
+        stones: filters.stones,
+        colors: filters.colors,
+        occasions: filters.occasions,
+        availability: filters.availability,
+        minRating: filters.minRating,
+        minDiscount: filters.minDiscount,
+        priceRange: filters.priceRange,
+        sort,
+      }),
+    [baseParams, filters, sort]
+  );
 
-    switch (sort) {
-      case 'newest':
-        list = [...list].sort((a, b) => (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0));
-        break;
-      case 'price-asc':
-        list = [...list].sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        list = [...list].sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        list = [...list].sort((a, b) => b.rating - a.rating);
-        break;
-      case 'discount':
-        list = [...list].sort((a, b) => b.discount - a.discount);
-        break;
-      default:
-        break;
-    }
+  const buildParams = useCallback(
+    (targetPage, targetPageSize) => {
+      const f = JSON.parse(requestKey);
+      return {
+        ...f.baseParams,
+        page: targetPage,
+        pageSize: targetPageSize,
+        search: f.search || undefined,
+        category: f.categories,
+        collection: f.collections,
+        material: f.materials,
+        stone: f.stones,
+        color: f.colors,
+        occasion: f.occasions,
+        availability: f.availability !== 'all' ? f.availability : undefined,
+        minRating: f.minRating || undefined,
+        minDiscount: f.minDiscount || undefined,
+        minPrice: f.priceRange?.[0],
+        maxPrice: f.priceRange?.[1],
+        sort: SORT_TO_API[f.sort] ?? 'newest',
+      };
+    },
+    [requestKey]
+  );
 
-    return list;
-  }, [products, filters, sort]);
+  // Any filter/sort change resets pagination and refetches from page 1.
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    setPage(1);
+    setLoadedPages(1);
+
+    fetchProducts(buildParams(1, pageSize))
+      .then(({ products, meta }) => {
+        if (cancelled) return;
+        setAccumulated(products);
+        setTotal(meta.total);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requestKey, pageSize]);
+
+  const goToPage = useCallback(
+    (targetPage) => {
+      const pageCount = Math.max(1, Math.ceil(total / pageSize));
+      const clamped = Math.min(Math.max(1, targetPage), pageCount);
+      setPage(clamped);
+      setLoading(true);
+      fetchProducts(buildParams(clamped, pageSize))
+        .then(({ products, meta }) => {
+          setAccumulated(products);
+          setTotal(meta.total);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    },
+    [buildParams, pageSize, total]
+  );
+
+  const loadMore = useCallback(() => {
+    const nextPage = loadedPages + 1;
+    setLoading(true);
+    fetchProducts(buildParams(nextPage, pageSize))
+      .then(({ products, meta }) => {
+        setAccumulated((prev) => [...prev, ...products]);
+        setTotal(meta.total);
+        setLoadedPages(nextPage);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [buildParams, loadedPages, pageSize]);
+
+  const setModeAndReset = useCallback((nextMode) => {
+    setMode(nextMode);
+    setPage(1);
+    setLoadedPages(1);
+  }, []);
 
   const activeChips = useMemo(() => {
     const chips = [];
@@ -134,11 +218,16 @@ export function useProductFilters(products, initial = {}) {
     }
     if (filters.minRating > 0) chips.push({ key: 'minRating', label: `${filters.minRating}★ & up` });
     if (filters.minDiscount > 0) chips.push({ key: 'minDiscount', label: `${filters.minDiscount}% off & up` });
-    if (filters.priceRange[0] !== priceBounds.min || filters.priceRange[1] !== priceBounds.max) {
+    if (
+      filters.priceRange &&
+      (filters.priceRange[0] !== facets.priceBounds.min || filters.priceRange[1] !== facets.priceBounds.max)
+    ) {
       chips.push({ key: 'priceRange', label: `₹${filters.priceRange[0]} – ₹${filters.priceRange[1]}` });
     }
     return chips;
-  }, [filters, priceBounds]);
+  }, [filters, facets.priceBounds]);
+
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
 
   return {
     filters,
@@ -156,6 +245,20 @@ export function useProductFilters(products, initial = {}) {
     setSort,
     view,
     setView,
-    filtered,
+    loading,
+    error,
+    // Pagination — folds in what usePaginatedList used to provide, now
+    // backed by real server pages instead of slicing an in-memory array.
+    filtered: accumulated,
+    mode,
+    setMode: setModeAndReset,
+    page,
+    pageCount,
+    goToPage,
+    visibleItems: accumulated,
+    hasMore: mode === 'infinite' && accumulated.length < total,
+    loadMore,
+    total,
+    shown: accumulated.length,
   };
 }

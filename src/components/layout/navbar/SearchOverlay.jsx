@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineXMark, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
-import { useProducts } from '@/context/ProductsContext';
+import { fetchProducts } from '@/services/productsApi';
 import { useCategories } from '@/context/CategoriesContext';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 
@@ -10,8 +10,9 @@ const TRENDING = ['Kundan Necklace', 'Bridal Set', 'Temple Jewellery', 'Maang Ti
 
 export default function SearchOverlay({ open, onClose }) {
   const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [searching, setSearching] = useState(false);
   const navigate = useNavigate();
-  const { products } = useProducts();
   const { visibleCategories: categories } = useCategories();
   useLockBodyScroll(open);
 
@@ -19,9 +20,21 @@ export default function SearchOverlay({ open, onClose }) {
     if (!open) setQuery('');
   }, [open]);
 
-  const results = query.trim()
-    ? products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
-    : [];
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) {
+      setResults([]);
+      return;
+    }
+    setSearching(true);
+    const timer = setTimeout(() => {
+      fetchProducts({ search: q, pageSize: 6 })
+        .then(({ products }) => setResults(products))
+        .catch(() => setResults([]))
+        .finally(() => setSearching(false));
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [query]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,26 +84,32 @@ export default function SearchOverlay({ open, onClose }) {
             </div>
 
             <div className="mt-6">
-              {results.length > 0 ? (
-                <ul className="space-y-3">
-                  {results.map((p) => (
-                    <li key={p.id}>
-                      <button
-                        onClick={() => {
-                          navigate(`/product/${p.slug}`);
-                          onClose();
-                        }}
-                        className="flex w-full items-center gap-4 rounded-xl p-2 text-left transition-colors hover:bg-beige"
-                      >
-                        <img src={p.images[0]} alt={p.name} className="h-14 w-14 rounded-lg object-cover" />
-                        <div>
-                          <p className="font-heading text-sm text-brown">{p.name}</p>
-                          <p className="text-xs text-gold">₹{p.price.toLocaleString('en-IN')}</p>
-                        </div>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+              {query.trim() ? (
+                searching ? (
+                  <p className="p-2 text-xs text-text/50">Searching…</p>
+                ) : results.length > 0 ? (
+                  <ul className="space-y-3">
+                    {results.map((p) => (
+                      <li key={p.id}>
+                        <button
+                          onClick={() => {
+                            navigate(`/product/${p.slug}`);
+                            onClose();
+                          }}
+                          className="flex w-full items-center gap-4 rounded-xl p-2 text-left transition-colors hover:bg-beige"
+                        >
+                          <img src={p.images[0]} alt={p.name} className="h-14 w-14 rounded-lg object-cover bg-beige" />
+                          <div>
+                            <p className="font-heading text-sm text-brown">{p.name}</p>
+                            <p className="text-xs text-gold">₹{p.price.toLocaleString('en-IN')}</p>
+                          </div>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="p-2 text-xs text-text/50">No products match "{query.trim()}".</p>
+                )
               ) : (
                 <>
                   <div>

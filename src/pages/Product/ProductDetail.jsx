@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { HiChevronRight } from 'react-icons/hi2';
-import { useProducts } from '@/context/ProductsContext';
-import { useCategories } from '@/context/CategoriesContext';
+import { useProduct } from '@/hooks/useProduct';
 import { useCart } from '@/context/CartContext';
 import { useRecentlyViewed, recordRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import ImageGallery from '@/components/product/ImageGallery';
@@ -15,20 +14,22 @@ import Reveal from '@/components/animations/Reveal';
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const { getBySlug, getRelatedProducts, getCompleteTheLook } = useProducts();
-  const { categories } = useCategories();
-  const product = getBySlug(slug);
+  const { product, related, completeTheLook, loading, error, notFound } = useProduct(slug);
   const navigate = useNavigate();
   const { addItem } = useCart();
   const [searchParams] = useSearchParams();
 
-  const [activeVariantId, setActiveVariantId] = useState(product?.variants[0]?.id);
+  const [activeVariantId, setActiveVariantId] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
   // Pre-filled by the "Order Again" button in Order History (?qty=N)
   const [qty, setQty] = useState(() => {
     const fromQuery = Number(searchParams.get('qty'));
     return Number.isFinite(fromQuery) && fromQuery > 0 ? fromQuery : 1;
   });
+
+  useEffect(() => {
+    if (product) setActiveVariantId(product.variants[0]?.id);
+  }, [product]);
 
   useEffect(() => {
     if (product) recordRecentlyViewed(product.id);
@@ -50,18 +51,34 @@ export default function ProductDetail() {
   }, [product]);
 
   const recentlyViewed = useRecentlyViewed(product?.id);
-  const related = useMemo(() => (product ? getRelatedProducts(product) : []), [product]);
-  const completeTheLook = useMemo(() => (product ? getCompleteTheLook(product) : []), [product]);
 
-  if (!product) return <Navigate to="/shop" replace />;
+  if (notFound) return <Navigate to="/shop" replace />;
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[70svh] items-center justify-center pt-28">
+        <span className="h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="flex min-h-[70svh] flex-col items-center justify-center gap-3 pt-28 text-center">
+        <p className="text-sm text-red-600">{error || 'Something went wrong loading this product.'}</p>
+        <Link to="/shop" className="text-sm text-gold underline">Back to Shop</Link>
+      </div>
+    );
+  }
 
   const activeVariant = product.variants.find((v) => v.id === activeVariantId) ?? product.variants[0];
-  const effectivePrice = product.price + activeVariant.priceDelta;
-  const effectiveOldPrice = product.oldPrice ? product.oldPrice + activeVariant.priceDelta : null;
+  const effectivePrice = product.price + (activeVariant?.priceDelta ?? 0);
+  const effectiveOldPrice = product.oldPrice ? product.oldPrice + (activeVariant?.priceDelta ?? 0) : null;
 
-  const displayImages = [activeVariant.image, ...product.images.filter((img) => img !== activeVariant.image)];
+  const displayImages = activeVariant?.image
+    ? [activeVariant.image, ...product.images.filter((img) => img !== activeVariant.image)]
+    : product.images;
 
-  const category = categories.find((c) => c.slug === product.category);
   const sizeRequired = Boolean(product.ringSizes) && !activeSize;
   const purchaseDisabled = !product.inStock || sizeRequired;
 
@@ -83,10 +100,10 @@ export default function ProductDetail() {
           <Link to="/" className="hover:text-gold">Home</Link>
           <HiChevronRight className="text-[10px]" />
           <Link to="/shop" className="hover:text-gold">Shop</Link>
-          {category && (
+          {product.category && (
             <>
               <HiChevronRight className="text-[10px]" />
-              <Link to={`/shop?category=${category.slug}`} className="hover:text-gold">{category.name}</Link>
+              <Link to={`/shop?category=${product.category.slug}`} className="hover:text-gold">{product.category.name}</Link>
             </>
           )}
           <HiChevronRight className="text-[10px]" />
@@ -105,7 +122,7 @@ export default function ProductDetail() {
           <Reveal direction="right" className="lg:sticky lg:top-28 lg:self-start">
             <PurchasePanel
               product={product}
-              activeVariantId={activeVariant.id}
+              activeVariantId={activeVariant?.id}
               onVariantChange={setActiveVariantId}
               activeSize={activeSize}
               onSizeChange={setActiveSize}

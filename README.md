@@ -4,8 +4,8 @@ React (Vite) storefront + admin dashboard for Khayaal Jewels, a premium imitatio
 e-commerce site. This repository is the **frontend only** — it deploys independently to Vercel
 and talks to a separate backend repository over HTTP.
 
-> Looking for the backend? It lives in its own repository (Express + PostgreSQL, deployed to
-> Railway). See `VITE_API_URL` below for how the two are connected.
+> Looking for the backend? It lives in its own repository (Express + PostgreSQL), deployed
+> separately. See `VITE_API_URL` below for how the two are connected.
 
 ## Tech Stack
 
@@ -52,10 +52,10 @@ See `.env.example` for the full list with explanations. Summary:
 |---|---|
 | `VITE_FIREBASE_*` | Firebase web app config, used by `/admin` login |
 | `VITE_ADMIN_EMAIL` | The only account allowed into `/admin` |
-| `VITE_API_URL` | Base URL of the backend repo — `http://localhost:4000` locally, your Railway URL in production |
+| `VITE_API_URL` | Base URL of the backend repo — `http://localhost:4000` locally, your backend's deployed URL in production |
 
 **Production:** set `VITE_API_URL` in Vercel → Project Settings → Environment Variables to the
-backend's deployed Railway URL (e.g. `https://your-backend.up.railway.app`). Do not commit real
+backend's deployed URL (e.g. `https://your-backend-host.example.com`). Do not commit real
 values to `.env` — it's gitignored.
 
 ## Scripts

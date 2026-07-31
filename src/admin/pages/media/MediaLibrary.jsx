@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { HiOutlineTrash, HiOutlineArrowPath, HiOutlinePlus, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { api } from '@/utils/apiClient';
-import { useProducts } from '@/context/ProductsContext';
+import { useAdminProducts } from '@/admin/hooks/useAdminProducts';
 
-function ReuseMenu({ image, onReuse }) {
-  const { allProducts } = useProducts();
+function ReuseMenu({ products, onReuse }) {
   const [open, setOpen] = useState(false);
   const [targetId, setTargetId] = useState('');
 
   const handleAdd = () => {
     if (!targetId) return;
-    onReuse(targetId, image.url);
+    onReuse(targetId);
     setOpen(false);
     setTargetId('');
   };
@@ -36,7 +35,7 @@ function ReuseMenu({ image, onReuse }) {
         className="min-w-0 flex-1 rounded-md border border-border px-1 py-0.5 text-[10px]"
       >
         <option value="">Add to...</option>
-        {allProducts.map((p) => (
+        {products.map((p) => (
           <option key={p.id} value={p.id}>{p.name}</option>
         ))}
       </select>
@@ -46,7 +45,11 @@ function ReuseMenu({ image, onReuse }) {
 }
 
 export default function MediaLibrary() {
-  const { allProducts, updateProduct } = useProducts();
+  // A flat, generously-sized page for the "which product" dropdowns below —
+  // fine for browsing/reuse purposes; the product catalogue itself is never
+  // loaded in bulk like this anywhere else (see useProductList for the real,
+  // server-paginated listing).
+  const { products } = useAdminProducts({ pageSize: 200 });
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -55,7 +58,7 @@ export default function MediaLibrary() {
   const replaceInputRef = useRef(null);
   const [replacingId, setReplacingId] = useState(null);
 
-  const productName = (productId) => allProducts.find((p) => p.id === productId)?.name ?? productId;
+  const productName = (productId) => products.find((p) => p.id === productId)?.name ?? productId;
 
   const load = async () => {
     setLoading(true);
@@ -110,11 +113,12 @@ export default function MediaLibrary() {
     }
   };
 
-  const handleReuse = (targetProductId, url) => {
-    const target = allProducts.find((p) => p.id === targetProductId);
-    if (!target) return;
-    if (target.images?.includes(url)) return;
-    updateProduct(targetProductId, { images: [...(target.images ?? []), url] });
+  const handleReuse = async (imageId, targetProductId) => {
+    try {
+      await api.post(`/api/admin/images/${imageId}/attach`, { targetProductId });
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -140,7 +144,7 @@ export default function MediaLibrary() {
           className="rounded-full border border-border bg-white px-4 py-2.5 text-sm focus:border-gold focus:outline-none"
         >
           <option value="">All Products</option>
-          {allProducts.map((p) => (
+          {products.map((p) => (
             <option key={p.id} value={p.id}>{p.name}</option>
           ))}
         </select>
@@ -177,7 +181,7 @@ export default function MediaLibrary() {
                 >
                   <HiOutlineArrowPath className="text-sm" />
                 </button>
-                <ReuseMenu image={img} onReuse={handleReuse} />
+                <ReuseMenu products={products} onReuse={(targetId) => handleReuse(img.id, targetId)} />
                 <button
                   type="button"
                   onClick={() => handleDelete(img.id)}

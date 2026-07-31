@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import Reveal from '@/components/animations/Reveal';
 import ProductCard from '@/components/cards/ProductCard';
 import QuickViewModal from '@/components/shop/QuickViewModal';
+import ProductGridSkeleton from '@/components/shop/ProductGridSkeleton';
 
-export default function ProductGridSection({ eyebrow, title, products, viewAllTo, tint = false }) {
+export default function ProductGridSection({ eyebrow, title, products, viewAllTo, tint = false, loading = false }) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
-  if (!products.length) return null;
+  if (!loading && !products.length) return null;
 
   return (
     <section className={`py-20 lg:py-28 ${tint ? 'bg-beige/50' : ''}`}>
@@ -24,11 +25,17 @@ export default function ProductGridSection({ eyebrow, title, products, viewAllTo
           )}
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
-          {products.slice(0, 8).map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} onQuickView={setQuickViewProduct} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="mt-12">
+            <ProductGridSkeleton count={8} />
+          </div>
+        ) : (
+          <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
+            {products.slice(0, 8).map((product, i) => (
+              <ProductCard key={product.id} product={product} index={i} onQuickView={setQuickViewProduct} />
+            ))}
+          </div>
+        )}
       </div>
 
       <QuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />

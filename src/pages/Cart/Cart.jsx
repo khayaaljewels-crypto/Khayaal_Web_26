@@ -2,18 +2,20 @@ import { AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
 import { useCart } from '@/context/CartContext';
-import { useProducts } from '@/context/ProductsContext';
+import { useProductList } from '@/hooks/useProductList';
 import CartLineItem from '@/components/cart/CartLineItem';
 import OrderSummary from '@/components/cart/OrderSummary';
 import EmptyCart from '@/components/cart/EmptyCart';
 import ProductRail from '@/components/product/ProductRail';
 import Reveal from '@/components/animations/Reveal';
 
+const BEST_SELLERS_FILTER = { isBestSeller: true, pageSize: 8 };
+
 export default function Cart() {
   const { items, updateQuantity, removeItem, saveForLater, savedItems, moveToCart, removeSaved } = useCart();
-  const { products } = useProducts();
+  const { products: bestSellers } = useProductList(BEST_SELLERS_FILTER);
 
-  const recommended = products.filter((p) => p.isBestSeller && !items.some((i) => i.product.id === p.id)).slice(0, 8);
+  const recommended = bestSellers.filter((p) => !items.some((i) => i.product.id === p.id));
 
   return (
     <div className="bg-bg pb-24 pt-28 lg:pt-32">

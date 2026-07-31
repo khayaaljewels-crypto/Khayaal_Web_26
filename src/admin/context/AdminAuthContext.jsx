@@ -8,6 +8,7 @@ import {
   updatePassword,
 } from 'firebase/auth';
 import { auth, ADMIN_EMAIL, isFirebaseConfigured } from '@/firebase/config';
+import { setAdminTokenProvider } from '@/utils/apiClient';
 
 const AdminAuthContext = createContext(null);
 
@@ -16,6 +17,12 @@ export function AdminAuthProvider({ children }) {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
+    // Reads auth.currentUser live at call time (not the `user` state above),
+    // so it's never stale regardless of when a request fires relative to
+    // the last onAuthStateChanged event. Every /api/admin/* call in
+    // apiClient.js attaches whatever this returns as a Bearer header.
+    setAdminTokenProvider(() => auth.currentUser?.getIdToken());
+
     if (!isFirebaseConfigured) {
       setCheckingAuth(false);
       return;

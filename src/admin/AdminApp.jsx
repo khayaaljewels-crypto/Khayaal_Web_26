@@ -15,6 +15,7 @@ const OrderDetail = lazy(() => import('@/admin/pages/orders/OrderDetail'));
 const CustomerList = lazy(() => import('@/admin/pages/customers/CustomerList'));
 const CustomerDetail = lazy(() => import('@/admin/pages/customers/CustomerDetail'));
 const Settings = lazy(() => import('@/admin/pages/settings/Settings'));
+const MigrateData = lazy(() => import('@/admin/pages/MigrateData'));
 
 export default function AdminApp() {
   return (
@@ -40,6 +41,7 @@ export default function AdminApp() {
           <Route path="/admin/customers" element={<CustomerList />} />
           <Route path="/admin/customers/:phone" element={<CustomerDetail />} />
           <Route path="/admin/settings" element={<Settings />} />
+          <Route path="/admin/migrate-data" element={<MigrateData />} />
         </Route>
       </Routes>
     </Suspense>

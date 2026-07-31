@@ -3,7 +3,7 @@ import { HiStar } from 'react-icons/hi2';
 import FilterSection from './FilterSection';
 import FilterCheckbox from './FilterCheckbox';
 import PriceRangeSlider from './PriceRangeSlider';
-import { useProducts } from '@/context/ProductsContext';
+import { useProductFacets } from '@/hooks/useProductFacets';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
 
@@ -20,20 +20,20 @@ export default function FilterPanelContent({ filtersApi }) {
     setPriceRange,
   } = filtersApi;
 
-  const { materialOptions, stoneOptions, colorOptions, occasionOptions } = useProducts();
+  const { materials, stones, colors, occasions } = useProductFacets();
   const { visibleCategories } = useCategories();
   const { visibleCollections } = useCollections();
 
   const FILTER_OPTIONS = useMemo(
     () => ({
       categories: visibleCategories.map((c) => ({ value: c.slug, label: c.name })),
-      collections: visibleCollections.map((c) => c.name),
-      materials: materialOptions,
-      stones: stoneOptions,
-      colors: colorOptions,
-      occasions: occasionOptions,
+      collections: visibleCollections.map((c) => ({ value: c.slug, label: c.name })),
+      materials,
+      stones,
+      colors,
+      occasions,
     }),
-    [visibleCategories, visibleCollections, materialOptions, stoneOptions, colorOptions, occasionOptions]
+    [visibleCategories, visibleCollections, materials, stones, colors, occasions]
   );
 
   return (
@@ -56,10 +56,10 @@ export default function FilterPanelContent({ filtersApi }) {
       <FilterSection title="Collection" defaultOpen={false}>
         {FILTER_OPTIONS.collections.map((c) => (
           <FilterCheckbox
-            key={c}
-            label={c}
-            checked={filters.collections.includes(c)}
-            onChange={() => toggleFilter('collections', c)}
+            key={c.value}
+            label={c.label}
+            checked={filters.collections.includes(c.value)}
+            onChange={() => toggleFilter('collections', c.value)}
           />
         ))}
       </FilterSection>

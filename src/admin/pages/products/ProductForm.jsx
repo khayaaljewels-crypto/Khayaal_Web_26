@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
-import { useProducts } from '@/context/ProductsContext';
+import { fetchAdminProduct, createProduct, updateProduct } from '@/services/productsApi';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
 import { MATERIALS, STONES, COLORS, OCCASION_OPTIONS, COLOR_HEX } from '@/data/constants';
@@ -11,7 +11,7 @@ import { api } from '@/utils/apiClient';
 import { useToast } from '@/admin/context/ToastContext';
 
 const emptyForm = {
-  name: '', sku: '', brand: 'Khayaal Jewels', category: '', collection: '', occasion: OCCASION_OPTIONS[0],
+  name: '', sku: '', brand: 'Khayaal Jewels', categoryId: '', collectionId: '', occasion: OCCASION_OPTIONS[0],
   price: '', oldPrice: '', costPrice: '', stockQty: '',
   material: MATERIALS[0], stone: STONES[0], color: COLORS[0],
   description: '', shortDescription: '', careInstructions: '', tags: '',
@@ -20,37 +20,56 @@ const emptyForm = {
   isFeatured: false, isTrending: false, isNewArrival: false, isBestSeller: false, isComingSoon: false, isPublished: true,
 };
 
+function generateId() {
+  return `kj-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+}
+
 export default function ProductForm() {
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
-  const { getById, addProduct, updateProduct } = useProducts();
   const { visibleCategories } = useCategories();
   const { visibleCollections } = useCollections();
   const toast = useToast();
 
-  const existing = isEdit ? getById(id) : null;
+  // For edit, the id is already known from the route — no fetch needed to
+  // determine it. For a brand new product it's generated once up front, so
+  // images uploaded before the first save already have somewhere real to
+  // attach to (product_images.product_id).
+  const [productId] = useState(() => id ?? generateId());
 
-  // Generated once and reused for the lifetime of this form — for a brand
-  // new product this is the id the product will be saved under, so images
-  // uploaded before the first "Create Product" click already have somewhere
-  // real to attach to (product_images.product_id).
-  const [productId] = useState(() => existing?.id ?? `kj-${Date.now().toString(36)}`);
-
-  const [form, setForm] = useState(() => {
-    if (!existing) return emptyForm;
-    return {
-      ...emptyForm,
-      ...existing,
-      tags: (existing.tags ?? []).join(', '),
-      weight: existing.specs?.weight ?? '',
-      dimensions: existing.specs?.dimensions ?? '',
-      packageIncludes: existing.specs?.packageIncludes ?? '',
-      warranty: existing.specs?.warranty ?? emptyForm.warranty,
-      countryOfOrigin: existing.specs?.countryOfOrigin ?? 'India',
-    };
-  });
+  const [existing, setExisting] = useState(null);
+  const [form, setForm] = useState(emptyForm);
+  const [formLoading, setFormLoading] = useState(isEdit);
+  const [formError, setFormError] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!isEdit) return;
+    let cancelled = false;
+    fetchAdminProduct(id)
+      .then((product) => {
+        if (cancelled) return;
+        setExisting(product);
+        setForm({
+          ...emptyForm,
+          ...product,
+          categoryId: product.category?.id ?? '',
+          collectionId: product.collection?.id ?? '',
+          tags: (product.tags ?? []).join(', '),
+          weight: product.specs?.weight ?? '',
+          dimensions: product.specs?.dimensions ?? '',
+          packageIncludes: product.specs?.packageIncludes ?? '',
+          warranty: product.specs?.warranty ?? emptyForm.warranty,
+          countryOfOrigin: product.specs?.countryOfOrigin ?? 'India',
+        });
+      })
+      .catch((err) => !cancelled && setFormError(err.message))
+      .finally(() => !cancelled && setFormLoading(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [isEdit, id]);
 
   // Authoritative image list lives in Postgres (product_images), not in
   // form state — ImageUploader talks to the upload API directly and reports
@@ -70,7 +89,7 @@ export default function ProductForm() {
 
   const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (images.length === 0) {
@@ -87,8 +106,8 @@ export default function ProductForm() {
       name: form.name.trim(),
       sku: form.sku.trim() || `KJ-${Date.now().toString().slice(-6)}`,
       brand: form.brand.trim(),
-      category: form.category,
-      collection: form.collection,
+      categoryId: form.categoryId || null,
+      collectionId: form.collectionId || null,
       occasion: form.occasion,
       price: Number(form.price) || 0,
       oldPrice: form.oldPrice ? Number(form.oldPrice) : null,
@@ -110,7 +129,6 @@ export default function ProductForm() {
       isBestSeller: form.isBestSeller,
       isComingSoon: form.isComingSoon,
       isPublished: form.isPublished,
-      images: imageUrls,
       specs: {
         metal: form.material,
         stone: form.stone,
@@ -130,15 +148,28 @@ export default function ProductForm() {
       reviewCount: existing?.reviewCount ?? 0,
     };
 
-    if (isEdit) {
-      updateProduct(id, payload);
-    } else {
-      addProduct(payload);
+    try {
+      if (isEdit) {
+        await updateProduct(id, payload);
+      } else {
+        await createProduct(payload);
+      }
+      toast.success(isEdit ? 'Product updated.' : 'Product created.');
+      navigate('/admin/products');
+    } catch (err) {
+      toast.error(err.message || 'Failed to save product.');
+    } finally {
+      setSaving(false);
     }
-
-    toast.success(isEdit ? 'Product updated.' : 'Product created.');
-    navigate('/admin/products');
   };
+
+  if (formLoading) {
+    return <p className="p-10 text-center text-sm text-text/50">Loading product…</p>;
+  }
+
+  if (formError) {
+    return <p className="p-10 text-center text-sm text-red-600">{formError}</p>;
+  }
 
   return (
     <div className="space-y-6">
@@ -162,15 +193,15 @@ export default function ProductForm() {
                 <input className={inputClass} value={form.brand} onChange={(e) => set('brand', e.target.value)} />
               </Field>
               <Field label="Category">
-                <select required className={inputClass} value={form.category} onChange={(e) => set('category', e.target.value)}>
+                <select required className={inputClass} value={form.categoryId} onChange={(e) => set('categoryId', e.target.value)}>
                   <option value="">Select category</option>
-                  {visibleCategories.map((c) => <option key={c.id} value={c.slug}>{c.name}</option>)}
+                  {visibleCategories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </Field>
               <Field label="Collection">
-                <select className={inputClass} value={form.collection} onChange={(e) => set('collection', e.target.value)}>
+                <select className={inputClass} value={form.collectionId} onChange={(e) => set('collectionId', e.target.value)}>
                   <option value="">None</option>
-                  {visibleCollections.map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
+                  {visibleCollections.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </Field>
               <Field label="Occasion">
@@ -283,7 +314,7 @@ export default function ProductForm() {
             ) : (
               <ImageUploader
                 productId={productId}
-                folder={form.category}
+                folder={visibleCategories.find((c) => c.id === form.categoryId)?.slug}
                 images={images}
                 onImagesChange={(next) => { setImages(next); if (next.length) setImageError(''); }}
                 onUploadingChange={setImagesUploading}

@@ -8,12 +8,27 @@ export function setUnauthorizedHandler(fn) {
   unauthorizedHandler = fn;
 }
 
+// Same pattern, for the admin side: AdminAuthContext registers a function
+// that returns the current Firebase ID token (or null if signed out), and
+// every request below attaches it as a Bearer header when present. Customer
+// requests are unaffected — they authenticate via the httpOnly cookie
+// (credentials: 'include'), never this header.
+let adminTokenProvider = null;
+export function setAdminTokenProvider(fn) {
+  adminTokenProvider = fn;
+}
+
+async function authHeaders() {
+  const token = await adminTokenProvider?.();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 async function request(path, options = {}, isRetry = false) {
   let res;
   try {
     res = await fetch(`${API_BASE}${path}`, {
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json', ...options.headers },
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()), ...options.headers },
       ...options,
     });
   } catch (networkErr) {
@@ -41,7 +56,12 @@ async function request(path, options = {}, isRetry = false) {
 // The browser must set its own multipart Content-Type (with boundary), so
 // this never sets a Content-Type header manually.
 async function requestFormData(path, formData, method = 'POST') {
-  const res = await fetch(`${API_BASE}${path}`, { method, credentials: 'include', body: formData });
+  const res = await fetch(`${API_BASE}${path}`, {
+    method,
+    credentials: 'include',
+    headers: await authHeaders(),
+    body: formData,
+  });
   const isJson = res.headers.get('content-type')?.includes('application/json');
   const body = isJson ? await res.json() : null;
   if (!res.ok) throw new Error(body?.error || `Upload failed (${res.status})`);
@@ -52,11 +72,13 @@ async function requestFormData(path, formData, method = 'POST') {
 // Kept separate from `requestFormData` above rather than replacing it —
 // most upload call sites don't need a progress bar and XHR is more
 // verbose to work with than fetch.
-function uploadWithProgress(path, formData, { method = 'POST', onProgress } = {}) {
+async function uploadWithProgress(path, formData, { method = 'POST', onProgress } = {}) {
+  const headers = await authHeaders();
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open(method, `${API_BASE}${path}`);
     xhr.withCredentials = true;
+    for (const [key, value] of Object.entries(headers)) xhr.setRequestHeader(key, value);
 
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100));

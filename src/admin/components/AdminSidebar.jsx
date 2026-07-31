@@ -9,6 +9,7 @@ import {
   HiOutlineUsers,
   HiOutlineCog6Tooth,
   HiOutlineXMark,
+  HiOutlineCloudArrowUp,
 } from 'react-icons/hi2';
 
 const NAV_ITEMS = [
@@ -20,6 +21,9 @@ const NAV_ITEMS = [
   { to: '/admin/orders', label: 'Orders', icon: HiOutlineShoppingBag },
   { to: '/admin/customers', label: 'Customers', icon: HiOutlineUsers },
   { to: '/admin/settings', label: 'Settings', icon: HiOutlineCog6Tooth },
+  // Temporary — remove this nav item once the one-time sync is confirmed
+  // done (see src/admin/pages/MigrateData.jsx).
+  { to: '/admin/migrate-data', label: 'Sync to Database', icon: HiOutlineCloudArrowUp },
 ];
 
 export default function AdminSidebar({ mobileOpen, onCloseMobile }) {

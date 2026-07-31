@@ -12,8 +12,6 @@ import ProductGridSkeleton from '@/components/shop/ProductGridSkeleton';
 import EmptyState from '@/components/shop/EmptyState';
 import LoadMoreControl from '@/components/shop/LoadMoreControl';
 import { useProductFilters } from '@/hooks/useProductFilters';
-import { usePaginatedList } from '@/hooks/usePaginatedList';
-import { useProducts } from '@/context/ProductsContext';
 
 const HEADINGS = {
   new: { eyebrow: 'Just Landed', title: 'New Arrivals' },
@@ -25,22 +23,19 @@ export default function Shop() {
   const [searchParams] = useSearchParams();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const { products, bestSellers, newArrivals } = useProducts();
 
   const filterParam = searchParams.get('filter');
   const categoryParam = searchParams.get('category');
   const occasionParam = searchParams.get('occasion');
   const searchParam = searchParams.get('search');
 
-  const baseProducts = useMemo(() => {
-    if (filterParam === 'new') return newArrivals;
-    if (filterParam === 'bestsellers') return bestSellers;
-    return products;
-  }, [filterParam, products, bestSellers, newArrivals]);
+  const baseParams = useMemo(() => {
+    if (filterParam === 'new') return { isNewArrival: true };
+    if (filterParam === 'bestsellers') return { isBestSeller: true };
+    return {};
+  }, [filterParam]);
 
-  const filtersApi = useProductFilters(baseProducts);
+  const filtersApi = useProductFilters(baseParams, { pageSize: 12 });
   const { patchFilters } = filtersApi;
 
   useEffect(() => {
@@ -52,15 +47,8 @@ export default function Shop() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryParam, occasionParam, searchParam]);
 
-  const pagination = usePaginatedList(filtersApi.filtered, { pageSize: 12 });
-
-  useEffect(() => {
-    setLoading(true);
-    const t = setTimeout(() => setLoading(false), 350);
-    return () => clearTimeout(t);
-  }, [filtersApi.filtered, filtersApi.view]);
-
   const heading = HEADINGS[filterParam] ?? HEADINGS.default;
+  const catalogEmpty = filtersApi.total === 0 && filtersApi.activeChips.length === 0;
 
   return (
     <div className="bg-bg pb-24 pt-28 lg:pt-32">
@@ -76,7 +64,7 @@ export default function Shop() {
           <div className="min-w-0 flex-1">
             <ShopToolbar
               filtersApi={filtersApi}
-              total={filtersApi.filtered.length}
+              total={filtersApi.total}
               onOpenMobileFilters={() => setMobileFiltersOpen(true)}
             />
 
@@ -87,10 +75,12 @@ export default function Shop() {
             />
 
             <div className="mt-6">
-              {loading ? (
+              {filtersApi.error ? (
+                <p className="py-16 text-center text-sm text-red-600">{filtersApi.error}</p>
+              ) : filtersApi.loading && filtersApi.visibleItems.length === 0 ? (
                 <ProductGridSkeleton view={filtersApi.view} count={filtersApi.view === 'grid' ? 8 : 4} />
-              ) : filtersApi.filtered.length === 0 ? (
-                <EmptyState onClearAll={filtersApi.clearAll} catalogEmpty={baseProducts.length === 0} />
+              ) : filtersApi.total === 0 ? (
+                <EmptyState onClearAll={filtersApi.clearAll} catalogEmpty={catalogEmpty} />
               ) : (
                 <>
                   <motion.div
@@ -101,7 +91,7 @@ export default function Shop() {
                         : 'flex flex-col gap-5'
                     }
                   >
-                    {pagination.visibleItems.map((product, i) => (
+                    {filtersApi.visibleItems.map((product, i) => (
                       <ProductCard
                         key={product.id}
                         product={product}
@@ -112,7 +102,7 @@ export default function Shop() {
                     ))}
                   </motion.div>
 
-                  <LoadMoreControl pagination={pagination} />
+                  <LoadMoreControl pagination={filtersApi} />
                 </>
               )}
             </div>
@@ -124,7 +114,7 @@ export default function Shop() {
         open={mobileFiltersOpen}
         onClose={() => setMobileFiltersOpen(false)}
         filtersApi={filtersApi}
-        resultCount={filtersApi.filtered.length}
+        resultCount={filtersApi.total}
       />
 
       <QuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />

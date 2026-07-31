@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   HiOutlinePlus,
@@ -10,52 +10,62 @@ import {
   HiOutlineChevronLeft,
   HiOutlineChevronRight,
 } from 'react-icons/hi2';
-import { useProducts } from '@/context/ProductsContext';
+import { useAdminProducts } from '@/admin/hooks/useAdminProducts';
 import { useCategories } from '@/context/CategoriesContext';
+import { useToast } from '@/admin/context/ToastContext';
 import { formatPrice } from '@/utils/format';
 
 const PAGE_SIZE = 10;
 
 export default function ProductList() {
-  const { allProducts, deleteProduct, deleteProducts, bulkUpdate, duplicateProduct } = useProducts();
-  const { categories } = useCategories();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState([]);
+  const toast = useToast();
 
   const stockFilter = searchParams.get('stock');
 
-  const filtered = useMemo(() => {
-    let list = allProducts;
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      list = list.filter((p) => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
-    }
-    if (categoryFilter) list = list.filter((p) => p.category === categoryFilter);
-    if (stockFilter === 'low') list = list.filter((p) => p.lowStock);
-    if (stockFilter === 'out') list = list.filter((p) => !p.inStock);
-    return list;
-  }, [allProducts, search, categoryFilter, stockFilter]);
+  // Debounced so typing doesn't fire a request per keystroke.
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput), 300);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const { categories } = useCategories();
+  const { products, meta, loading, error, deleteProduct, deleteProducts, bulkUpdate, duplicateProduct } =
+    useAdminProducts({ search, category: categoryFilter, stock: stockFilter, page, pageSize: PAGE_SIZE });
+
+  const pageCount = Math.max(1, Math.ceil(meta.total / PAGE_SIZE));
 
   const toggleSelect = (id) =>
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
   const toggleSelectAll = () =>
-    setSelected((prev) => (prev.length === pageItems.length ? [] : pageItems.map((p) => p.id)));
+    setSelected((prev) => (prev.length === products.length ? [] : products.map((p) => p.id)));
+
+  const runOrToast = async (action) => {
+    try {
+      await action();
+    } catch (err) {
+      toast.error(err.message || 'Something went wrong.');
+    }
+  };
 
   const handleDelete = (id) => {
-    if (window.confirm('Delete this product? This cannot be undone.')) deleteProduct(id);
+    if (window.confirm('Delete this product? This cannot be undone.')) {
+      runOrToast(() => deleteProduct(id));
+    }
   };
 
   const handleBulkDelete = () => {
     if (window.confirm(`Delete ${selected.length} selected product(s)? This cannot be undone.`)) {
-      deleteProducts(selected);
-      setSelected([]);
+      runOrToast(async () => {
+        await deleteProducts(selected);
+        setSelected([]);
+      });
     }
   };
 
@@ -69,7 +79,7 @@ export default function ProductList() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-gold">Catalogue</p>
-          <h1 className="mt-2 font-heading text-3xl text-brown">Products ({allProducts.length})</h1>
+          <h1 className="mt-2 font-heading text-3xl text-brown">Products ({meta.total})</h1>
         </div>
         <Link to="/admin/products/new" className="flex w-fit items-center gap-1.5 rounded-full bg-brown px-5 py-3 text-sm font-medium text-white hover:bg-gold">
           <HiOutlinePlus /> Add Product
@@ -78,8 +88,8 @@ export default function ProductList() {
 
       <div className="flex flex-wrap items-center gap-3">
         <input
-          value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          value={searchInput}
+          onChange={(e) => { setSearchInput(e.target.value); setPage(1); }}
           placeholder="Search by name or SKU..."
           className="w-full max-w-xs rounded-full border border-border bg-white px-4 py-2.5 text-sm focus:border-gold focus:outline-none"
         />
@@ -101,19 +111,23 @@ export default function ProductList() {
         {selected.length > 0 && (
           <div className="flex items-center gap-2">
             <span className="text-xs text-text/50">{selected.length} selected</span>
-            <button onClick={() => bulkUpdate(selected, { isPublished: true })} className="rounded-full border border-border px-3 py-1.5 text-xs hover:border-gold">Publish</button>
-            <button onClick={() => bulkUpdate(selected, { isPublished: false })} className="rounded-full border border-border px-3 py-1.5 text-xs hover:border-gold">Hide</button>
+            <button onClick={() => runOrToast(() => bulkUpdate(selected, { isPublished: true }))} className="rounded-full border border-border px-3 py-1.5 text-xs hover:border-gold">Publish</button>
+            <button onClick={() => runOrToast(() => bulkUpdate(selected, { isPublished: false }))} className="rounded-full border border-border px-3 py-1.5 text-xs hover:border-gold">Hide</button>
             <button onClick={handleBulkDelete} className="rounded-full border border-red-200 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50">Delete</button>
           </div>
         )}
       </div>
+
+      {error && (
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>
+      )}
 
       <div className="overflow-x-auto rounded-2xl border border-border bg-white">
         <table className="w-full min-w-[800px] text-left text-sm">
           <thead>
             <tr className="border-b border-border text-xs uppercase tracking-wide text-text/40">
               <th className="w-10 p-4">
-                <input type="checkbox" checked={selected.length === pageItems.length && pageItems.length > 0} onChange={toggleSelectAll} />
+                <input type="checkbox" checked={selected.length === products.length && products.length > 0} onChange={toggleSelectAll} />
               </th>
               <th className="p-4">Product</th>
               <th className="p-4">SKU</th>
@@ -125,14 +139,19 @@ export default function ProductList() {
             </tr>
           </thead>
           <tbody>
-            {pageItems.map((p) => (
+            {loading && (
+              <tr>
+                <td colSpan={8} className="p-10 text-center text-sm text-text/50">Loading…</td>
+              </tr>
+            )}
+            {!loading && products.map((p) => (
               <tr key={p.id} className="border-b border-border last:border-b-0 hover:bg-beige/40">
                 <td className="p-4">
                   <input type="checkbox" checked={selected.includes(p.id)} onChange={() => toggleSelect(p.id)} />
                 </td>
                 <td className="p-4">
                   <div className="flex items-center gap-3">
-                    <img src={p.images[0]} alt={p.name} className="h-11 w-11 rounded-lg object-cover" />
+                    <img src={p.images[0]} alt={p.name} className="h-11 w-11 rounded-lg object-cover bg-beige" />
                     <div>
                       <p className="font-medium text-brown">{p.name}</p>
                       <div className="mt-0.5 flex gap-1">
@@ -144,7 +163,7 @@ export default function ProductList() {
                   </div>
                 </td>
                 <td className="p-4 text-text/60">{p.sku}</td>
-                <td className="p-4 text-text/60 capitalize">{p.category.replace(/-/g, ' ')}</td>
+                <td className="p-4 text-text/60 capitalize">{p.category?.name ?? '—'}</td>
                 <td className="p-4 font-medium text-brown">{formatPrice(p.price)}</td>
                 <td className="p-4">
                   <span className={p.inStock ? (p.lowStock ? 'text-amber-600' : 'text-green-700') : 'text-red-500'}>
@@ -159,16 +178,16 @@ export default function ProductList() {
                 <td className="p-4">
                   <div className="flex items-center justify-end gap-2 text-text/50">
                     <Link to={`/admin/products/${p.id}/edit`} aria-label="Edit" className="hover:text-gold"><HiOutlinePencilSquare /></Link>
-                    <button onClick={() => bulkUpdate([p.id], { isPublished: !p.isPublished })} aria-label="Toggle publish" className="hover:text-gold">
+                    <button onClick={() => runOrToast(() => bulkUpdate([p.id], { isPublished: !p.isPublished }))} aria-label="Toggle publish" className="hover:text-gold">
                       {p.isPublished ? <HiOutlineEyeSlash /> : <HiOutlineEye />}
                     </button>
-                    <button onClick={() => duplicateProduct(p.id)} aria-label="Duplicate" className="hover:text-gold"><HiOutlineDocumentDuplicate /></button>
+                    <button onClick={() => runOrToast(() => duplicateProduct(p.id))} aria-label="Duplicate" className="hover:text-gold"><HiOutlineDocumentDuplicate /></button>
                     <button onClick={() => handleDelete(p.id)} aria-label="Delete" className="hover:text-red-500"><HiOutlineTrash /></button>
                   </div>
                 </td>
               </tr>
             ))}
-            {pageItems.length === 0 && (
+            {!loading && products.length === 0 && (
               <tr>
                 <td colSpan={8} className="p-10 text-center text-sm text-text/50">No products found.</td>
               </tr>
