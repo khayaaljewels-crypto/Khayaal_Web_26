@@ -7,6 +7,11 @@ import { motion } from 'framer-motion';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 function CategoryTile({ cat }) {
+  // Temporary diagnostic logging — open DevTools console to see exactly
+  // what this section receives per category, including the `image` field
+  // it renders. Safe to remove once image rendering is confirmed correct.
+  console.log('[Shop by Category] category:', cat);
+
   // One lightweight count-only request per tile (pageSize: 1 — only
   // meta.total is read) rather than fetching the whole catalogue to derive
   // counts client-side.

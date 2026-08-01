@@ -37,7 +37,15 @@ export default function TrendingCollections() {
             1280: { slidesPerView: 4.2 },
           }}
         >
-          {categories.map((cat) => (
+          {categories.map((cat) => {
+            // Temporary diagnostic logging — open DevTools console to see
+            // exactly what this section receives, including the `image`
+            // field it renders. Note: despite the "Trending Collections"
+            // heading, this section is wired to useCategories() (category
+            // objects), not the /collections API — see the accompanying
+            // report for why that's worth confirming is intentional.
+            console.log('[Trending Collections] category:', cat);
+            return (
             <SwiperSlide key={cat.id}>
               <Link to={`/shop?category=${cat.slug}`} className="group block" data-cursor-hover>
                 <div className="relative aspect-4/5 overflow-hidden rounded-3xl">
@@ -55,7 +63,8 @@ export default function TrendingCollections() {
                 </div>
               </Link>
             </SwiperSlide>
-          ))}
+            );
+          })}
         </Swiper>
       </div>
     </section>

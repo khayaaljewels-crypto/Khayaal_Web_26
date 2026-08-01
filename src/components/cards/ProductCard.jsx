@@ -12,6 +12,7 @@ import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
 import { useCompare } from '@/context/CompareContext';
 import { formatPrice } from '@/utils/format';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
@@ -43,7 +44,7 @@ export default function ProductCard({ product, index = 0, view = 'grid', onQuick
         className="group flex gap-4 rounded-2xl border border-border bg-white p-3 sm:gap-6 sm:p-4"
       >
         <Link to={`/product/${product.slug}`} className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl bg-beige sm:h-44 sm:w-44">
-          <img
+          <ImageWithFallback
             src={product.images[0]}
             alt={product.name}
             loading="lazy"
@@ -132,13 +133,13 @@ export default function ProductCard({ product, index = 0, view = 'grid', onQuick
       <div className="relative overflow-hidden rounded-2xl bg-beige">
         <Link to={`/product/${product.slug}`} className="block">
           <div className="relative aspect-4/5 overflow-hidden">
-            <img
+            <ImageWithFallback
               src={product.images[0]}
               alt={product.name}
               loading="lazy"
               className={`h-full w-full object-cover transition-all duration-700 ease-luxury group-hover:scale-110 group-hover:opacity-0 ${outOfStock ? 'grayscale' : ''}`}
             />
-            <img
+            <ImageWithFallback
               src={product.images[1] ?? product.images[0]}
               alt=""
               aria-hidden
