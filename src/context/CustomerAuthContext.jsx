@@ -34,22 +34,18 @@ export function CustomerAuthProvider({ children }) {
   // Restore session on every load (and on client-side route changes into
   // the storefront, since a full OAuth round trip is a fresh page load
   // anyway) — this is the only place `/auth/me` is called automatically.
-  useEffect(() => {
+ useEffect(() => {
   const checkAuth = async () => {
-    console.log("========== AUTH CHECK ==========");
-    console.log("API URL:", import.meta.env.VITE_API_URL);
-
     try {
       const { customer } = await api.get("/auth/me");
 
-      console.log("Customer received:", customer);
+      alert("SUCCESS\n\n" + JSON.stringify(customer, null, 2));
 
       setUser(customer);
     } catch (err) {
-      console.error("AUTH ERROR:", err);
+      alert("ERROR\n\n" + (err.message || "Unknown error"));
       setUser(null);
     } finally {
-      console.log("Finished auth check");
       setCheckingAuth(false);
     }
   };
