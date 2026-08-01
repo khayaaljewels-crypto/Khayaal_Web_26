@@ -82,7 +82,7 @@ export default function QuickViewModal({ product, onClose }) {
                 <HiOutlineXMark />
               </button>
 
-              <p className="eyebrow">{product?.category.replace(/-/g, ' ')}</p>
+              <p className="eyebrow">{product?.category?.name}</p>
               <h3 className="mt-2 font-heading text-2xl text-brown">{product?.name}</h3>
 
               <div className="mt-2 flex items-center gap-1 text-gold">

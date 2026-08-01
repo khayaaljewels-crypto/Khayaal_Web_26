@@ -91,7 +91,7 @@ export default function InfoTabs({ product }) {
             <p className="text-sm leading-relaxed text-text/70">{product.description}</p>
             <ul className="mt-5 space-y-2 text-sm text-text/70">
               <li>• Premium {product.specs.metal.toLowerCase()} finish with hand-set {product.stone.toLowerCase()} stones</li>
-              <li>• Part of the {product.collection} collection</li>
+              <li>• Part of the {product.collection?.name} collection</li>
               <li>• Designed for {product.occasion.replace(/-/g, ' ')} wear</li>
               <li>• Comes with Khayaal Jewels signature gift box &amp; authenticity card</li>
             </ul>

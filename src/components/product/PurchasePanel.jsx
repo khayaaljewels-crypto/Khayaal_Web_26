@@ -59,7 +59,7 @@ export default function PurchasePanel({
 
   return (
     <div>
-      <p className="eyebrow">{product.collection}</p>
+      <p className="eyebrow">{product.collection?.name}</p>
       <h1 className="mt-2 font-heading text-2xl text-brown sm:text-3xl">{product.name}</h1>
 
       <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-text/50">
