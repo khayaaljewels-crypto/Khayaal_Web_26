@@ -6,7 +6,7 @@ import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 export default function AccountDropdown({ textColor }) {
-  const { user, loggingOut, logout } = useCustomerAuth();
+  const { user, checkingAuth, loggingOut, logout } = useCustomerAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   useOnClickOutside(ref, () => setOpen(false));
@@ -15,6 +15,13 @@ export default function AccountDropdown({ textColor }) {
     setOpen(false);
     logout();
   };
+
+  // Avoids a flash of the signed-out icon for an already-logged-in visitor
+  // while the initial /auth/me check is still in flight — same size as the
+  // real icon so nothing shifts once it resolves either way.
+  if (checkingAuth) {
+    return <span className="hidden h-5 w-5 lg:block" aria-hidden="true" />;
+  }
 
   if (!user) {
     return (

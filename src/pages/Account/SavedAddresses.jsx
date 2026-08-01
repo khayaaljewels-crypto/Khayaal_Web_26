@@ -3,17 +3,26 @@ import { HiOutlinePlus, HiOutlinePencilSquare, HiOutlineTrash, HiOutlineCheckCir
 import { api } from '@/utils/apiClient';
 import AddressModal from '@/components/account/AddressModal';
 import Reveal from '@/components/animations/Reveal';
+import { useToast } from '@/context/ToastContext';
 
 export default function SavedAddresses() {
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(null); // null | 'new' | address object
+  const toast = useToast();
 
   const load = async () => {
     setLoading(true);
-    const { addresses: fetched } = await api.get('/api/me/addresses');
-    setAddresses(fetched);
-    setLoading(false);
+    setError(null);
+    try {
+      const { addresses: fetched } = await api.get('/api/me/addresses');
+      setAddresses(fetched);
+    } catch (err) {
+      setError(err.message || 'Could not load your addresses.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -21,24 +30,36 @@ export default function SavedAddresses() {
   }, []);
 
   const handleSave = async (form) => {
-    if (modalOpen === 'new') {
-      await api.post('/api/me/addresses', form);
-    } else {
-      await api.put(`/api/me/addresses/${modalOpen.id}`, form);
+    try {
+      if (modalOpen === 'new') {
+        await api.post('/api/me/addresses', form);
+      } else {
+        await api.put(`/api/me/addresses/${modalOpen.id}`, form);
+      }
+      setModalOpen(null);
+      await load();
+    } catch (err) {
+      toast.error(err.message || 'Could not save this address.');
     }
-    setModalOpen(null);
-    load();
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this address?')) return;
-    await api.delete(`/api/me/addresses/${id}`);
-    load();
+    try {
+      await api.delete(`/api/me/addresses/${id}`);
+      await load();
+    } catch (err) {
+      toast.error(err.message || 'Could not delete this address.');
+    }
   };
 
   const handleSetDefault = async (id) => {
-    await api.post(`/api/me/addresses/${id}/default`);
-    load();
+    try {
+      await api.post(`/api/me/addresses/${id}/default`);
+      await load();
+    } catch (err) {
+      toast.error(err.message || 'Could not set this address as default.');
+    }
   };
 
   return (
@@ -50,9 +71,13 @@ export default function SavedAddresses() {
         </button>
       </Reveal>
 
+      {error && (
+        <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>
+      )}
+
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         {loading && <p className="text-sm text-text/50">Loading...</p>}
-        {!loading && addresses.length === 0 && (
+        {!loading && !error && addresses.length === 0 && (
           <p className="rounded-2xl border border-border bg-white p-8 text-center text-sm text-text/50 sm:col-span-2">
             No saved addresses yet.
           </p>

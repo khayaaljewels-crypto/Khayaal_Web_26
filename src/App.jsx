@@ -24,6 +24,7 @@ import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import ScrollToTop from '@/routes/ScrollToTop';
 import AppRoutes from '@/routes/AppRoutes';
 import AdminApp from '@/admin/AdminApp';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
 
 function StorefrontShell() {
   const [isLoading, setIsLoading] = useState(true);
@@ -84,17 +85,19 @@ function Root() {
 function App() {
   return (
     <BrowserRouter>
-      <SettingsProvider>
-        <ProductsProvider>
-          <CategoriesProvider>
-            <CollectionsProvider>
-              <OrdersProvider>
-                <Root />
-              </OrdersProvider>
-            </CollectionsProvider>
-          </CategoriesProvider>
-        </ProductsProvider>
-      </SettingsProvider>
+      <ErrorBoundary>
+        <SettingsProvider>
+          <ProductsProvider>
+            <CategoriesProvider>
+              <CollectionsProvider>
+                <OrdersProvider>
+                  <Root />
+                </OrdersProvider>
+              </CollectionsProvider>
+            </CategoriesProvider>
+          </ProductsProvider>
+        </SettingsProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

@@ -34,24 +34,10 @@ export function CustomerAuthProvider({ children }) {
   // Restore session on every load (and on client-side route changes into
   // the storefront, since a full OAuth round trip is a fresh page load
   // anyway) — this is the only place `/auth/me` is called automatically.
- useEffect(() => {
-  const checkAuth = async () => {
-    try {
-      const { customer } = await api.get("/auth/me");
-
-      alert("SUCCESS\n\n" + JSON.stringify(customer, null, 2));
-
-      setUser(customer);
-    } catch (err) {
-      alert("ERROR\n\n" + (err.message || "Unknown error"));
-      setUser(null);
-    } finally {
-      setCheckingAuth(false);
-    }
-  };
-
-  checkAuth();
-}, []);
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // A 401 from *any* API call (not just this initial check) means the
   // session is no longer valid — e.g. the JWT expired while the tab was

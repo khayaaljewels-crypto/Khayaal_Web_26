@@ -3,6 +3,7 @@ import { api } from '@/utils/apiClient';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { Field, inputClass } from '@/admin/components/AdminField';
 import Reveal from '@/components/animations/Reveal';
+import { useToast } from '@/context/ToastContext';
 
 export default function MyProfile() {
   const { user, refresh } = useCustomerAuth();
@@ -10,15 +11,21 @@ export default function MyProfile() {
   const [phone, setPhone] = useState(user?.phone ?? '');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    await api.put('/api/me', { fullName, phone });
-    await refresh();
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+    try {
+      await api.put('/api/me', { fullName, phone });
+      await refresh();
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch (err) {
+      toast.error(err.message || 'Could not save your changes.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
