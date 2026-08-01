@@ -25,6 +25,9 @@ export const fetchProductFacets = () => api.get('/products/facets');
 export const fetchAdminProducts = (params) => api.get(`/api/admin/products${toQueryString(params)}`);
 export const fetchAdminProduct = (id) => api.get(`/api/admin/products/${id}`).then((r) => r.product);
 export const createProduct = (payload) => api.post('/api/admin/products', payload).then((r) => r.product);
+// Returns the raw { product } body (not unwrapped) — see ProductForm.jsx,
+// its only caller, which destructures `product` straight off the response.
+export const createDraftProduct = () => api.post('/api/admin/products/draft', {});
 export const updateProduct = (id, patch) => api.put(`/api/admin/products/${id}`, patch).then((r) => r.product);
 export const deleteProduct = (id) => api.delete(`/api/admin/products/${id}`);
 export const bulkUpdateProducts = (ids, patch) => api.post('/api/admin/products/bulk', { ids, patch });

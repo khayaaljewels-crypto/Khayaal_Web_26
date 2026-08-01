@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
-import { fetchAdminProduct, createProduct, updateProduct } from '@/services/productsApi';
+import { fetchAdminProduct, createProduct, createDraftProduct, updateProduct } from '@/services/productsApi';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
 import { MATERIALS, STONES, COLORS, OCCASION_OPTIONS, COLOR_HEX } from '@/data/constants';
@@ -20,10 +20,6 @@ const emptyForm = {
   isFeatured: false, isTrending: false, isNewArrival: false, isBestSeller: false, isComingSoon: false, isPublished: true,
 };
 
-function generateId() {
-  return `kj-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-}
-
 export default function ProductForm() {
   const { id } = useParams();
   const isEdit = Boolean(id);
@@ -32,17 +28,45 @@ export default function ProductForm() {
   const { visibleCollections } = useCollections();
   const toast = useToast();
 
-  // For edit, the id is already known from the route — no fetch needed to
-  // determine it. For a brand new product it's generated once up front, so
-  // images uploaded before the first save already have somewhere real to
-  // attach to (product_images.product_id).
-  const [productId] = useState(() => id ?? generateId());
+  // For edit, the id is already known from the route synchronously — seeded
+  // straight into state so the images-fetch effect below never runs once
+  // with a null productId before correcting itself (that would flash
+  // "no images" for a product that has them). For a brand new product this
+  // starts null, and the effect below fills it in once a real (unpublished)
+  // draft row exists on the server — images uploaded before the first save
+  // already have somewhere real to attach to (product_images.product_id)
+  // instead of an id that might never become an actual product row.
+  const [productId, setProductId] = useState(id ?? null);
 
   const [existing, setExisting] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [formLoading, setFormLoading] = useState(isEdit);
   const [formError, setFormError] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      setProductId(id);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function createDraft() {
+      try {
+        const { product } = await createDraftProduct();
+        if (!cancelled) setProductId(product.id);
+      } catch (err) {
+        if (!cancelled) setFormError(err.message || 'Could not start a new product.');
+      }
+    }
+
+    createDraft();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -309,7 +333,7 @@ export default function ProductForm() {
             <p className="font-heading text-lg text-brown">
               Images <span className="text-red-500">*</span>
             </p>
-            {imagesLoading ? (
+            {!productId || imagesLoading ? (
               <p className="text-xs text-text/50">Loading images...</p>
             ) : (
               <ImageUploader
