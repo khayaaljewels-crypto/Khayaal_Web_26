@@ -3,6 +3,7 @@ import { FreeMode, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 import Reveal from '@/components/animations/Reveal';
 import { useCategories } from '@/context/CategoriesContext';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
@@ -40,7 +41,7 @@ export default function TrendingCollections() {
             <SwiperSlide key={cat.id}>
               <Link to={`/shop?category=${cat.slug}`} className="group block" data-cursor-hover>
                 <div className="relative aspect-4/5 overflow-hidden rounded-3xl">
-                  <img
+                  <ImageWithFallback
                     src={cat.image}
                     alt={cat.name}
                     loading="lazy"

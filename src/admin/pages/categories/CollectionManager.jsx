@@ -4,6 +4,7 @@ import { useTaxonomyAdmin } from '@/admin/hooks/useTaxonomyAdmin';
 import { Field, inputClass } from '@/admin/components/AdminField';
 import SingleImageUpload from '@/admin/components/SingleImageUpload';
 import { useToast } from '@/admin/context/ToastContext';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 function slugify(name) {
   return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -152,7 +153,7 @@ export default function CollectionManager() {
             <div key={c.id} className="overflow-hidden rounded-2xl border border-border bg-white">
               <div className="aspect-21/9 bg-beige">
                 {c.image ? (
-                  <img src={c.image} alt={c.name} className="h-full w-full object-cover" />
+                  <ImageWithFallback src={c.image} alt={c.name} className="h-full w-full object-cover" />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-xs text-text/30">No banner</div>
                 )}

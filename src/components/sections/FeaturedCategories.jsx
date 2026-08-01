@@ -4,6 +4,7 @@ import { useProductList } from '@/hooks/useProductList';
 import Reveal from '@/components/animations/Reveal';
 import StaggerGroup, { staggerItem } from '@/components/animations/StaggerGroup';
 import { motion } from 'framer-motion';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 function CategoryTile({ cat }) {
   // One lightweight count-only request per tile (pageSize: 1 — only
@@ -14,7 +15,7 @@ function CategoryTile({ cat }) {
   return (
     <Link to={`/shop?category=${cat.slug}`} className="group block" data-cursor-hover>
       <div className="relative aspect-3/4 overflow-hidden rounded-2xl bg-beige shadow-card">
-        <img
+        <ImageWithFallback
           src={cat.image}
           alt={cat.name}
           loading="lazy"

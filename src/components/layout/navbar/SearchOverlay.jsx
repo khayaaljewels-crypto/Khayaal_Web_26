@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchProducts } from '@/services/productsApi';
 import { useCategories } from '@/context/CategoriesContext';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const TRENDING = ['Kundan Necklace', 'Bridal Set', 'Temple Jewellery', 'Maang Tikka', 'Jhumkas'];
 
@@ -98,7 +99,7 @@ export default function SearchOverlay({ open, onClose }) {
                           }}
                           className="flex w-full items-center gap-4 rounded-xl p-2 text-left transition-colors hover:bg-beige"
                         >
-                          <img src={p.images[0]} alt={p.name} className="h-14 w-14 rounded-lg object-cover bg-beige" />
+                          <ImageWithFallback src={p.images[0]} alt={p.name} className="h-14 w-14 rounded-lg object-cover bg-beige" />
                           <div>
                             <p className="font-heading text-sm text-brown">{p.name}</p>
                             <p className="text-xs text-gold">₹{p.price.toLocaleString('en-IN')}</p>
@@ -139,7 +140,7 @@ export default function SearchOverlay({ open, onClose }) {
                           className="group overflow-hidden rounded-xl"
                         >
                           <div className="aspect-square overflow-hidden rounded-xl bg-beige">
-                            <img
+                            <ImageWithFallback
                               src={c.image}
                               alt={c.name}
                               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"

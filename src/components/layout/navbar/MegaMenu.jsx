@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useCategories } from '@/context/CategoriesContext';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function MegaMenu({ open, onClose }) {
   const { visibleCategories: categories } = useCategories();
@@ -26,7 +27,7 @@ export default function MegaMenu({ open, onClose }) {
               >
                 <Link to={`/shop?category=${cat.slug}`} onClick={onClose} className="group block">
                   <div className="relative aspect-square overflow-hidden rounded-2xl bg-beige">
-                    <img
+                    <ImageWithFallback
                       src={cat.image}
                       alt={cat.name}
                       loading="lazy"
