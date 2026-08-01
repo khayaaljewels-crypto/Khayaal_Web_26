@@ -35,9 +35,27 @@ export function CustomerAuthProvider({ children }) {
   // the storefront, since a full OAuth round trip is a fresh page load
   // anyway) — this is the only place `/auth/me` is called automatically.
   useEffect(() => {
-    refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const checkAuth = async () => {
+    console.log("========== AUTH CHECK ==========");
+    console.log("API URL:", import.meta.env.VITE_API_URL);
+
+    try {
+      const { customer } = await api.get("/auth/me");
+
+      console.log("Customer received:", customer);
+
+      setUser(customer);
+    } catch (err) {
+      console.error("AUTH ERROR:", err);
+      setUser(null);
+    } finally {
+      console.log("Finished auth check");
+      setCheckingAuth(false);
+    }
+  };
+
+  checkAuth();
+}, []);
 
   // A 401 from *any* API call (not just this initial check) means the
   // session is no longer valid — e.g. the JWT expired while the tab was
