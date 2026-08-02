@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { HiOutlineTrash, HiOutlineArrowPath, HiOutlinePlus, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { api } from '@/utils/apiClient';
 import { useAdminProducts } from '@/admin/hooks/useAdminProducts';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 function ReuseMenu({ products, onReuse }) {
   const [open, setOpen] = useState(false);
@@ -164,7 +165,7 @@ export default function MediaLibrary() {
           {images.map((img) => (
             <div key={img.id} className="group relative overflow-hidden rounded-2xl border border-border bg-white">
               <div className="aspect-square bg-beige">
-                <img src={img._bust ? `${img.url}?t=${img._bust}` : img.url} alt="" className="h-full w-full object-cover" />
+                <ImageWithFallback src={img._bust ? `${img.url}?t=${img._bust}` : img.url} alt="" className="h-full w-full object-cover" />
               </div>
               <div className="p-2.5">
                 <p className="truncate text-xs font-medium text-brown" title={productName(img.productId)}>

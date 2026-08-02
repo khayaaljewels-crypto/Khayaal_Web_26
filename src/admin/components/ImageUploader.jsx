@@ -8,6 +8,7 @@ import {
 } from 'react-icons/hi2';
 import { api } from '@/utils/apiClient';
 import { useToast } from '@/admin/context/ToastContext';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const ACCEPTED_ATTR = 'image/jpeg,image/png,image/webp';
@@ -194,7 +195,7 @@ export default function ImageUploader({ productId, folder, images, onImagesChang
                 as="div"
                 className="group relative h-24 w-24 shrink-0 cursor-grab overflow-hidden rounded-xl border-2 border-border bg-beige active:cursor-grabbing"
               >
-                <img src={displaySrc(img)} alt="" className="h-full w-full object-cover" draggable={false} />
+                <ImageWithFallback src={displaySrc(img)} alt="" className="h-full w-full object-cover" draggable={false} />
                 {img.isThumbnail && (
                   <span className="absolute left-1 top-1 rounded-full bg-gold px-1.5 py-0.5 text-[9px] font-semibold text-white">
                     Main

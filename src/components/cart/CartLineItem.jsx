@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { HiOutlineMinus, HiOutlinePlus, HiOutlineTrash, HiOutlineBookmark, HiOutlineArrowUturnLeft } from 'react-icons/hi2';
 import { formatPrice } from '@/utils/format';
 import { getItemPrice } from '@/context/CartContext';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemove, onSaveForLater, onMoveToCart }) {
   const variant = item.variant ? item.product.variants?.find((v) => v.id === item.variant) : null;
@@ -17,7 +18,7 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
       className="flex gap-4 border-b border-border py-6 last:border-b-0 sm:gap-6"
     >
       <Link to={`/product/${item.product.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-beige sm:h-32 sm:w-32">
-        <img src={item.product.images[0]} alt={item.product.name} className="h-full w-full object-cover" />
+        <ImageWithFallback src={item.product.images[0]} alt={item.product.name} className="h-full w-full object-cover" />
       </Link>
 
       <div className="flex flex-1 flex-col justify-between">

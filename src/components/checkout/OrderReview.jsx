@@ -2,6 +2,7 @@ import { HiOutlinePencil } from 'react-icons/hi2';
 import { FaWhatsapp } from 'react-icons/fa';
 import { formatPrice } from '@/utils/format';
 import { getItemPrice } from '@/context/CartContext';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function OrderReview({ customer, items, subtotal, discount, shippingFee, grandTotal, coupon, onEdit, onConfirm, submitting }) {
   return (
@@ -38,7 +39,7 @@ export default function OrderReview({ customer, items, subtotal, discount, shipp
         <div className="mt-4 divide-y divide-border">
           {items.map((item) => (
             <div key={item.key} className="flex items-center gap-4 py-3">
-              <img src={item.product.images[0]} alt={item.product.name} className="h-14 w-14 rounded-lg object-cover" />
+              <ImageWithFallback src={item.product.images[0]} alt={item.product.name} className="h-14 w-14 rounded-lg object-cover" />
               <div className="flex-1">
                 <p className="text-sm text-brown">{item.product.name}</p>
                 <p className="text-xs text-text/50">Qty: {item.quantity}</p>

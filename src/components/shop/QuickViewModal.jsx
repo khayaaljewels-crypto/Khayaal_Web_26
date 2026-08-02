@@ -6,6 +6,7 @@ import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { formatPrice } from '@/utils/format';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function QuickViewModal({ product, onClose }) {
   const [qty, setQty] = useState(1);
@@ -56,7 +57,7 @@ export default function QuickViewModal({ product, onClose }) {
                 <HiOutlineXMark />
               </button>
               <div className="aspect-square overflow-hidden">
-                <img src={product?.images[activeImg]} alt={product?.name} className="h-full w-full object-cover" />
+                <ImageWithFallback src={product?.images[activeImg]} alt={product?.name} className="h-full w-full object-cover" />
               </div>
               <div className="flex gap-2 p-4">
                 {product?.images.map((img, i) => (
@@ -67,7 +68,7 @@ export default function QuickViewModal({ product, onClose }) {
                       i === activeImg ? 'border-gold' : 'border-transparent'
                     }`}
                   >
-                    <img src={img} alt="" className="h-full w-full object-cover" />
+                    <ImageWithFallback src={img} alt="" className="h-full w-full object-cover" />
                   </button>
                 ))}
               </div>

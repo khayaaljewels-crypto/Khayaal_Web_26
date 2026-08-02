@@ -2,6 +2,15 @@ import { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineArrowsPointingOut, HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import FullscreenGallery from './FullscreenGallery';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
+
+const FALLBACK_IMAGE = '/images/placeholder.svg';
+
+function handleImgError(e) {
+  if (e.currentTarget.dataset.fallbackApplied) return;
+  e.currentTarget.dataset.fallbackApplied = 'true';
+  e.currentTarget.src = FALLBACK_IMAGE;
+}
 
 export default function ImageGallery({ images, productName, badge }) {
   const [active, setActive] = useState(0);
@@ -33,7 +42,7 @@ export default function ImageGallery({ images, productName, badge }) {
                 i === active ? 'border-gold' : 'border-transparent hover:border-border'
               }`}
             >
-              <img src={img} alt="" loading="lazy" className="h-full w-full object-cover" />
+              <ImageWithFallback src={img} alt="" loading="lazy" className="h-full w-full object-cover" />
             </button>
           ))}
         </div>
@@ -51,8 +60,9 @@ export default function ImageGallery({ images, productName, badge }) {
             <AnimatePresence mode="wait">
               <motion.img
                 key={active}
-                src={images[active]}
+                src={images[active] || FALLBACK_IMAGE}
                 alt={productName}
+                onError={handleImgError}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -123,7 +133,7 @@ export default function ImageGallery({ images, productName, badge }) {
               i === active ? 'border-gold' : 'border-transparent'
             }`}
           >
-            <img src={img} alt="" loading="lazy" className="h-full w-full object-cover" />
+            <ImageWithFallback src={img} alt="" loading="lazy" className="h-full w-full object-cover" />
           </button>
         ))}
       </div>

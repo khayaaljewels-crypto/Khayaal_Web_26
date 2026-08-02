@@ -8,6 +8,7 @@ import { useCart } from '@/context/CartContext';
 import { formatPrice } from '@/utils/format';
 import OrderStatusBadge from '@/components/account/OrderStatusBadge';
 import Reveal from '@/components/animations/Reveal';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 function OrderRow({ order }) {
   const [open, setOpen] = useState(false);
@@ -77,7 +78,7 @@ function OrderRow({ order }) {
             <div className="space-y-3 p-5">
               {order.items.map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <img src={item.image} alt={item.name} className="h-12 w-12 rounded-lg object-cover" />
+                  <ImageWithFallback src={item.image} alt={item.name} className="h-12 w-12 rounded-lg object-cover" />
                   <div className="flex-1">
                     <p className="text-sm text-brown">{item.name}</p>
                     <p className="text-xs text-text/50">Qty: {item.quantity}</p>

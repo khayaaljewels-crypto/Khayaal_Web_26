@@ -9,6 +9,7 @@ import { buildWhatsAppOrderLink } from '@/utils/buildWhatsAppOrderMessage';
 import { ORDER_STATUSES } from '@/data/constants';
 import StatusBadge from '@/admin/components/StatusBadge';
 import { inputClass } from '@/admin/components/AdminField';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function OrderDetail() {
   const { id } = useParams();
@@ -69,7 +70,7 @@ export default function OrderDetail() {
             <div className="mt-4 divide-y divide-border">
               {order.items.map((item, i) => (
                 <div key={i} className="flex items-center gap-4 py-3">
-                  <img src={item.image} alt={item.name} className="h-14 w-14 rounded-lg object-cover" />
+                  <ImageWithFallback src={item.image} alt={item.name} className="h-14 w-14 rounded-lg object-cover" />
                   <div className="flex-1">
                     <p className="text-sm text-brown">{item.name}</p>
                     <p className="text-xs text-text/50">{item.variantLabel && `${item.variantLabel} · `}Qty: {item.quantity}</p>

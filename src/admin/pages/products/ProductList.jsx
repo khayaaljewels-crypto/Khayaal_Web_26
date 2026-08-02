@@ -14,6 +14,7 @@ import { useAdminProducts } from '@/admin/hooks/useAdminProducts';
 import { useCategories } from '@/context/CategoriesContext';
 import { useToast } from '@/admin/context/ToastContext';
 import { formatPrice } from '@/utils/format';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const PAGE_SIZE = 10;
 
@@ -151,7 +152,7 @@ export default function ProductList() {
                 </td>
                 <td className="p-4">
                   <div className="flex items-center gap-3">
-                    <img src={p.images[0]} alt={p.name} className="h-11 w-11 rounded-lg object-cover bg-beige" />
+                    <ImageWithFallback src={p.images[0]} alt={p.name} className="h-11 w-11 rounded-lg object-cover bg-beige" />
                     <div>
                       <p className="font-medium text-brown">{p.name}</p>
                       <div className="mt-0.5 flex gap-1">
