@@ -14,7 +14,9 @@
   /* ---------- Typography ---------- */
   --font-heading: "Playfair Display", ui-serif, Georgia, serif;
   --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-accent: "Great Vibes", cursive;
+  /* Brand wordmark only — see the @font-face below and .font-script,
+     the one class every "Khayaal" logo instance uses site-wide. */
+  --font-accent: "Brittany", cursive;
 
   /* ---------- Easing ---------- */
   --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
@@ -27,6 +29,18 @@
 
   /* ---------- Container ---------- */
   --breakpoint-xs: 375px;
+}
+
+/* Brand wordmark font — used only by .font-script (the "Khayaal" logo
+   everywhere it appears: navbar, footer, mobile menu, loading screen,
+   admin login). Every other typeface (--font-heading, --font-body) is
+   untouched. */
+@font-face {
+  font-family: "Brittany";
+  src: url("../assets/fonts/BrittanySignature.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));

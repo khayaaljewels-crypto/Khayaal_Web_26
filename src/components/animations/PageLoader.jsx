@@ -33,7 +33,7 @@ export default function PageLoader({ isLoading }) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            Jewels
+            Jewels Manifested
           </motion.span>
           <motion.div
             className="mt-8 h-px w-40 overflow-hidden bg-border"

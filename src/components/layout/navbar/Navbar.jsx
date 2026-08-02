@@ -68,7 +68,7 @@ export default function Navbar() {
               Khayaal
             </span>
             <span className={`text-[10px] tracking-[0.4em] uppercase ${textColor} opacity-80`}>
-              Jewels
+              Jewels Manifested
             </span>
           </Link>
 
