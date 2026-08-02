@@ -63,7 +63,7 @@ export default function Navbar() {
             <HiOutlineBars3 className={`text-2xl ${textColor}`} />
           </button>
 
-          <Link to="/" className="flex flex-col items-center leading-none lg:items-start">
+          <Link to="/" className="flex flex-col items-center gap-1.5 lg:items-start">
             <span className={`font-script text-3xl lg:text-4xl ${transparent ? 'text-white' : 'text-gold'}`}>
               Khayaal
             </span>

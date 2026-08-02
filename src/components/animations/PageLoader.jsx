@@ -28,7 +28,7 @@ export default function PageLoader({ isLoading }) {
             Khayaal
           </motion.span>
           <motion.span
-            className="mt-3 eyebrow"
+            className="mt-6 eyebrow"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
