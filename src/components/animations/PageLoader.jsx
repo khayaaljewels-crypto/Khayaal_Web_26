@@ -19,22 +19,28 @@ export default function PageLoader({ isLoading }) {
                 'radial-gradient(circle at center, rgba(184,134,74,0.15) 0%, rgba(250,248,245,0) 70%)',
             }}
           />
-          <motion.span
-            className="font-script text-6xl sm:text-7xl text-gold"
-            initial={{ opacity: 0, y: 16, letterSpacing: '0.1em' }}
-            animate={{ opacity: 1, y: 0, letterSpacing: '0.02em' }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Khayaal
-          </motion.span>
-          <motion.span
-            className="mt-6 eyebrow"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            Jewels Manifested
-          </motion.span>
+          <div className="relative pb-7">
+            <motion.span
+              className="font-script text-6xl sm:text-7xl text-gold"
+              initial={{ opacity: 0, y: 16, letterSpacing: '0.1em' }}
+              animate={{ opacity: 1, y: 0, letterSpacing: '0.02em' }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Khayaal
+            </motion.span>
+            {/* Positioned to start under the "y" in "Khayaal" (per the brand
+                reference), not centered under the whole word — pb-7 above
+                reserves room so this doesn't collide with the divider below,
+                since absolute positioning takes it out of flow. */}
+            <motion.span
+              className="absolute left-[48%] top-full mt-1 whitespace-nowrap eyebrow"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            >
+              Jewels Manifested
+            </motion.span>
+          </div>
           <motion.div
             className="mt-8 h-px w-40 overflow-hidden bg-border"
             initial={{ opacity: 0 }}

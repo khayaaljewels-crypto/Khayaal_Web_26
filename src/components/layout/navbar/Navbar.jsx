@@ -63,11 +63,17 @@ export default function Navbar() {
             <HiOutlineBars3 className={`text-2xl ${textColor}`} />
           </button>
 
-          <Link to="/" className="flex flex-col items-center gap-1.5 lg:items-start">
+          <Link to="/" className="relative flex flex-col">
             <span className={`font-script text-3xl lg:text-4xl ${transparent ? 'text-white' : 'text-gold'}`}>
               Khayaal
             </span>
-            <span className={`text-[10px] tracking-[0.4em] uppercase ${textColor} opacity-80`}>
+            {/* Positioned to start under the "y" in "Khayaal" (per the brand
+                reference), not centered under the whole word — left-[48%] is
+                measured against this Link's own width, which shrink-wraps to
+                the wordmark since this tagline is taken out of flow. */}
+            <span
+              className={`absolute left-[48%] top-full mt-1 whitespace-nowrap text-[10px] tracking-[0.4em] uppercase ${textColor} opacity-80`}
+            >
               Jewels Manifested
             </span>
           </Link>
