@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
 import { fetchAdminProduct, createProduct, createDraftProduct, updateProduct } from '@/services/productsApi';
+import { clearProductListCache } from '@/hooks/useProductList';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
 import { MATERIALS, STONES, COLORS, OCCASION_OPTIONS, COLOR_HEX } from '@/data/constants';
@@ -178,6 +179,7 @@ export default function ProductForm() {
       } else {
         await createProduct(payload);
       }
+      clearProductListCache();
       toast.success(isEdit ? 'Product updated.' : 'Product created.');
       navigate('/admin/products');
     } catch (err) {

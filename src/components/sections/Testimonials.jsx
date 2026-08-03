@@ -37,7 +37,7 @@ export default function Testimonials() {
                   <FaQuoteLeft className="text-2xl text-gold" />
                   <p className="mt-5 flex-1 text-sm leading-relaxed text-white/80">{t.quote}</p>
                   <div className="mt-6 flex items-center gap-3">
-                    <img src={t.avatar} alt={t.name} className="h-11 w-11 rounded-full object-cover" />
+                    <img src={t.avatar} alt={t.name} loading="lazy" className="h-11 w-11 rounded-full object-cover" />
                     <div>
                       <p className="font-heading text-sm text-white">{t.name}</p>
                       <p className="text-xs text-white/50">{t.location}</p>

@@ -37,7 +37,11 @@
    untouched. */
 @font-face {
   font-family: "Brittany";
-  src: url("../assets/fonts/BrittanySignature.ttf") format("truetype");
+  /* Served from public/ (stable, unhashed path) rather than imported from
+     src/assets/ — a static <link rel="preload"> in index.html needs a
+     predictable URL, which a Vite-bundled/hashed src/assets/ path can't
+     offer. WOFF2 (converted from the original .ttf, ~40% smaller). */
+  src: url("/fonts/BrittanySignature.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

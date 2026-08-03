@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 
 export default function TrendingCollections() {
-  const { visibleCategories: categories } = useCategories();
+  const { visibleCategories: categories, loading } = useCategories();
 
   return (
     <section className="bg-beige/50 py-20 lg:py-28">
@@ -25,38 +25,48 @@ export default function TrendingCollections() {
       </div>
 
       <div className="container-luxury mt-12">
-        <Swiper
-          modules={[FreeMode, Autoplay]}
-          spaceBetween={20}
-          freeMode
-          autoplay={{ delay: 2600, disableOnInteraction: true }}
-          breakpoints={{
-            0: { slidesPerView: 1.4 },
-            640: { slidesPerView: 2.4 },
-            1024: { slidesPerView: 3.4 },
-            1280: { slidesPerView: 4.2 },
-          }}
-        >
-          {categories.map((cat) => (
-            <SwiperSlide key={cat.id}>
-              <Link to={`/shop?category=${cat.slug}`} className="group block" data-cursor-hover>
-                <div className="relative aspect-4/5 overflow-hidden rounded-3xl">
-                  <ImageWithFallback
-                    src={cat.image}
-                    alt={cat.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-900 ease-luxury group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-brown/80 via-brown/10 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-6">
-                    <p className="font-heading text-xl text-white">{cat.name}</p>
-                    <p className="mt-1 text-xs tracking-wide text-white/70">Explore Collection</p>
+        {loading ? (
+          <div className="flex gap-5 overflow-hidden">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="w-[70%] shrink-0 animate-pulse sm:w-[41%] lg:w-[29%] xl:w-[23%]">
+                <div className="aspect-4/5 rounded-3xl bg-beige" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Swiper
+            modules={[FreeMode, Autoplay]}
+            spaceBetween={20}
+            freeMode
+            autoplay={{ delay: 2600, disableOnInteraction: true }}
+            breakpoints={{
+              0: { slidesPerView: 1.4 },
+              640: { slidesPerView: 2.4 },
+              1024: { slidesPerView: 3.4 },
+              1280: { slidesPerView: 4.2 },
+            }}
+          >
+            {categories.map((cat) => (
+              <SwiperSlide key={cat.id}>
+                <Link to={`/shop?category=${cat.slug}`} className="group block" data-cursor-hover>
+                  <div className="relative aspect-4/5 overflow-hidden rounded-3xl">
+                    <ImageWithFallback
+                      src={cat.image}
+                      alt={cat.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-900 ease-luxury group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-brown/80 via-brown/10 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-6">
+                      <p className="font-heading text-xl text-white">{cat.name}</p>
+                      <p className="mt-1 text-xs tracking-wide text-white/70">Explore Collection</p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );

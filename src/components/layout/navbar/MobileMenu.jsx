@@ -77,7 +77,7 @@ export default function MobileMenu({ open, onClose }) {
                   <motion.div key={cat.id} variants={itemVariants}>
                     <Link to={`/shop?category=${cat.slug}`} onClick={onClose} className="block">
                       <div className="aspect-square overflow-hidden rounded-xl bg-beige">
-                        <ImageWithFallback src={cat.image} alt={cat.name} className="h-full w-full object-cover" />
+                        <ImageWithFallback src={cat.image} alt={cat.name} loading="lazy" className="h-full w-full object-cover" />
                       </div>
                       <p className="mt-1.5 text-center text-[11px] text-brown">{cat.name}</p>
                     </Link>

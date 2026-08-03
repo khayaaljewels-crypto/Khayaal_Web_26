@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import * as productsApi from '@/services/productsApi';
+import { clearProductListCache } from '@/hooks/useProductList';
 
 // Backs the admin ProductList page — filtering/sorting/pagination happen
 // server-side (query params), never by loading the full catalogue into the
@@ -30,21 +31,25 @@ export function useAdminProducts(filters = {}) {
 
   const deleteProduct = async (id) => {
     await productsApi.deleteProduct(id);
+    clearProductListCache();
     await refetch();
   };
 
   const deleteProducts = async (ids) => {
     await productsApi.bulkDeleteProducts(ids);
+    clearProductListCache();
     await refetch();
   };
 
   const bulkUpdate = async (ids, patch) => {
     await productsApi.bulkUpdateProducts(ids, patch);
+    clearProductListCache();
     await refetch();
   };
 
   const duplicateProduct = async (id) => {
     const duplicate = await productsApi.duplicateProduct(id);
+    clearProductListCache();
     await refetch();
     return duplicate.id;
   };

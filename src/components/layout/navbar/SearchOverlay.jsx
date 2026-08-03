@@ -99,7 +99,7 @@ export default function SearchOverlay({ open, onClose }) {
                           }}
                           className="flex w-full items-center gap-4 rounded-xl p-2 text-left transition-colors hover:bg-beige"
                         >
-                          <ImageWithFallback src={p.images[0]} alt={p.name} className="h-14 w-14 rounded-lg object-cover bg-beige" />
+                          <ImageWithFallback src={p.images[0]} alt={p.name} loading="lazy" className="h-14 w-14 rounded-lg object-cover bg-beige" />
                           <div>
                             <p className="font-heading text-sm text-brown">{p.name}</p>
                             <p className="text-xs text-gold">₹{p.price.toLocaleString('en-IN')}</p>
@@ -143,6 +143,7 @@ export default function SearchOverlay({ open, onClose }) {
                             <ImageWithFallback
                               src={c.image}
                               alt={c.name}
+                              loading="lazy"
                               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
                           </div>

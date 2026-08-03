@@ -5,6 +5,12 @@ export function useLenis() {
   const lenisRef = useRef(null);
 
   useEffect(() => {
+    // Skip entirely on touch devices — coarse pointer means no scroll wheel
+    // to smooth, and this also saves the RAF loop's CPU/battery cost for
+    // the page's whole lifetime, which otherwise runs unconditionally on
+    // every device including mobile.
+    if (window.matchMedia?.('(pointer: coarse)').matches) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

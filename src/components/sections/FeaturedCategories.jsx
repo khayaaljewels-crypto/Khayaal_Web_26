@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useCategories } from '@/context/CategoriesContext';
 import { useProductList } from '@/hooks/useProductList';
@@ -32,9 +33,13 @@ function CategoryTile({ cat }) {
   );
 }
 
+// 6 independent instances per Home render — memo keeps a re-render of one
+// tile's own count-fetch state from touching its siblings.
+const MemoCategoryTile = memo(CategoryTile);
+
 export default function FeaturedCategories() {
-  const { visibleCategories } = useCategories();
-  const featured = visibleCategories.slice(0, 6);
+  const { visibleCategories, loading } = useCategories();
+  const featured = useMemo(() => visibleCategories.slice(0, 6), [visibleCategories]);
 
   return (
     <section className="container-luxury py-20 lg:py-28">
@@ -43,13 +48,23 @@ export default function FeaturedCategories() {
         <h2 className="mt-3 font-heading text-3xl text-brown sm:text-4xl">Shop by Category</h2>
       </Reveal>
 
-      <StaggerGroup className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6" staggerDelay={0.08}>
-        {featured.map((cat) => (
-          <motion.div key={cat.id} variants={staggerItem}>
-            <CategoryTile cat={cat} />
-          </motion.div>
-        ))}
-      </StaggerGroup>
+      {loading ? (
+        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="aspect-3/4 rounded-2xl bg-beige" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <StaggerGroup className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6" staggerDelay={0.08}>
+          {featured.map((cat) => (
+            <motion.div key={cat.id} variants={staggerItem}>
+              <MemoCategoryTile cat={cat} />
+            </motion.div>
+          ))}
+        </StaggerGroup>
+      )}
     </section>
   );
 }

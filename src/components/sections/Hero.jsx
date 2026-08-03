@@ -24,6 +24,7 @@ export default function Hero() {
           src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=2000&auto=format&fit=crop"
           alt="Model wearing Khayaal Jewels bridal necklace set"
           className="h-full w-full object-cover"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
         <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" />

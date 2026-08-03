@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, lazy, Suspense, useState } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
@@ -9,7 +9,6 @@ import { CategoriesProvider } from '@/context/CategoriesContext';
 import { CollectionsProvider } from '@/context/CollectionsContext';
 import { OrdersProvider } from '@/context/OrdersContext';
 import { SettingsProvider } from '@/context/SettingsContext';
-import { AdminAuthProvider } from '@/admin/context/AdminAuthContext';
 import { CustomerAuthProvider } from '@/context/CustomerAuthContext';
 import { ToastProvider } from '@/context/ToastContext';
 import { useLenis } from '@/hooks/useLenis';
@@ -23,8 +22,12 @@ import BackToTop from '@/components/ui/BackToTop';
 import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import ScrollToTop from '@/routes/ScrollToTop';
 import AppRoutes from '@/routes/AppRoutes';
-import AdminApp from '@/admin/AdminApp';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
+
+// Lazy-loaded as one unit (see AdminRoot.jsx) — this is what keeps the full
+// firebase/auth SDK (the largest single piece of the old main bundle) out of
+// every storefront visitor's initial load, since only /admin ever needs it.
+const AdminRoot = lazy(() => import('@/admin/AdminRoot'));
 
 function StorefrontShell() {
   const [isLoading, setIsLoading] = useState(true);
@@ -59,9 +62,9 @@ function Root() {
 
   if (isAdmin) {
     return (
-      <AdminAuthProvider>
-        <AdminApp />
-      </AdminAuthProvider>
+      <Suspense fallback={<div className="min-h-svh" />}>
+        <AdminRoot />
+      </Suspense>
     );
   }
 

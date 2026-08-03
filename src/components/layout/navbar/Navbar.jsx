@@ -64,7 +64,7 @@ export default function Navbar() {
             <HiOutlineBars3 className={`text-2xl ${textColor}`} />
           </button>
 
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex shrink-0 items-center">
             <Logo className="h-10 w-auto lg:h-12" invert={transparent} />
           </Link>
 
@@ -89,7 +89,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className={`flex items-center gap-4 sm:gap-5 ${textColor}`}>
+          <div className={`flex shrink-0 items-center gap-4 sm:gap-5 ${textColor}`}>
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"

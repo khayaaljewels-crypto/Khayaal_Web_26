@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -14,7 +15,7 @@ import { useCompare } from '@/context/CompareContext';
 import { formatPrice } from '@/utils/format';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
-export default function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
+function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
   const { isComparing, toggleCompare } = useCompare();
@@ -265,3 +266,11 @@ export default function ProductCard({ product, index = 0, view = 'grid', onQuick
     </motion.div>
   );
 }
+
+// Rendered many times per grid (Shop, Home rails, Wishlist) — memo avoids
+// re-rendering every card when an unrelated sibling's props change on the
+// parent list. Doesn't prevent re-renders from this component's own
+// useWishlist/useCart/useCompare context subscriptions (those update
+// whenever ANY item changes, not just this card's) — that would need a
+// bigger context restructuring, out of scope here.
+export default memo(ProductCard);

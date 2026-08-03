@@ -18,7 +18,7 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
       className="flex gap-4 border-b border-border py-6 last:border-b-0 sm:gap-6"
     >
       <Link to={`/product/${item.product.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-beige sm:h-32 sm:w-32">
-        <ImageWithFallback src={item.product.images[0]} alt={item.product.name} className="h-full w-full object-cover" />
+        <ImageWithFallback src={item.product.images[0]} alt={item.product.name} loading="lazy" className="h-full w-full object-cover" />
       </Link>
 
       <div className="flex flex-1 flex-col justify-between">

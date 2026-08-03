@@ -39,7 +39,7 @@ export default function OrderReview({ customer, items, subtotal, discount, shipp
         <div className="mt-4 divide-y divide-border">
           {items.map((item) => (
             <div key={item.key} className="flex items-center gap-4 py-3">
-              <ImageWithFallback src={item.product.images[0]} alt={item.product.name} className="h-14 w-14 rounded-lg object-cover" />
+              <ImageWithFallback src={item.product.images[0]} alt={item.product.name} loading="lazy" className="h-14 w-14 rounded-lg object-cover" />
               <div className="flex-1">
                 <p className="text-sm text-brown">{item.product.name}</p>
                 <p className="text-xs text-text/50">Qty: {item.quantity}</p>

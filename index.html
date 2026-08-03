@@ -21,12 +21,40 @@
     <meta name="twitter:description" content="Khayaal Jewels — Premium imitation jewellery, crafted for the modern heirloom." />
     <meta name="twitter:image" content="/images/Khayaal_logo.png" />
 
+    <!-- Critical assets — logo (used above the fold in the navbar on every
+         page) and the self-hosted brand font. The hero photo is preloaded
+         too since it's the LCP element on Home; see fetchPriority="high" on
+         its <img> in Hero.jsx for the matching runtime hint. -->
+    <link rel="preload" as="image" href="/images/Khayaal_logo_trimmed.png" />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/BrittanySignature.woff2" crossorigin />
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=2000&auto=format&fit=crop" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Non-render-blocking Google Fonts load: the stylesheet is fetched
+         with low priority (media="print" is never true for on-screen
+         rendering) and swapped to "all" once loaded, via the standard
+         preload+onload pattern — font-display=swap (already in this URL)
+         only controls FOIT/FOUT once the CSS has loaded, it doesn't stop
+         the CSS request itself from blocking first paint, which is what
+         this addresses. <noscript> covers the no-JS fallback. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Poppins:wght@300;400;500;600;700&display=swap"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
     <title>Khayaal Jewels | Luxury Imitation Jewellery</title>
   </head>
   <body>
