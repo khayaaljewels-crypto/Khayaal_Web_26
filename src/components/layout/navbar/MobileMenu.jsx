@@ -6,6 +6,7 @@ import { navLinks } from './navLinks';
 import { useCategories } from '@/context/CategoriesContext';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
+import Logo from '@/components/ui/Logo';
 
 const listVariants = {
   hidden: {},
@@ -33,7 +34,7 @@ export default function MobileMenu({ open, onClose }) {
         >
           <div className="flex h-full flex-col overflow-y-auto px-8 py-8">
             <div className="flex items-center justify-between">
-              <span className="font-script text-3xl text-gold">Khayaal</span>
+              <Logo className="h-9 w-auto" />
               <button
                 onClick={onClose}
                 aria-label="Close menu"

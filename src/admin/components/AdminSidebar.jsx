@@ -11,6 +11,7 @@ import {
   HiOutlineXMark,
   HiOutlineCloudArrowUp,
 } from 'react-icons/hi2';
+import Logo from '@/components/ui/Logo';
 
 const NAV_ITEMS = [
   { to: '/admin', label: 'Dashboard', icon: HiOutlineSquares2X2, end: true },
@@ -38,7 +39,7 @@ export default function AdminSidebar({ mobileOpen, onCloseMobile }) {
         }`}
       >
         <div className="flex h-20 items-center justify-between px-6">
-          <span className="font-script text-3xl text-gold-hover">Khayaal</span>
+          <Logo className="h-8 w-auto" invert />
           <button onClick={onCloseMobile} className="text-white/70 lg:hidden" aria-label="Close menu">
             <HiOutlineXMark className="text-xl" />
           </button>

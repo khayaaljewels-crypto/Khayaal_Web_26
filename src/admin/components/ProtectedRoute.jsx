@@ -1,11 +1,12 @@
 import { Navigate, Link } from 'react-router-dom';
 import { useAdminAuth } from '@/admin/context/AdminAuthContext';
+import Logo from '@/components/ui/Logo';
 
 function AccessDenied() {
   const { logout, user } = useAdminAuth();
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-brown px-4 text-center">
-      <span className="font-script text-4xl text-gold">Khayaal</span>
+      <Logo className="h-11 w-auto" invert />
       <h1 className="mt-6 font-heading text-2xl text-white">Access Denied</h1>
       <p className="mt-2 max-w-sm text-sm text-white/60">
         {user?.email} is signed in but is not authorized to access the admin dashboard.

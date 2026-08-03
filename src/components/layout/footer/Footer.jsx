@@ -4,6 +4,7 @@ import { FaInstagram, FaFacebookF, FaPinterestP, FaYoutube } from 'react-icons/f
 import { HiOutlineArrowRight } from 'react-icons/hi2';
 import Reveal from '@/components/animations/Reveal';
 import { useSettings } from '@/context/SettingsContext';
+import Logo from '@/components/ui/Logo';
 
 const SHOP_LINKS = [
   { label: 'Bridal Sets', to: '/shop?category=bridal-sets' },
@@ -83,7 +84,7 @@ export default function Footer() {
 
         <div className="mt-16 grid grid-cols-2 gap-10 sm:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 sm:col-span-4 lg:col-span-2">
-            <span className="font-script text-4xl text-gold">Khayaal</span>
+            <Logo className="h-12 w-auto" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-text/70">
               Premium imitation jewellery crafted for the modern heirloom — luxury design,
               accessible elegance, made to be worn and remembered.

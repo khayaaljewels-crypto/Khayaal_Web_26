@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HiOutlineLockClosed, HiOutlineEnvelope, HiOutlineEye, HiOutlineEyeSlash, HiOutlineExclamationTriangle } from 'react-icons/hi2';
 import { useAdminAuth } from '@/admin/context/AdminAuthContext';
+import Logo from '@/components/ui/Logo';
 
 export default function Login() {
   const { login, isAuthenticated, isFirebaseConfigured } = useAdminAuth();
@@ -37,7 +38,7 @@ export default function Login() {
         className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-soft"
       >
         <div className="text-center">
-          <span className="font-script text-4xl text-gold">Khayaal</span>
+          <Logo className="mx-auto h-12 w-auto" />
           <p className="mt-1 text-[10px] uppercase tracking-[0.35em] text-text/50">Admin Dashboard</p>
         </div>
 
