@@ -52,7 +52,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-border bg-beige/60">
       <div className="container-luxury py-16 lg:py-20">
-        <Reveal className="flex flex-col items-start justify-between gap-8 rounded-3xl bg-brown px-8 py-12 text-white sm:px-14 sm:py-14 lg:flex-row lg:items-center">
+        {/* <Reveal className="flex flex-col items-start justify-between gap-8 rounded-3xl bg-brown px-8 py-12 text-white sm:px-14 sm:py-14 lg:flex-row lg:items-center">
           <div>
             <p className="eyebrow !text-gold-hover">Stay In The Light</p>
             <h3 className="mt-2 font-heading text-2xl sm:text-3xl">
@@ -79,7 +79,7 @@ export default function Footer() {
           {submitted && (
             <span className="text-xs text-gold-hover">Thank you — you're on the list.</span>
           )}
-        </Reveal>
+        </Reveal> */}
 
         <div className="mt-16 grid grid-cols-2 gap-10 sm:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 sm:col-span-4 lg:col-span-2">
