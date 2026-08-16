@@ -29,7 +29,6 @@ const COMPANY_LINKS = [
   { label: 'Profile', to: '/my-account' },
 ];
 
-const PAYMENT_ICONS = ['Visa', 'Mastercard', 'UPI', 'RuPay', 'PayPal'];
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -110,21 +109,7 @@ export default function Footer() {
           <FooterColumn title="Company" links={COMPANY_LINKS} />
         </div>
 
-        <div className="mt-14 flex flex-col-reverse items-center justify-between gap-6 border-t border-border pt-8 sm:flex-row">
-          <p className="text-xs text-text/60">
-            © {new Date().getFullYear()} Khayaal Jewels. All rights reserved.
-          </p>
-          <div className="flex items-center gap-3">
-            {PAYMENT_ICONS.map((p) => (
-              <span
-                key={p}
-                className="rounded-md border border-border bg-white px-2.5 py-1 text-[10px] font-medium text-text/60"
-              >
-                {p}
-              </span>
-            ))}
-          </div>
-        </div>
+
       </div>
     </footer>
   );
