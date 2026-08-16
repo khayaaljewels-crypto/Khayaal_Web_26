@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import * as categoriesApi from '@/services/categoriesApi';
 import * as collectionsApi from '@/services/collectionsApi';
+import * as occasionsApi from '@/services/occasionsApi';
 
 const RESOURCES = {
   categories: {
@@ -14,6 +15,12 @@ const RESOURCES = {
     create: collectionsApi.createCollection,
     update: collectionsApi.updateCollection,
     remove: collectionsApi.deleteCollection,
+  },
+  occasions: {
+    fetchAll: occasionsApi.fetchAdminOccasions,
+    create: occasionsApi.createOccasion,
+    update: occasionsApi.updateOccasion,
+    remove: occasionsApi.deleteOccasion,
   },
 };
 

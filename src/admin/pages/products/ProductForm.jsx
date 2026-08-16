@@ -5,14 +5,15 @@ import { fetchAdminProduct, createProduct, createDraftProduct, updateProduct } f
 import { clearProductListCache } from '@/hooks/useProductList';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
-import { MATERIALS, STONES, COLORS, OCCASION_OPTIONS, COLOR_HEX } from '@/data/constants';
+import { fetchOccasions } from '@/services/occasionsApi';
+import { MATERIALS, STONES, COLORS, COLOR_HEX } from '@/data/constants';
 import { Field, inputClass, Toggle, ToggleList } from '@/admin/components/AdminField';
 import ImageUploader from '@/admin/components/ImageUploader';
 import { api } from '@/utils/apiClient';
 import { useToast } from '@/admin/context/ToastContext';
 
 const emptyForm = {
-  name: '', sku: '', brand: 'Khayaal Jewels', categoryId: '', collectionId: '', occasion: OCCASION_OPTIONS[0],
+  name: '', sku: '', brand: 'Khayaal Jewels', categoryId: '', collectionId: '', occasion: '',
   price: '', oldPrice: '', costPrice: '', stockQty: '',
   material: MATERIALS[0], stone: STONES[0], color: COLORS[0],
   description: '', shortDescription: '', careInstructions: '', tags: '',
@@ -28,6 +29,9 @@ export default function ProductForm() {
   const { visibleCategories } = useCategories();
   const { visibleCollections } = useCollections();
   const toast = useToast();
+  const [occasions, setOccasions] = useState([]);
+  const [occasionsLoading, setOccasionsLoading] = useState(true);
+  const [occasionsError, setOccasionsError] = useState(null);
 
   // For edit, the id is already known from the route synchronously — seeded
   // straight into state so the images-fetch effect below never runs once
@@ -44,6 +48,29 @@ export default function ProductForm() {
   const [formLoading, setFormLoading] = useState(isEdit);
   const [formError, setFormError] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchOccasions()
+      .then((rows) => {
+        if (cancelled) return;
+        setOccasions(rows);
+        // New products start with the first visible backend-managed occasion.
+        // Edit mode deliberately leaves the persisted value untouched.
+        if (!isEdit && rows.length) {
+          setForm((current) => (current.occasion ? current : { ...current, occasion: rows[0].slug }));
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setOccasionsError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setOccasionsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isEdit]);
 
   useEffect(() => {
     if (id) {
@@ -113,6 +140,9 @@ export default function ProductForm() {
   }, [isEdit, productId]);
 
   const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
+  const occasionOptions = form.occasion && !occasions.some((occasion) => occasion.slug === form.occasion)
+    ? [{ slug: form.occasion, name: `${form.occasion.replace(/-/g, ' ')} (hidden or deleted)` }, ...occasions]
+    : occasions;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -231,9 +261,16 @@ export default function ProductForm() {
                 </select>
               </Field>
               <Field label="Occasion">
-                <select className={inputClass} value={form.occasion} onChange={(e) => set('occasion', e.target.value)}>
-                  {OCCASION_OPTIONS.map((o) => <option key={o} value={o}>{o.replace(/-/g, ' ')}</option>)}
+                <select className={inputClass} value={form.occasion} onChange={(e) => set('occasion', e.target.value)} disabled={occasionsLoading || Boolean(occasionsError)}>
+                  {occasionsLoading ? (
+                    <option value="">Loading occasions…</option>
+                  ) : occasionOptions.length ? (
+                    occasionOptions.map((occasion) => <option key={occasion.slug} value={occasion.slug}>{occasion.name}</option>)
+                  ) : (
+                    <option value="">No active occasions available</option>
+                  )}
                 </select>
+                {occasionsError && <p className="mt-1 text-xs text-red-500">Could not load occasions: {occasionsError}</p>}
               </Field>
               <Field label="Tags (comma separated)">
                 <input className={inputClass} value={form.tags} onChange={(e) => set('tags', e.target.value)} />

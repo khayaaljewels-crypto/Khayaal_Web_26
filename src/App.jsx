@@ -7,6 +7,7 @@ import { UIProvider } from '@/context/UIContext';
 import { ProductsProvider } from '@/context/ProductsContext';
 import { CategoriesProvider } from '@/context/CategoriesContext';
 import { CollectionsProvider } from '@/context/CollectionsContext';
+import { OccasionsProvider } from '@/context/OccasionsContext';
 import { OrdersProvider } from '@/context/OrdersContext';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { CustomerAuthProvider } from '@/context/CustomerAuthContext';
@@ -93,9 +94,11 @@ function App() {
           <ProductsProvider>
             <CategoriesProvider>
               <CollectionsProvider>
-                <OrdersProvider>
-                  <Root />
-                </OrdersProvider>
+                <OccasionsProvider>
+                  <OrdersProvider>
+                    <Root />
+                  </OrdersProvider>
+                </OccasionsProvider>
               </CollectionsProvider>
             </CategoriesProvider>
           </ProductsProvider>

@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { occasions } from '@/data/constants';
 import Reveal from '@/components/animations/Reveal';
 import StaggerGroup, { staggerItem } from '@/components/animations/StaggerGroup';
+import { useOccasions } from '@/context/OccasionsContext';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function ShopByOccasion() {
+  const { visibleOccasions: occasions, loading } = useOccasions();
+
+  if (!loading && occasions.length === 0) return null;
+
   return (
     <section className="container-luxury py-20 lg:py-28">
       <Reveal className="mx-auto max-w-xl text-center">
@@ -15,9 +20,9 @@ export default function ShopByOccasion() {
       <StaggerGroup className="mt-14 grid grid-cols-2 gap-5 lg:grid-cols-4" staggerDelay={0.1}>
         {occasions.map((o) => (
           <motion.div key={o.id} variants={staggerItem}>
-            <Link to={`/shop?occasion=${o.id}`} className="group relative block overflow-hidden rounded-3xl" data-cursor-hover>
+            <Link to={`/shop?occasion=${encodeURIComponent(o.slug)}`} className="group relative block overflow-hidden rounded-3xl" data-cursor-hover>
               <div className="aspect-3/4 overflow-hidden">
-                <img
+                <ImageWithFallback
                   src={o.image}
                   alt={o.name}
                   loading="lazy"
