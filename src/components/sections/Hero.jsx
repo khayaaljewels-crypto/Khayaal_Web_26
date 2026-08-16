@@ -42,7 +42,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
           className="eyebrow !text-gold-hover"
         >
-          The New Heirloom Collection
+          THE KHAYAAL COLLECTIONS
         </motion.p>
 
         <div className="mt-4 overflow-hidden">
@@ -52,7 +52,7 @@ export default function Hero() {
             transition={{ duration: 1, delay: 1.25, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-2xl font-heading text-5xl leading-[1.1] text-white sm:text-6xl lg:text-7xl"
           >
-            Jewellery for the moments you don't repeat
+            Jewellery That Becomes Part Of Your Story
           </motion.h1>
         </div>
 
@@ -62,8 +62,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.5 }}
           className="mt-6 max-w-md text-base text-white/75"
         >
-          Hand-finished imitation jewellery, designed in-house and crafted to feel like a
-          genuine heirloom — for weddings, festivities, and everyday luxury.
+          Find jewellery that feels uniquely yours—beautifully designed for every celebration & everyday moments alike.
         </motion.p>
 
         <motion.div

@@ -1,4 +1,16 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+// Same-origin in production (proxied to the Render backend by vercel.json's
+// /api/:path* rewrite) — required for the customer session cookie to work
+// on Safari iOS and Chrome Android, both of which block third-party cookies
+// by default. When the frontend and backend were on different domains, the
+// browser correctly stored khayaal_token as belonging to
+// khayaal-backend.onrender.com, and then refused to attach it to any
+// cross-site fetch() from khayaalofficial.in — invisibly, with no console
+// error, since this is a browser privacy policy, not a bug either app could
+// detect. Routing every request through /api on the frontend's own origin
+// makes the cookie genuinely first-party, which both browsers exempt from
+// that restriction. Local dev has no Vercel rewrite layer, so it keeps
+// talking to the backend directly.
+const API_BASE = import.meta.env.DEV ? (import.meta.env.VITE_API_URL || 'http://localhost:4000') : '/api';
 
 // Lets CustomerAuthContext react to a session going invalid (expired/revoked
 // JWT) no matter which API call surfaces it, without apiClient importing
