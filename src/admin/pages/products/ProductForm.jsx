@@ -269,42 +269,6 @@ export default function ProductForm() {
           </section>
 
           <section className="space-y-4 rounded-2xl border border-border bg-white p-6">
-            <p className="font-heading text-lg text-brown">Attributes</p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <Field label="Material">
-                <select className={inputClass} value={form.material} onChange={(e) => set('material', e.target.value)}>
-                  {MATERIALS.map((m) => <option key={m} value={m}>{m}</option>)}
-                </select>
-              </Field>
-              <Field label="Stone Type">
-                <select className={inputClass} value={form.stone} onChange={(e) => set('stone', e.target.value)}>
-                  {STONES.map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </Field>
-              <Field label="Color">
-                <select className={inputClass} value={form.color} onChange={(e) => set('color', e.target.value)}>
-                  {COLORS.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </Field>
-              <Field label="Weight">
-                <input className={inputClass} value={form.weight} onChange={(e) => set('weight', e.target.value)} placeholder="e.g. 24 g" />
-              </Field>
-              <Field label="Dimensions" className="sm:col-span-2">
-                <input className={inputClass} value={form.dimensions} onChange={(e) => set('dimensions', e.target.value)} placeholder="e.g. 16 in chain + 2 in extender" />
-              </Field>
-              <Field label="Package Includes" className="sm:col-span-3">
-                <input className={inputClass} value={form.packageIncludes} onChange={(e) => set('packageIncludes', e.target.value)} />
-              </Field>
-              <Field label="Warranty">
-                <input className={inputClass} value={form.warranty} onChange={(e) => set('warranty', e.target.value)} />
-              </Field>
-              <Field label="Country of Origin">
-                <input className={inputClass} value={form.countryOfOrigin} onChange={(e) => set('countryOfOrigin', e.target.value)} />
-              </Field>
-            </div>
-          </section>
-
-          <section className="space-y-4 rounded-2xl border border-border bg-white p-6">
             <p className="font-heading text-lg text-brown">Description</p>
             <Field label="Short Description">
               <input className={inputClass} value={form.shortDescription} onChange={(e) => set('shortDescription', e.target.value)} />
