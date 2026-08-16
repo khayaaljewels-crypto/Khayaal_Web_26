@@ -62,7 +62,8 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.5 }}
           className="mt-6 max-w-md text-base text-white/75"
         >
-          Find jewellery that feels uniquely yours—beautifully designed for every celebration & everyday moments alike.
+                    Find jewellery that feels uniquely yours—beautifully designed for every celebration & everyday moments alike.
+
         </motion.p>
 
         <motion.div
