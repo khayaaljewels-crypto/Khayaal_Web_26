@@ -51,7 +51,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border bg-beige/60">
-      {/* <div className="container-luxury py-16 lg:py-20">
+      <div className="container-luxury py-16 lg:py-20">
         <Reveal className="flex flex-col items-start justify-between gap-8 rounded-3xl bg-brown px-8 py-12 text-white sm:px-14 sm:py-14 lg:flex-row lg:items-center">
           <div>
             <p className="eyebrow !text-gold-hover">Stay In The Light</p>
@@ -110,7 +110,7 @@ export default function Footer() {
         </div>
 
 
-      </div> */}
+      </div>
     </footer>
   );
 }
