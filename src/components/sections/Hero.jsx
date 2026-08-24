@@ -20,12 +20,19 @@ export default function Hero() {
         animate={{ scale: 1 }}
         transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
       >
-        <img
+        {/* <img
           src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=2000&auto=format&fit=crop"
           alt="Model wearing Khayaal Jewels bridal necklace set"
           className="h-full w-full object-cover"
           fetchPriority="high"
-        />
+        /> */}
+
+        <img
+  src="/images/hero-bg.jpg"
+  alt="Khayaal Jewels luxury jewellery collection"
+  className="h-full w-full object-cover"
+  fetchPriority="high"
+/>
         <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
         <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" />
       </motion.div>
@@ -62,7 +69,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.5 }}
           className="mt-6 max-w-md text-base text-white/75"
         >
-                    Find jewellery that feels uniquely yours—beautifully designed for every celebration & everyday moments alike.
+          Find jewellery that feels uniquely yours—beautifully designed for every celebration & everyday moments alike.
 
         </motion.p>
 
