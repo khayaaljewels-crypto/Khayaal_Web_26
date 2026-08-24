@@ -28,7 +28,7 @@ export default function Hero() {
         /> */}
 
         <img
-  src="/images/hero-bg.jpg"
+  src="/images/bg.jpeg"
   alt="Khayaal Jewels luxury jewellery collection"
   className="h-full w-full object-cover"
   fetchPriority="high"
