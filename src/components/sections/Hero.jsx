@@ -14,21 +14,22 @@ export default function Hero() {
   return (
     <section ref={ref} className="relative flex h-[100svh] min-h-135 w-full items-center overflow-hidden bg-brown sm:min-h-160">
       <motion.div
-        className="absolute inset-0"
-        style={{ y: imageY }}
-        initial={{ scale: 1.15 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <img
-          src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=2000&auto=format&fit=crop"
-          alt="Model wearing Khayaal Jewels bridal necklace set"
-          className="h-full w-full object-cover"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
-        <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" />
-      </motion.div>
+  className="absolute inset-0"
+  style={{ y: imageY }}
+  initial={{ scale: 1.15 }}
+  animate={{ scale: 1 }}
+  transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
+>
+  <img
+    src="/images/bg.jpeg"
+    alt="Khayaal Jewels bridal collection"
+    className="h-full w-full object-cover"
+    fetchPriority="high"
+  />
+
+  <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
+  <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" />
+</motion.div>
 
       <GoldParticles />
 
