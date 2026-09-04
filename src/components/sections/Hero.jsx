@@ -116,7 +116,7 @@ export default function Hero() {
 
   return (
     <section ref={ref} className="relative flex h-[100svh] min-h-135 w-full items-center overflow-hidden bg-brown sm:min-h-160">
-      <motion.div
+      {/* <motion.div
         className="absolute inset-0"
         style={{ y: imageY }}
         initial={{ scale: 1.15 }}
@@ -124,13 +124,25 @@ export default function Hero() {
         transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
       >
         <img
-     src="/images/BG1.jpeg"
-     alt="Khayaal Jewels bridal collection"
-     className="h-full w-full object-cover"
-     fetchPriority="high"   />
-        {/* <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
-        <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" /> */}
-      </motion.div>
+          src="/images/BG1.jpeg"
+          alt="Khayaal Jewels bridal collection"
+          className="h-full w-full object-cover"
+          fetchPriority="high" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" />
+      </motion.div> */}
+
+      <div className="absolute inset-0">
+  <img
+    src="/images/BG1.jpeg"
+    alt="Khayaal Jewels bridal collection"
+    className="h-full w-full object-cover"
+    fetchPriority="high"
+  />
+
+  <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
+  <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" />
+</div>
 
       <GoldParticles />
 
