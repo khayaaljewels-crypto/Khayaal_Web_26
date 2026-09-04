@@ -139,9 +139,6 @@ export default function Hero() {
     className="h-full w-full object-cover"
     fetchPriority="high"
   />
-
-  <div className="absolute inset-0 bg-gradient-to-t from-brown via-brown/40 to-brown/30" />
-  <div className="absolute inset-0 bg-gradient-to-r from-brown/70 via-brown/10 to-transparent" />
 </div>
 
       <GoldParticles />
