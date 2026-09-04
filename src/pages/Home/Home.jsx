@@ -4,7 +4,6 @@ import FeaturedCategories from '@/components/sections/FeaturedCategories';
 import ProductGridSection from '@/components/sections/ProductGridSection';
 import ShopByOccasion from '@/components/sections/ShopByOccasion';
 import InstagramGallery from '@/components/sections/InstagramGallery';
-import Newsletter from '@/components/sections/Newsletter';
 import { useProductList } from '@/hooks/useProductList';
 
 const BEST_SELLERS_FILTER = { isBestSeller: true, pageSize: 8 };
@@ -36,7 +35,6 @@ export default function Home() {
         tint
       />
       <InstagramGallery />
-      <Newsletter />
     </>
   );
 }
