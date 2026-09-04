@@ -3,7 +3,6 @@ import TrendingCollections from '@/components/sections/TrendingCollections';
 import FeaturedCategories from '@/components/sections/FeaturedCategories';
 import ProductGridSection from '@/components/sections/ProductGridSection';
 import ShopByOccasion from '@/components/sections/ShopByOccasion';
-import Testimonials from '@/components/sections/Testimonials';
 import InstagramGallery from '@/components/sections/InstagramGallery';
 import Newsletter from '@/components/sections/Newsletter';
 import { useProductList } from '@/hooks/useProductList';
@@ -36,7 +35,6 @@ export default function Home() {
         viewAllTo="/shop?filter=new"
         tint
       />
-      <Testimonials />
       <InstagramGallery />
       <Newsletter />
     </>
