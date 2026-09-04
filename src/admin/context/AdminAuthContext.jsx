@@ -16,13 +16,17 @@ export function AdminAuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
+  // Register this during render, before any protected child can mount and
+  // make an API request. Registering it in useEffect left a small window
+  // where an authenticated admin page could request a protected endpoint
+  // without its Firebase Bearer token.
+  setAdminTokenProvider(() => auth.currentUser?.getIdToken());
+
   useEffect(() => {
     // Reads auth.currentUser live at call time (not the `user` state above),
     // so it's never stale regardless of when a request fires relative to
     // the last onAuthStateChanged event. Every /api/admin/* call in
     // apiClient.js attaches whatever this returns as a Bearer header.
-    setAdminTokenProvider(() => auth.currentUser?.getIdToken());
-
     if (!isFirebaseConfigured) {
       setCheckingAuth(false);
       return;

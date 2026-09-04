@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
-import { fetchAdminProduct, createProduct, createDraftProduct, updateProduct } from '@/services/productsApi';
+import { fetchAdminProduct, createProduct, updateProduct } from '@/services/productsApi';
 import { clearProductListCache } from '@/hooks/useProductList';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
@@ -41,6 +41,8 @@ export default function ProductForm() {
   // draft row exists on the server — images uploaded before the first save
   // already have somewhere real to attach to (product_images.product_id)
   // instead of an id that might never become an actual product row.
+  // Opening Add Product must not create a database row. An id exists only
+  // after the administrator explicitly saves the new product.
   const [productId, setProductId] = useState(id ?? null);
 
   const [existing, setExisting] = useState(null);
@@ -71,30 +73,6 @@ export default function ProductForm() {
       cancelled = true;
     };
   }, [isEdit]);
-
-  useEffect(() => {
-    if (id) {
-      setProductId(id);
-      return;
-    }
-
-    let cancelled = false;
-
-    async function createDraft() {
-      try {
-        const { product } = await createDraftProduct();
-        if (!cancelled) setProductId(product.id);
-      } catch (err) {
-        if (!cancelled) setFormError(err.message || 'Could not start a new product.');
-      }
-    }
-
-    createDraft();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -147,7 +125,7 @@ export default function ProductForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (images.length === 0) {
+    if (isEdit && images.length === 0) {
       setImageError('A product thumbnail is required — upload at least one image below.');
       toast.error('Add a product thumbnail before saving.');
       return;
@@ -207,7 +185,11 @@ export default function ProductForm() {
       if (isEdit) {
         await updateProduct(id, payload);
       } else {
-        await createProduct(payload);
+        const created = await createProduct(payload);
+        clearProductListCache();
+        toast.success('Product created. Add its images, then save any further changes.');
+        navigate(`/admin/products/${created.id}/edit`, { replace: true });
+        return;
       }
       clearProductListCache();
       toast.success(isEdit ? 'Product updated.' : 'Product created.');
@@ -336,7 +318,9 @@ export default function ProductForm() {
             <p className="font-heading text-lg text-brown">
               Images <span className="text-red-500">*</span>
             </p>
-            {!productId || imagesLoading ? (
+            {!productId ? (
+              <p className="text-xs text-text/50">Save the product first, then upload its images.</p>
+            ) : imagesLoading ? (
               <p className="text-xs text-text/50">Loading images...</p>
             ) : (
               <ImageUploader
