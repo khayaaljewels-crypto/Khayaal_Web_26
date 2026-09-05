@@ -175,7 +175,7 @@ export default function Hero() {
           className="mt-10 flex flex-wrap items-center gap-4"
         >
           <GoldButton to="/shop" icon={HiOutlineArrowRight}>
-            Shop The Edit
+            Shop Now
           </GoldButton>
           <GoldButton to="/about" variant="outline" className="!text-white border-white/50 hover:!text-brown">
             Our Story
