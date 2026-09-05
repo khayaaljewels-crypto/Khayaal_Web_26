@@ -43,7 +43,7 @@ export default function ProductForm() {
   // instead of an id that might never become an actual product row.
   // Opening Add Product must not create a database row. An id exists only
   // after the administrator explicitly saves the new product.
-  const [productId, setProductId] = useState(id ?? null);
+  const productId = id ?? null;
 
   const [existing, setExisting] = useState(null);
   const [form, setForm] = useState(emptyForm);
@@ -125,11 +125,6 @@ export default function ProductForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isEdit && images.length === 0) {
-      setImageError('A product thumbnail is required — upload at least one image below.');
-      toast.error('Add a product thumbnail before saving.');
-      return;
-    }
     setImageError('');
     setSaving(true);
 
@@ -185,10 +180,11 @@ export default function ProductForm() {
       if (isEdit) {
         await updateProduct(id, payload);
       } else {
-        const created = await createProduct(payload);
+        const categoryFolder = visibleCategories.find((category) => category.id === form.categoryId)?.slug;
+        await createProduct(payload, images.map((image) => image.file).filter(Boolean), categoryFolder);
         clearProductListCache();
-        toast.success('Product created. Add its images, then save any further changes.');
-        navigate(`/admin/products/${created.id}/edit`, { replace: true });
+        toast.success('Product created.');
+        navigate('/admin/products');
         return;
       }
       clearProductListCache();
@@ -316,11 +312,9 @@ export default function ProductForm() {
 
           <section className="space-y-3 rounded-2xl border border-border bg-white p-6">
             <p className="font-heading text-lg text-brown">
-              Images <span className="text-red-500">*</span>
+              Images
             </p>
-            {!productId ? (
-              <p className="text-xs text-text/50">Save the product first, then upload its images.</p>
-            ) : imagesLoading ? (
+            {isEdit && imagesLoading ? (
               <p className="text-xs text-text/50">Loading images...</p>
             ) : (
               <ImageUploader

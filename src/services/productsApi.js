@@ -24,7 +24,15 @@ export const fetchProductFacets = () => api.get('/products/facets');
 // Admin — sees unpublished products too, and can mutate.
 export const fetchAdminProducts = (params) => api.get(`/api/admin/products${toQueryString(params)}`);
 export const fetchAdminProduct = (id) => api.get(`/api/admin/products/${id}`).then((r) => r.product);
-export const createProduct = (payload) => api.post('/api/admin/products', payload).then((r) => r.product);
+// New-product files stay in the form until this authenticated create request.
+export const createProduct = (payload, imageFiles = [], folder) => {
+  if (!imageFiles.length) return api.post('/api/admin/products', payload).then((r) => r.product);
+  const formData = new FormData();
+  formData.append('product', JSON.stringify(payload));
+  formData.append('folder', folder || 'uncategorized');
+  imageFiles.forEach((file) => formData.append('images', file));
+  return api.upload('/api/admin/products', formData).then((r) => r.product);
+};
 // Returns the raw { product } body (not unwrapped) — see ProductForm.jsx,
 // its only caller, which destructures `product` straight off the response.
 export const updateProduct = (id, patch) => api.put(`/api/admin/products/${id}`, patch).then((r) => r.product);

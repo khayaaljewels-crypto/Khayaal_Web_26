@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Reorder } from 'framer-motion';
 import {
   HiOutlineCloudArrowUp,
@@ -39,6 +39,18 @@ export default function ImageUploader({ productId, folder, images, onImagesChang
   const fileInputRef = useRef(null);
   const replaceInputRef = useRef(null);
   const reorderTimeout = useRef(null);
+  const imagesRef = useRef(images);
+  const isCreateMode = !productId;
+
+  useEffect(() => {
+    imagesRef.current = images;
+  }, [images]);
+
+  useEffect(() => () => {
+    imagesRef.current.forEach((image) => {
+      if (image.objectUrl) URL.revokeObjectURL(image.objectUrl);
+    });
+  }, []);
 
   const setUploadingState = (value) => {
     setUploading(value);
@@ -55,6 +67,20 @@ export default function ImageUploader({ productId, folder, images, onImagesChang
     }
 
     setError('');
+    if (isCreateMode) {
+      const selected = files.map((file, index) => {
+        const objectUrl = URL.createObjectURL(file);
+        return {
+          id: `local-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+          file,
+          objectUrl,
+          url: objectUrl,
+          isThumbnail: images.length === 0 && index === 0,
+        };
+      });
+      onImagesChange([...images, ...selected]);
+      return;
+    }
     setUploadingState(true);
     try {
       const formData = new FormData();
@@ -78,12 +104,14 @@ export default function ImageUploader({ productId, folder, images, onImagesChang
   };
 
   const handleReorder = (newOrder) => {
-    onImagesChange(newOrder);
+    const ordered = newOrder.map((image, index) => ({ ...image, isThumbnail: index === 0 }));
+    onImagesChange(ordered);
+    if (isCreateMode) return;
     clearTimeout(reorderTimeout.current);
     reorderTimeout.current = setTimeout(async () => {
       try {
         const { images: confirmed } = await api.put(`/api/admin/products/${productId}/images/reorder`, {
-          order: newOrder.map((img) => img.id),
+          order: ordered.map((img) => img.id),
         });
         onImagesChange(confirmed);
       } catch (err) {
@@ -94,6 +122,12 @@ export default function ImageUploader({ productId, folder, images, onImagesChang
   };
 
   const handleSetThumbnail = async (id) => {
+    if (isCreateMode) {
+      const selected = images.find((image) => image.id === id);
+      if (!selected) return;
+      onImagesChange([selected, ...images.filter((image) => image.id !== id)].map((image, index) => ({ ...image, isThumbnail: index === 0 })));
+      return;
+    }
     try {
       const { images: updated } = await api.put(`/api/admin/images/${id}/thumbnail`, {});
       onImagesChange(updated);
@@ -105,6 +139,12 @@ export default function ImageUploader({ productId, folder, images, onImagesChang
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this image? This cannot be undone.')) return;
+    if (isCreateMode) {
+      const removed = images.find((image) => image.id === id);
+      if (removed?.objectUrl) URL.revokeObjectURL(removed.objectUrl);
+      onImagesChange(images.filter((image) => image.id !== id).map((image, index) => ({ ...image, isThumbnail: index === 0 })));
+      return;
+    }
     try {
       await api.delete(`/api/admin/images/${id}`);
       onImagesChange(images.filter((img) => img.id !== id));
@@ -127,6 +167,17 @@ export default function ImageUploader({ productId, folder, images, onImagesChang
     const validationError = validateFiles([file]);
     if (validationError) {
       setError(validationError);
+      return;
+    }
+
+    if (isCreateMode) {
+      const replacementUrl = URL.createObjectURL(file);
+      onImagesChange(images.map((image) => {
+        if (image.id !== replacingId) return image;
+        if (image.objectUrl) URL.revokeObjectURL(image.objectUrl);
+        return { ...image, file, objectUrl: replacementUrl, url: replacementUrl };
+      }));
+      setReplacingId(null);
       return;
     }
 
