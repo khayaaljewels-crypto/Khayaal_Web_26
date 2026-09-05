@@ -6,6 +6,6 @@ export const navLinks = [
   },
   { label: 'New Arrivals', to: '/shop?filter=new' },
   { label: 'Best Sellers', to: '/shop?filter=bestsellers' },
-  { label: 'About', to: '/about' },
+  { label: 'Our Story', to: '/about' },
   { label: 'Contact', to: '/contact' },
 ];
