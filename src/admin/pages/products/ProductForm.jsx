@@ -170,7 +170,7 @@ export default function ProductForm() {
       },
       variants: existing?.variants?.length
         ? existing.variants
-        : [{ id: form.color.toLowerCase().replace(/\s+/g, '-'), label: form.color, hex: COLOR_HEX[form.color] ?? '#B8864A', image: imageUrls[0], priceDelta: 0 }],
+        : [{ id: form.color.toLowerCase().replace(/\s+/g, '-'), label: form.color, hex: COLOR_HEX[form.color] ?? '#B8864A', image: isEdit ? imageUrls[0] : undefined, priceDelta: 0 }],
       ringSizes: existing?.ringSizes ?? null,
       rating: existing?.rating ?? 0,
       reviewCount: existing?.reviewCount ?? 0,

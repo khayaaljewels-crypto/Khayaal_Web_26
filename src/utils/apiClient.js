@@ -10,7 +10,20 @@
 // makes the cookie genuinely first-party, which both browsers exempt from
 // that restriction. Local dev has no Vercel rewrite layer, so it keeps
 // talking to the backend directly.
-const API_BASE = import.meta.env.DEV ? (import.meta.env.VITE_API_URL || 'http://localhost:4000') : '/api';
+const configuredApiBase = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+// VITE_API_URL is documented as the backend origin. Tolerate an accidental
+// trailing /api too, because service paths already include it where needed.
+const API_BASE = import.meta.env.DEV ? configuredApiBase.replace(/\/api\/?$/, '') : '/api';
+
+// Service modules describe backend routes. Some backend routes already live
+// under /api (admin, orders, and customer account routes), while public
+// catalog routes do not. In production, avoid prefixing those /api routes a
+// second time so the browser always requests /api/admin/... rather than
+// /api/api/admin/.... The Vercel rewrites preserve that backend prefix.
+function requestUrl(path) {
+  if (!import.meta.env.DEV && path.startsWith('/api/')) return path;
+  return `${API_BASE}${path}`;
+}
 
 // Lets CustomerAuthContext react to a session going invalid (expired/revoked
 // JWT) no matter which API call surfaces it, without apiClient importing
@@ -38,12 +51,12 @@ async function authHeaders() {
 async function request(path, options = {}, isRetry = false) {
   let res;
   try {
-    res = await fetch(`${API_BASE}${path}`, {
+    res = await fetch(requestUrl(path), {
       credentials: 'include',
       headers: { 'Content-Type': 'application/json', ...(await authHeaders()), ...options.headers },
       ...options,
     });
-  } catch (networkErr) {
+  } catch {
     // `fetch` only throws for a genuine network-level failure (server
     // unreachable, DNS failure, offline) — never for HTTP error responses,
     // which resolve normally with res.ok === false. One retry after a short
@@ -68,7 +81,7 @@ async function request(path, options = {}, isRetry = false) {
 // The browser must set its own multipart Content-Type (with boundary), so
 // this never sets a Content-Type header manually.
 async function requestFormData(path, formData, method = 'POST') {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await fetch(requestUrl(path), {
     method,
     credentials: 'include',
     headers: await authHeaders(),
@@ -88,7 +101,7 @@ async function uploadWithProgress(path, formData, { method = 'POST', onProgress 
   const headers = await authHeaders();
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open(method, `${API_BASE}${path}`);
+    xhr.open(method, requestUrl(path));
     xhr.withCredentials = true;
     for (const [key, value] of Object.entries(headers)) xhr.setRequestHeader(key, value);
 
