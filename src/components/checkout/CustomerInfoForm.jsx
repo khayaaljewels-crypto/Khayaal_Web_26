@@ -67,7 +67,7 @@ export default function CustomerInfoForm({ initialValues, onSubmit }) {
       <p className="font-heading text-lg text-brown">Contact Details</p>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Full Name" required error={errors.name}>
-          <input className={inputClass} value={values.name} onChange={(e) => set('name', e.target.value)} placeholder="Anjali Nair" />
+          <input className={inputClass} value={values.name} onChange={(e) => set('name', e.target.value)} placeholder="Enter Your Name" />
         </Field>
         <Field label="Mobile Number" required error={errors.phone}>
           <input
@@ -76,7 +76,7 @@ export default function CustomerInfoForm({ initialValues, onSubmit }) {
             maxLength={10}
             value={values.phone}
             onChange={(e) => set('phone', e.target.value.replace(/\D/g, ''))}
-            placeholder="9876543210"
+            placeholder="Enter Your Mobile Number"
           />
         </Field>
       </div>
@@ -95,7 +95,7 @@ export default function CustomerInfoForm({ initialValues, onSubmit }) {
                 maxLength={10}
                 value={values.whatsapp}
                 onChange={(e) => set('whatsapp', e.target.value.replace(/\D/g, ''))}
-                placeholder="9876543210"
+                placeholder="Enter Your Mobile Number"
               />
             </Field>
           </div>
@@ -137,7 +137,7 @@ export default function CustomerInfoForm({ initialValues, onSubmit }) {
             maxLength={6}
             value={values.pincode}
             onChange={(e) => set('pincode', e.target.value.replace(/\D/g, ''))}
-            placeholder="673001"
+            placeholder="Pincode"
           />
         </Field>
       </div>
@@ -146,7 +146,7 @@ export default function CustomerInfoForm({ initialValues, onSubmit }) {
         <input className={inputClass} value={values.landmark} onChange={(e) => set('landmark', e.target.value)} placeholder="Near..." />
       </Field>
 
-      <Field label="Order Notes (Optional)">
+      {/* <Field label="Order Notes (Optional)">
         <textarea
           className={inputClass}
           rows={2}
@@ -154,7 +154,7 @@ export default function CustomerInfoForm({ initialValues, onSubmit }) {
           onChange={(e) => set('notes', e.target.value)}
           placeholder="Gift wrap, delivery instructions, etc."
         />
-      </Field>
+      </Field> */}
 
       <div>
         <label className="flex items-start gap-2 text-xs text-text/70">

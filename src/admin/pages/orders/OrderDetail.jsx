@@ -82,7 +82,7 @@ export default function OrderDetail() {
             <div className="mt-4 space-y-1.5 border-t border-border pt-4 text-sm">
               <div className="flex justify-between text-text/60"><span>Subtotal</span><span>{formatPrice(order.subtotal)}</span></div>
               {order.discount > 0 && <div className="flex justify-between text-gold"><span>Discount ({order.coupon})</span><span>-{formatPrice(order.discount)}</span></div>}
-              <div className="flex justify-between text-text/60"><span>Shipping</span><span>{order.shippingFee === 0 ? 'Free' : formatPrice(order.shippingFee)}</span></div>
+              {/* <div className="flex justify-between text-text/60"><span>Shipping</span><span>{order.shippingFee === 0 ? 'Free' : formatPrice(order.shippingFee)}</span></div> */}
               <div className="flex justify-between border-t border-border pt-2 font-heading text-base text-brown"><span>Grand Total</span><span>{formatPrice(order.grandTotal)}</span></div>
             </div>
             {order.notes && (
