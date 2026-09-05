@@ -11,7 +11,7 @@
   const About = lazy(() => import('@/pages/About/About'));
   const Contact = lazy(() => import('@/pages/Contact/Contact'));
   const FAQ = lazy(() => import('@/pages/FAQ/FAQ'));
-  const TrackOrder = lazy(() => import('@/pages/Track/TrackOrder'));
+  // const TrackOrder = lazy(() => import('@/pages/Track/TrackOrder'));
   const NotFound = lazy(() => import('@/pages/NotFound'));
 
   const AccountLayout = lazy(() => import('@/pages/Account/AccountLayout'));
@@ -45,7 +45,7 @@
             <Route path="addresses" element={<SavedAddresses />} />
           </Route>
 
-          <Route path="/track-order" element={<TrackOrder />} />
+          {/* <Route path="/track-order" element={<TrackOrder />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
