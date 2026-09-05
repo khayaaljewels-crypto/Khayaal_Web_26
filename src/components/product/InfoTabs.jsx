@@ -64,7 +64,7 @@ function SpecRow({ label, value }) {
   );
 }
 
-const TABS = ['Description', 'Specifications', 'Care Guide', 'Shipping', 'Returns', 'Reviews', 'FAQs'];
+const TABS = ['Description', 'Care Guide', 'Shipping', 'Returns', 'Reviews', 'FAQs'];
 
 export default function InfoTabs({ product }) {
   const [active, setActive] = useState('Description');
