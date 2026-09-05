@@ -98,7 +98,7 @@ export default function InfoTabs({ product }) {
           </div>
         )}
 
-        {active === 'Specifications' && (
+        {/* {active === 'Specifications' && (
           <div>
             <SpecRow label="Metal" value={product.specs.metal} />
             <SpecRow label="Stone" value={product.specs.stone} />
@@ -110,7 +110,7 @@ export default function InfoTabs({ product }) {
             <SpecRow label="Warranty" value={product.specs.warranty} />
             <SpecRow label="Country of Origin" value={product.specs.countryOfOrigin} />
           </div>
-        )}
+        )} */}
 
         {active === 'Care Guide' && (
           <p className="text-sm leading-relaxed text-text/70">{product.careInstructions}</p>
