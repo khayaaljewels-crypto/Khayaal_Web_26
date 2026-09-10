@@ -15,7 +15,6 @@ import { formatPrice } from '@/utils/format';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCompare } from '@/context/CompareContext';
 import { RingSizeSelector } from './VariantSelector';
-import PincodeChecker from './PincodeChecker';
 
 export default function PurchasePanel({
   product,
@@ -177,11 +176,6 @@ export default function PurchasePanel({
         </button>
       </div>
 
-      <div className="mt-6">
-        <PincodeChecker
-          returnDays={product.returnDays}
-        />
-      </div>
     </div>
   );
 }
