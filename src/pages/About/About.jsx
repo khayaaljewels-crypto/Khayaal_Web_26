@@ -24,150 +24,146 @@ const PRINCIPLES = [
 export default function About() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-brown pb-20 pt-36 text-white sm:pb-28 sm:pt-44 lg:pb-36 lg:pt-52">
-        <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_12%_20%,#d8b27a_0,transparent_26%),radial-gradient(circle_at_85%_70%,#b8864a_0,transparent_22%)]" />
-
-        <div className="absolute -right-20 top-16 h-72 w-72 rounded-full border border-gold/30 sm:h-112 sm:w-112" />
-
-        <div className="absolute -right-8 top-24 h-56 w-56 rounded-full border border-white/10 sm:h-88 sm:w-88" />
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-brown text-white">
+        <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_15%_20%,#d8b27a_0,transparent_28%),radial-gradient(circle_at_85%_75%,#b8864a_0,transparent_25%)]" />
 
         <div className="container-luxury relative z-10">
-          <Reveal direction="none">
-            <p className="text-2xl font-medium tracking-wide text-gold-hover sm:text-3xl lg:text-4xl">
-              The House of Khayaal
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.08}>
-            <div className="mt-8 max-w-3xl space-y-4 text-base leading-8 text-white/75 sm:mt-10 sm:text-lg">
-              <p>
-                Khayaal began with a simple thought shared between two
-                engineers — and a dream we chose to make real.
+          <div className="max-w-5xl pb-20 pt-32 sm:pb-28 sm:pt-40 lg:pb-36 lg:pt-48">
+            <Reveal direction="none">
+              <p className="text-xl font-medium tracking-wide text-gold-hover sm:text-2xl lg:text-3xl">
+                The House of Khayaal
               </p>
+            </Reveal>
 
-              <p>
-                Born from countless ideas, quiet excitement, a little
-                nervousness, and a whole lot of heart, Khayaal is a small piece
-                of our imagination brought to life.
-              </p>
-
-              <p>
-                Every detail carries a part of our journey, created with the
-                hope that Khayaal becomes a part of yours — celebrating the
-                beautiful moments, little joys, and memories that make life
-                truly your own.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.16}>
-            <div className="mt-10 border-t border-white/10 pt-8 sm:mt-14 sm:pt-10">
-              <p className="text-xs uppercase tracking-[0.28em] text-gold-hover">
-                Our beginning
-              </p>
-
-              <h1 className="mt-4 max-w-4xl font-heading text-5xl leading-[1.05] sm:text-6xl lg:text-8xl">
+            <Reveal delay={0.08}>
+              <h1 className="mt-5 font-heading text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">
                 Our Story
               </h1>
-            </div>
-          </Reveal>
+            </Reveal>
 
-          <Reveal delay={0.24}>
-            <p className="mt-7 max-w-2xl text-base leading-8 text-white/75 sm:text-lg">
-              Khayaal is an expression of the thoughts, memories and little
-              celebrations that make a life feel entirely your own.
-            </p>
-          </Reveal>
+            <Reveal delay={0.14}>
+              <div className="mt-8 max-w-3xl space-y-4 border-l border-gold/50 pl-5 text-base leading-8 text-white/75 sm:pl-7 sm:text-lg">
+                <p>
+                  Khayaal began with a simple thought shared between two
+                  engineers — and a dream we chose to make real.
+                </p>
+
+                <p>
+                  Born from countless ideas, quiet excitement, a little
+                  nervousness, and a whole lot of heart, Khayaal is a small
+                  piece of our imagination brought to life.
+                </p>
+
+                <p>
+                  Every detail carries a part of our journey, created with
+                  the hope that Khayaal becomes a part of yours — celebrating
+                  the beautiful moments, little joys, and memories that make
+                  life truly your own.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <p className="mt-8 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
+                Khayaal is an expression of the thoughts, memories and little
+                celebrations that make a life feel entirely your own.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* MEANING */}
-      <section id="story" className="scroll-mt-28 bg-bg py-20 sm:py-28 lg:py-36">
-        <div className="container-luxury grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
+      {/* Meaning */}
+      <section
+        id="story"
+        className="scroll-mt-28 bg-bg py-20 sm:py-24 lg:py-32"
+      >
+        <div className="container-luxury grid gap-10 lg:grid-cols-12 lg:gap-20">
           <Reveal className="lg:col-span-5">
             <p className="eyebrow">A thought, made tangible</p>
 
-            <h2 className="mt-4 font-heading text-4xl leading-tight text-brown sm:text-5xl">
+            <h2 className="mt-4 max-w-md font-heading text-4xl leading-tight text-brown sm:text-5xl">
               The meaning of{' '}
-              <span className="font-script text-5xl text-gold sm:text-6xl">
+              <span className="font-script text-gold">
                 Khayaal
               </span>
             </h2>
-
-            <div className="mt-7 h-px w-16 bg-gold" />
           </Reveal>
 
-          <Reveal delay={0.12} className="lg:col-span-6 lg:col-start-7">
+          <Reveal
+            delay={0.1}
+            className="lg:col-span-6 lg:col-start-7"
+          >
             <p className="text-lg leading-8 text-text/80">
-              Khayaal is a word held close in our language of home — a thought,
-              a feeling, a tender remembrance.
+              Khayaal is a word held close in our language of home — a
+              thought, a feeling, a tender remembrance.
             </p>
 
             <p className="mt-5 leading-8 text-text/65">
-              We created Khayaal around that feeling. To us, jewellery is never
-              merely an ornament. It can hold the warmth of a relationship,
-              mark a beginning, carry a memory, or become the piece you reach
-              for when you want to feel most like yourself.
+              We created Khayaal around that feeling. To us, jewellery is
+              never merely an ornament. It can hold the warmth of a
+              relationship, mark a beginning, carry a memory, or become the
+              piece you reach for when you want to feel most like yourself.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* PHILOSOPHY */}
-      <section className="overflow-hidden bg-beige py-20 sm:py-28 lg:py-36">
-        <div className="container-luxury grid gap-12 lg:grid-cols-2 lg:gap-24">
-          <Reveal className="relative min-h-96 overflow-hidden bg-brown p-8 sm:p-12">
-            <div className="absolute inset-0 opacity-60 [background-image:radial-gradient(circle_at_30%_35%,rgba(216,178,122,.4)_0,transparent_18%),radial-gradient(circle_at_68%_62%,rgba(255,255,255,.12)_0,transparent_25%)]" />
+      {/* Philosophy */}
+      <section className="bg-beige py-20 sm:py-24 lg:py-32">
+        <div className="container-luxury grid gap-12 lg:grid-cols-2 lg:gap-20">
+          <Reveal>
+            <div className="relative overflow-hidden bg-brown p-8 text-white sm:p-12">
+              <div className="absolute inset-0 opacity-40 [background-image:radial-gradient(circle_at_25%_25%,rgba(216,178,122,.35)_0,transparent_22%)]" />
 
-            <div className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full border border-gold/40" />
+              <div className="relative">
+                <HiOutlineSparkles className="text-3xl text-gold-hover" />
 
-            <div className="absolute -bottom-12 -right-8 h-56 w-56 rounded-full border border-white/20" />
+                <p className="mt-20 max-w-md font-heading text-3xl leading-snug sm:mt-28 sm:text-4xl">
+                  “The pieces we choose become part of how we remember.”
+                </p>
 
-            <div className="relative flex h-full min-h-80 flex-col justify-between text-white">
-              <HiOutlineSparkles className="text-3xl text-gold-hover" />
+                <div className="mt-12">
+                  <div className="mb-4 h-px w-10 bg-gold" />
 
-              <p className="max-w-sm font-heading text-3xl leading-snug sm:text-4xl">
-                “The pieces we choose become part of how we remember.”
-              </p>
-
-              <div>
-                <div className="mb-4 h-px w-12 bg-gold" />
-
-                <span className="text-xs uppercase tracking-[0.28em] text-gold-hover">
-                  Khayaal philosophy
-                </span>
+                  <span className="text-xs uppercase tracking-[0.25em] text-gold-hover">
+                    Khayaal philosophy
+                  </span>
+                </div>
               </div>
             </div>
           </Reveal>
 
-          <Reveal delay={0.12} className="flex flex-col justify-center">
+          <Reveal
+            delay={0.1}
+            className="flex flex-col justify-center"
+          >
             <p className="eyebrow">Jewellery with meaning</p>
 
-            <h2 className="mt-4 font-heading text-4xl leading-tight text-brown sm:text-5xl">
+            <h2 className="mt-4 max-w-xl font-heading text-4xl leading-tight text-brown sm:text-5xl">
               Designed with intention, chosen with feeling.
             </h2>
 
-            <div className="mt-6 h-px w-16 bg-gold" />
-
-            <p className="mt-6 leading-8 text-text/70">
-              Our philosophy is simple: beautiful jewellery should carry more
-              than shine. It should feel considered—from the first line of its
-              design to the finishing touches that make it a pleasure to wear.
+            <p className="mt-6 max-w-xl leading-8 text-text/70">
+              Our philosophy is simple: beautiful jewellery should carry
+              more than shine. It should feel considered—from the first line
+              of its design to the finishing touches that make it a pleasure
+              to wear.
             </p>
 
-            <p className="mt-4 leading-8 text-text/70">
-              Khayaal brings together a love for Indian heritage and a lighter,
-              modern sense of elegance. The result is jewellery for the days
-              that matter, and the everyday moments that quietly become part of
-              your story.
+            <p className="mt-4 max-w-xl leading-8 text-text/70">
+              Khayaal brings together a love for Indian heritage and a
+              lighter, modern sense of elegance. The result is jewellery for
+              the days that matter, and the everyday moments that quietly
+              become part of your story.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* PRINCIPLES */}
-      <section className="bg-bg py-20 sm:py-28 lg:py-36">
+      {/* Principles */}
+      <section className="bg-bg py-20 sm:py-24 lg:py-32">
         <div className="container-luxury">
           <Reveal className="max-w-2xl">
             <p className="eyebrow">The Khayaal approach</p>
@@ -184,15 +180,11 @@ export default function About() {
                 delay={index * 0.1}
                 className="border-b border-border py-8 lg:border-b-0 lg:border-r lg:px-9 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm tracking-[0.2em] text-gold">
-                    {principle.number}
-                  </span>
+                <span className="text-sm tracking-[0.2em] text-gold">
+                  {principle.number}
+                </span>
 
-                  <span className="h-px w-8 bg-gold/40" />
-                </div>
-
-                <h3 className="mt-8 font-heading text-2xl text-brown">
+                <h3 className="mt-6 font-heading text-2xl text-brown">
                   {principle.title}
                 </h3>
 
@@ -205,11 +197,9 @@ export default function About() {
         </div>
       </section>
 
-      {/* EXPRESSION */}
-      <section className="relative overflow-hidden bg-brown py-20 text-white sm:py-28 lg:py-36">
-        <div className="absolute -right-24 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full border border-gold/20 sm:h-96 sm:w-96" />
-
-        <div className="container-luxury relative z-10 grid gap-10 lg:grid-cols-12 lg:items-end">
+      {/* Expression */}
+      <section className="bg-brown py-20 text-white sm:py-24 lg:py-32">
+        <div className="container-luxury grid gap-10 lg:grid-cols-12 lg:items-end">
           <Reveal className="lg:col-span-7">
             <p className="eyebrow !text-gold-hover">
               For every expression of you
@@ -220,7 +210,10 @@ export default function About() {
             </h2>
           </Reveal>
 
-          <Reveal delay={0.12} className="lg:col-span-4 lg:col-start-9">
+          <Reveal
+            delay={0.1}
+            className="lg:col-span-4 lg:col-start-9"
+          >
             <p className="leading-8 text-white/70">
               Khayaal is for anyone who chooses jewellery as a form of
               self-expression: to honour a bond, to celebrate a chapter, or
@@ -230,8 +223,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* VISION */}
-      <section className="bg-bg py-20 sm:py-28 lg:py-36">
+      {/* Vision */}
+      <section className="bg-bg py-20 sm:py-24 lg:py-32">
         <div className="container-luxury text-center">
           <Reveal className="mx-auto max-w-3xl">
             <p className="eyebrow">Our vision</p>
@@ -240,14 +233,12 @@ export default function About() {
               To make every Khayaal worth keeping.
             </h2>
 
-            <div className="mx-auto mt-6 h-px w-16 bg-gold" />
-
             <p className="mx-auto mt-6 max-w-2xl leading-8 text-text/70">
-              As Khayaal grows, our vision remains rooted in meaningful design
-              — creating jewellery that feels considered, versatile, and
-              beautifully relevant to the way you live today. With care and
-              quality at every step, we create pieces that stay close, long
-              after the moment has passed.
+              As Khayaal grows, our vision remains rooted in meaningful
+              design — creating jewellery that feels considered, versatile,
+              and beautifully relevant to the way you live today. With care
+              and quality at every step, we create pieces that stay close,
+              long after the moment has passed.
             </p>
 
             <GoldButton
