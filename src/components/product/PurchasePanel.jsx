@@ -99,11 +99,11 @@ export default function PurchasePanel({
         )}
       </div>
 
-      <div className="mt-6 space-y-5 border-y border-border py-6">
-        {product.ringSizes && (
+      {product.ringSizes && (
+        <div className="mt-6 space-y-5 border-y border-border py-6">
           <RingSizeSelector sizes={product.ringSizes} activeSize={activeSize} onChange={onSizeChange} />
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="mt-6 flex items-center gap-4">
         <div className="flex items-center rounded-full border border-border">
