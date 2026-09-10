@@ -68,9 +68,8 @@ export default function InfoTabs({ product }) {
           <button
             key={tab}
             onClick={() => setActive(tab)}
-            className={`shrink-0 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
-              active === tab ? 'border-gold text-brown' : 'border-transparent text-text/50 hover:text-brown'
-            }`}
+            className={`shrink-0 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${active === tab ? 'border-gold text-brown' : 'border-transparent text-text/50 hover:text-brown'
+              }`}
           >
             {tab}
           </button>
