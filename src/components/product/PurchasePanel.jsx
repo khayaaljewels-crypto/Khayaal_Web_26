@@ -15,8 +15,7 @@ import { formatPrice } from '@/utils/format';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCompare } from '@/context/CompareContext';
 import { RingSizeSelector } from './VariantSelector';
-// Temporarily disabled on the Product Details page; retain for future re-enablement.
-// import PincodeChecker from './PincodeChecker';
+import PincodeChecker from './PincodeChecker';
 
 export default function PurchasePanel({
   product,
@@ -178,12 +177,11 @@ export default function PurchasePanel({
         </button>
       </div>
 
-      {/* Temporarily disabled on the Product Details page.
       <div className="mt-6">
         <PincodeChecker
           returnDays={product.returnDays}
         />
-      </div> */}
+      </div>
     </div>
   );
 }
