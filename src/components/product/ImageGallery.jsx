@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineArrowsPointingOut, HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import FullscreenGallery from './FullscreenGallery';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
+import { optimizedImageUrl } from '@/utils/imageUrl';
 
 const FALLBACK_IMAGE = '/images/placeholder.svg';
 
@@ -42,7 +43,7 @@ export default function ImageGallery({ images, productName, badge }) {
                 i === active ? 'border-gold' : 'border-transparent hover:border-border'
               }`}
             >
-              <ImageWithFallback src={img} alt="" loading="lazy" className="h-full w-full object-cover" />
+              <ImageWithFallback src={img} alt="" loading="lazy" width={160} height={160} className="h-full w-full object-cover" />
             </button>
           ))}
         </div>
@@ -60,9 +61,12 @@ export default function ImageGallery({ images, productName, badge }) {
             <AnimatePresence mode="wait">
               <motion.img
                 key={active}
-                src={images[active] || FALLBACK_IMAGE}
+                src={optimizedImageUrl(images[active] || FALLBACK_IMAGE, { width: 1200 })}
                 alt={productName}
                 onError={handleImgError}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -133,7 +137,7 @@ export default function ImageGallery({ images, productName, badge }) {
               i === active ? 'border-gold' : 'border-transparent'
             }`}
           >
-            <ImageWithFallback src={img} alt="" loading="lazy" className="h-full w-full object-cover" />
+              <ImageWithFallback src={img} alt="" loading="lazy" width={160} height={160} className="h-full w-full object-cover" />
           </button>
         ))}
       </div>

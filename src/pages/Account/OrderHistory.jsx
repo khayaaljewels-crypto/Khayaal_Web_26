@@ -88,7 +88,7 @@ function OrderRow({ order }) {
             <div className="space-y-3 p-5 sm:p-6">
               {order.items.map((item, i) => (
                 <div key={i} className="flex items-center gap-3 rounded-xl bg-bg p-3 sm:gap-4">
-                  <ImageWithFallback src={item.image} alt={item.name} loading="lazy" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
+                  <ImageWithFallback src={item.image} alt={item.name} loading="lazy" width={160} height={160} className="h-14 w-14 shrink-0 rounded-lg object-cover" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-brown">{item.name}</p>
                     <p className="text-xs text-text/50">Qty: {item.quantity}</p>

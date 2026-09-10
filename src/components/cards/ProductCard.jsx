@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -23,6 +23,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
   const wishlisted = isWishlisted(product.id);
   const comparing = isComparing(product.id);
   const outOfStock = !product.inStock;
+  const [secondaryImageVisible, setSecondaryImageVisible] = useState(false);
 
   const handleBuyNow = (e) => {
     e.preventDefault();
@@ -130,6 +131,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7, delay: (index % 4) * 0.08, ease: [0.16, 1, 0.3, 1] }}
       className="group relative"
+      onPointerEnter={() => setSecondaryImageVisible(true)}
     >
       <div className="relative overflow-hidden rounded-2xl bg-beige">
         <Link to={`/product/${product.slug}`} className="block">
@@ -138,15 +140,22 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
               src={product.images[0]}
               alt={product.name}
               loading="lazy"
+              width={600}
+              height={750}
+              sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, 50vw"
               className={`h-full w-full object-cover transition-all duration-700 ease-luxury group-hover:scale-110 group-hover:opacity-0 ${outOfStock ? 'grayscale' : ''}`}
             />
-            <ImageWithFallback
-              src={product.images[1] ?? product.images[0]}
-              alt=""
-              aria-hidden
-              loading="lazy"
-              className={`absolute inset-0 h-full w-full scale-110 object-cover opacity-0 transition-all duration-700 ease-luxury group-hover:scale-100 group-hover:opacity-100 ${outOfStock ? 'grayscale' : ''}`}
-            />
+            {secondaryImageVisible && (
+              <ImageWithFallback
+                src={product.images[1] ?? product.images[0]}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                width={600}
+                height={750}
+                className={`absolute inset-0 h-full w-full scale-110 object-cover opacity-0 transition-all duration-700 ease-luxury group-hover:scale-100 group-hover:opacity-100 ${outOfStock ? 'grayscale' : ''}`}
+              />
+            )}
             {outOfStock && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/50">
                 <span className="rounded-full bg-brown/90 px-4 py-1.5 text-[11px] font-semibold tracking-wide text-white">

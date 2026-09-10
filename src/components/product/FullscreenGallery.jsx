@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard } from 'swiper/modules';
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
+import { optimizedImageUrl } from '@/utils/imageUrl';
 import 'swiper/css';
 
 export default function FullscreenGallery({ open, images, activeIndex, onIndexChange, onClose, productName }) {
@@ -41,7 +42,7 @@ export default function FullscreenGallery({ open, images, activeIndex, onIndexCh
               {images.map((img, i) => (
                 <SwiperSlide key={i} className="flex items-center justify-center">
                   <img
-                    src={img}
+                    src={optimizedImageUrl(img, { width: 1600, quality: 'auto:best' })}
                     alt={`${productName} ${i + 1}`}
                     className="max-h-full max-w-full rounded-xl object-contain"
                   />

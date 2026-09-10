@@ -1,3 +1,5 @@
+import { optimizedImageUrl } from '@/utils/imageUrl';
+
 const DEFAULT_FALLBACK = '/images/placeholder.svg';
 
 // Drop-in replacement for a plain <img> — falls back to a placeholder when
@@ -6,11 +8,15 @@ const DEFAULT_FALLBACK = '/images/placeholder.svg';
 // changed since upload, etc). Category/collection images are the current
 // reason this exists (see SingleImageUpload.jsx's fix for the root cause),
 // but this is deliberately generic — any image anywhere can use it.
-export default function ImageWithFallback({ src, fallback = DEFAULT_FALLBACK, alt = '', ...rest }) {
+export default function ImageWithFallback({ src, fallback = DEFAULT_FALLBACK, alt = '', width, height, ...rest }) {
+  const resolvedSrc = optimizedImageUrl(src || fallback, { width, height });
+
   return (
     <img
-      src={src || fallback}
+      src={resolvedSrc}
       alt={alt}
+      width={width}
+      height={height}
       onError={(e) => {
         // Guards against looping forever if the fallback asset itself
         // ever fails to load.
