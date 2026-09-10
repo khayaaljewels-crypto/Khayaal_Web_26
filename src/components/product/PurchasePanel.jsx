@@ -14,13 +14,11 @@ import {
 import { formatPrice } from '@/utils/format';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCompare } from '@/context/CompareContext';
-import { ColorVariantSelector, RingSizeSelector } from './VariantSelector';
+import { RingSizeSelector } from './VariantSelector';
 import PincodeChecker from './PincodeChecker';
 
 export default function PurchasePanel({
   product,
-  activeVariantId,
-  onVariantChange,
   activeSize,
   onSizeChange,
   qty,
@@ -102,7 +100,6 @@ export default function PurchasePanel({
       </div>
 
       <div className="mt-6 space-y-5 border-y border-border py-6">
-        <ColorVariantSelector variants={product.variants} activeId={activeVariantId} onChange={onVariantChange} />
         {product.ringSizes && (
           <RingSizeSelector sizes={product.ringSizes} activeSize={activeSize} onChange={onSizeChange} />
         )}

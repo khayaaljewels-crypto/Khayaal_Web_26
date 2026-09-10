@@ -6,7 +6,6 @@ import { getItemPrice } from '@/context/CartContext';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemove, onSaveForLater, onMoveToCart }) {
-  const variant = item.variant ? item.product.variants?.find((v) => v.id === item.variant) : null;
   const price = getItemPrice(item);
 
   return (
@@ -27,7 +26,6 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
             <Link to={`/product/${item.product.slug}`}>
               <p className="font-heading text-sm text-brown sm:text-base">{item.product.name}</p>
             </Link>
-            {variant && <p className="mt-1 text-xs text-text/50">Color: {variant.label}</p>}
             <p className="mt-1 font-medium text-brown">{formatPrice(price)}</p>
           </div>
           <button

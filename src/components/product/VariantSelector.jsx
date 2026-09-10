@@ -1,32 +1,3 @@
-export function ColorVariantSelector({ variants, activeId, onChange }) {
-  return (
-    <div>
-      <p className="text-xs font-medium text-brown">
-        Color: <span className="text-text/60">{variants.find((v) => v.id === activeId)?.label}</span>
-      </p>
-      <div className="mt-2.5 flex items-center gap-3">
-        {variants.map((variant) => (
-          <button
-            key={variant.id}
-            onClick={() => onChange(variant.id)}
-            aria-label={variant.label}
-            title={variant.label}
-            className={`h-9 w-9 rounded-full border-2 transition-all ${
-              activeId === variant.id ? 'border-gold scale-110' : 'border-transparent hover:scale-105'
-            }`}
-            style={{ boxShadow: `0 0 0 1px ${activeId === variant.id ? 'transparent' : '#ECE7E2'}` }}
-          >
-            <span
-              className="block h-full w-full rounded-full border border-black/10"
-              style={{ backgroundColor: variant.hex }}
-            />
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function RingSizeSelector({ sizes, activeSize, onChange }) {
   return (
     <div>

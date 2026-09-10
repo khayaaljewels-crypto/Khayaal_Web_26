@@ -19,17 +19,12 @@ export default function ProductDetail() {
   const { addItem } = useCart();
   const [searchParams] = useSearchParams();
 
-  const [activeVariantId, setActiveVariantId] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
   // Pre-filled by the "Order Again" button in Order History (?qty=N)
   const [qty, setQty] = useState(() => {
     const fromQuery = Number(searchParams.get('qty'));
     return Number.isFinite(fromQuery) && fromQuery > 0 ? fromQuery : 1;
   });
-
-  useEffect(() => {
-    if (product) setActiveVariantId(product.variants[0]?.id);
-  }, [product]);
 
   useEffect(() => {
     if (product) recordRecentlyViewed(product.id);
@@ -71,25 +66,21 @@ export default function ProductDetail() {
     );
   }
 
-  const activeVariant = product.variants.find((v) => v.id === activeVariantId) ?? product.variants[0];
-  const effectivePrice = product.price + (activeVariant?.priceDelta ?? 0);
-  const effectiveOldPrice = product.oldPrice ? product.oldPrice + (activeVariant?.priceDelta ?? 0) : null;
-
-  const displayImages = activeVariant?.image
-    ? [activeVariant.image, ...product.images.filter((img) => img !== activeVariant.image)]
-    : product.images;
+  const effectivePrice = product.price;
+  const effectiveOldPrice = product.oldPrice;
+  const displayImages = product.images;
 
   const sizeRequired = Boolean(product.ringSizes) && !activeSize;
   const purchaseDisabled = !product.inStock || sizeRequired;
 
   const handleAddToCart = () => {
     if (purchaseDisabled) return;
-    addItem(product, { quantity: qty, variant: activeVariantId });
+    addItem(product, { quantity: qty });
   };
 
   const handleBuyNow = () => {
     if (purchaseDisabled) return;
-    addItem(product, { quantity: qty, variant: activeVariantId });
+    addItem(product, { quantity: qty });
     navigate('/checkout');
   };
 
@@ -122,8 +113,6 @@ export default function ProductDetail() {
           <Reveal direction="right" className="lg:sticky lg:top-28 lg:self-start">
             <PurchasePanel
               product={product}
-              activeVariantId={activeVariant?.id}
-              onVariantChange={setActiveVariantId}
               activeSize={activeSize}
               onSizeChange={setActiveSize}
               qty={qty}

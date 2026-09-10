@@ -56,15 +56,6 @@ function Accordion({ items, renderTitle, renderContent }) {
   );
 }
 
-function SpecRow({ label, value }) {
-  return (
-    <div className="flex items-center justify-between border-b border-border py-3 text-sm last:border-b-0">
-      <span className="text-text/50">{label}</span>
-      <span className="font-medium text-brown">{value}</span>
-    </div>
-  );
-}
-
 const TABS = ['Description', 'Care Guide', 'Shipping', 'Returns', 'Reviews', 'FAQs'];
 
 export default function InfoTabs({ product }) {
@@ -90,20 +81,6 @@ export default function InfoTabs({ product }) {
         {active === 'Description' && (
           <p className="text-base leading-8 text-text/80">{product.description}</p>
         )}
-
-        {/* {active === 'Specifications' && (
-          <div>
-            <SpecRow label="Metal" value={product.specs.metal} />
-            <SpecRow label="Stone" value={product.specs.stone} />
-            <SpecRow label="Finish" value={product.specs.finish} />
-            <SpecRow label="Weight" value={product.specs.weight} />
-            <SpecRow label="Dimensions" value={product.specs.dimensions} />
-            <SpecRow label="Occasion" value={product.specs.occasion.replace(/-/g, ' ')} />
-            <SpecRow label="Package Includes" value={product.specs.packageIncludes} />
-            <SpecRow label="Warranty" value={product.specs.warranty} />
-            <SpecRow label="Country of Origin" value={product.specs.countryOfOrigin} />
-          </div>
-        )} */}
 
         {active === 'Care Guide' && (
           <p className="text-sm leading-relaxed text-text/70">{product.careInstructions}</p>

@@ -103,12 +103,6 @@ export default function QuickViewModal({ product, onClose }) {
 
               <p className="mt-4 text-sm leading-relaxed text-text/70">{product?.description}</p>
 
-              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs text-text/60">
-                <span>Material: <strong className="text-brown">{product?.material}</strong></span>
-                <span>Stone: <strong className="text-brown">{product?.stone}</strong></span>
-                <span>Color: <strong className="text-brown">{product?.color}</strong></span>
-              </div>
-
               <div className="mt-6 flex items-center gap-4">
                 <div className="flex items-center rounded-full border border-border">
                   <button

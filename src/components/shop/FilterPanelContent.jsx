@@ -28,9 +28,6 @@ export default function FilterPanelContent({ filtersApi }) {
     () => ({
       categories: visibleCategories.map((c) => ({ value: c.slug, label: c.name })),
       collections: visibleCollections.map((c) => ({ value: c.slug, label: c.name })),
-      // materials,
-      // stones,
-      // colors,
       occasions,
     }),
     [visibleCategories, visibleCollections,  occasions]
@@ -63,39 +60,6 @@ export default function FilterPanelContent({ filtersApi }) {
           />
         ))}
       </FilterSection>
-
-      {/* <FilterSection title="Material" defaultOpen={false}>
-        {FILTER_OPTIONS.materials.map((m) => (
-          <FilterCheckbox
-            key={m}
-            label={m}
-            checked={filters.materials.includes(m)}
-            onChange={() => toggleFilter('materials', m)}
-          />
-        ))}
-      </FilterSection> */}
-
-      {/* <FilterSection title="Stone" defaultOpen={false}>
-        {FILTER_OPTIONS.stones.map((s) => (
-          <FilterCheckbox
-            key={s}
-            label={s}
-            checked={filters.stones.includes(s)}
-            onChange={() => toggleFilter('stones', s)}
-          />
-        ))}
-      </FilterSection> */}
-
-      {/* <FilterSection title="Color" defaultOpen={false}>
-        {FILTER_OPTIONS.colors.map((c) => (
-          <FilterCheckbox
-            key={c}
-            label={c}
-            checked={filters.colors.includes(c)}
-            onChange={() => toggleFilter('colors', c)}
-          />
-        ))}
-      </FilterSection> */}
 
       <FilterSection title="Occasion" defaultOpen={false}>
         {FILTER_OPTIONS.occasions.map((o) => (

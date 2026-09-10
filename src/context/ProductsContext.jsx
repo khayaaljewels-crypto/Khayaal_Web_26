@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { SEED_PRODUCTS } from '@/data/productSeed';
-import { MATERIALS, STONES, COLORS } from '@/data/constants';
 
 const ProductsContext = createContext(null);
 const STORAGE_KEY = 'khayaal_products_v3';
@@ -152,9 +151,6 @@ export function ProductsProvider({ children }) {
     getCompleteTheLook,
     collectionsInUse,
     priceBounds,
-    materialOptions: MATERIALS,
-    stoneOptions: STONES,
-    colorOptions: COLORS,
   };
 
   return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>;

@@ -33,7 +33,7 @@ export function clearProductListCache() {
 }
 
 // filters is any plain object accepted by GET /products (page, pageSize,
-// search, category, collection, material[], stone[], color[], occasion[],
+// search, category, collection, occasion[],
 // minPrice, maxPrice, minRating, sort). Serialized to a stable key so
 // callers can pass a fresh object literal every render without triggering
 // an extra fetch.

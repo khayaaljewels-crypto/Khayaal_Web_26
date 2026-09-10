@@ -30,9 +30,6 @@ const BASE_FILTERS = {
   search: '',
   categories: [],
   collections: [],
-  materials: [],
-  stones: [],
-  colors: [],
   occasions: [],
   availability: 'all', // all | in-stock | out-of-stock
   minRating: 0,
@@ -102,9 +99,6 @@ export function useProductFilters(baseParams = {}, { pageSize = 12 } = {}) {
         search: filters.search,
         categories: filters.categories,
         collections: filters.collections,
-        materials: filters.materials,
-        stones: filters.stones,
-        colors: filters.colors,
         occasions: filters.occasions,
         availability: filters.availability,
         minRating: filters.minRating,
@@ -125,9 +119,6 @@ export function useProductFilters(baseParams = {}, { pageSize = 12 } = {}) {
         search: f.search || undefined,
         category: f.categories,
         collection: f.collections,
-        material: f.materials,
-        stone: f.stones,
-        color: f.colors,
         occasion: f.occasions,
         availability: f.availability !== 'all' ? f.availability : undefined,
         minRating: f.minRating || undefined,
@@ -209,9 +200,6 @@ export function useProductFilters(baseParams = {}, { pageSize = 12 } = {}) {
     if (filters.search.trim()) chips.push({ key: 'search', label: `"${filters.search.trim()}"` });
     filters.categories.forEach((v) => chips.push({ key: 'categories', value: v, label: v.replace(/-/g, ' ') }));
     filters.collections.forEach((v) => chips.push({ key: 'collections', value: v, label: v }));
-    filters.materials.forEach((v) => chips.push({ key: 'materials', value: v, label: v }));
-    filters.stones.forEach((v) => chips.push({ key: 'stones', value: v, label: v }));
-    filters.colors.forEach((v) => chips.push({ key: 'colors', value: v, label: v }));
     filters.occasions.forEach((v) => chips.push({ key: 'occasions', value: v, label: v.replace(/-/g, ' ') }));
     if (filters.availability !== 'all') {
       chips.push({ key: 'availability', label: filters.availability === 'in-stock' ? 'In Stock' : 'Out of Stock' });

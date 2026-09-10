@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { fetchProductFacets } from '@/services/productsApi';
 
-const EMPTY_FACETS = { priceBounds: { min: 0, max: 0 }, materials: [], stones: [], colors: [], occasions: [] };
+const EMPTY_FACETS = { priceBounds: { min: 0, max: 0 }, occasions: [] };
 
 // Price bounds + filter option lists for the Shop page's filter sidebar —
-// replaces ProductsContext's priceBounds/materialOptions/etc, which used to
-// be derived client-side from the full in-memory catalogue.
+// Provides the Shop page's price bounds and occasion filter options.
 export function useProductFacets() {
   const [state, setState] = useState({ ...EMPTY_FACETS, loading: true, error: null });
 

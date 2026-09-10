@@ -6,7 +6,6 @@ import { clearProductListCache } from '@/hooks/useProductList';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
 import { fetchOccasions } from '@/services/occasionsApi';
-// import { MATERIALS, STONES, COLORS, COLOR_HEX } from '@/data/constants';
 import { Field, inputClass, Toggle, ToggleList } from '@/admin/components/AdminField';
 import ImageUploader from '@/admin/components/ImageUploader';
 import { api } from '@/utils/apiClient';
@@ -15,7 +14,6 @@ import { useToast } from '@/admin/context/ToastContext';
 const emptyForm = {
   name: '', sku: '', brand: 'Khayaal Jewels', categoryId: '', collectionId: '', occasion: '',
   price: '', oldPrice: '', costPrice: '', stockQty: '',
-  material: MATERIALS[0], stone: STONES[0], color: COLORS[0],
   description: '', shortDescription: '', careInstructions: '', tags: '',
   weight: '', dimensions: '', packageIncludes: '', warranty: '6 Months Against Manufacturing Defects', countryOfOrigin: 'India',
   returnDays: 7,
@@ -141,9 +139,6 @@ export default function ProductForm() {
       oldPrice: form.oldPrice ? Number(form.oldPrice) : null,
       costPrice: Number(form.costPrice) || 0,
       stockQty: Number(form.stockQty) || 0,
-      // material: form.material,
-      // stone: form.stone,
-      // color: form.color,
       description: form.description,
       shortDescription: form.shortDescription,
       careInstructions: form.careInstructions,
@@ -156,8 +151,6 @@ export default function ProductForm() {
       isComingSoon: form.isComingSoon,
       isPublished: form.isPublished,
       specs: {
-        // metal: form.material,
-        // stone: form.stone,
         finish: existing?.specs?.finish ?? 'Glossy',
         weight: form.weight,
         dimensions: form.dimensions,
@@ -166,9 +159,9 @@ export default function ProductForm() {
         warranty: form.warranty,
         countryOfOrigin: form.countryOfOrigin,
       },
-      variants: existing?.variants?.length
-        ? existing.variants
-        : [{ id: form.color.toLowerCase().replace(/\s+/g, '-'), label: form.color, hex: COLOR_HEX[form.color] ?? '#B8864A', image: isEdit ? imageUrls[0] : undefined, priceDelta: 0 }],
+      // Preserve any existing variant data without requiring a colour choice
+      // when creating or editing a product.
+      variants: existing?.variants ?? [],
       ringSizes: existing?.ringSizes ?? null,
       rating: existing?.rating ?? 0,
       reviewCount: existing?.reviewCount ?? 0,
