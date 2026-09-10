@@ -20,7 +20,7 @@ export default function FilterPanelContent({ filtersApi }) {
     setPriceRange,
   } = filtersApi;
 
-  const { materials, stones, colors, occasions } = useProductFacets();
+  const {  occasions } = useProductFacets();
   const { visibleCategories } = useCategories();
   const { visibleCollections } = useCollections();
 
@@ -28,12 +28,12 @@ export default function FilterPanelContent({ filtersApi }) {
     () => ({
       categories: visibleCategories.map((c) => ({ value: c.slug, label: c.name })),
       collections: visibleCollections.map((c) => ({ value: c.slug, label: c.name })),
-      materials,
-      stones,
-      colors,
+      // materials,
+      // stones,
+      // colors,
       occasions,
     }),
-    [visibleCategories, visibleCollections, materials, stones, colors, occasions]
+    [visibleCategories, visibleCollections,  occasions]
   );
 
   return (
@@ -64,7 +64,7 @@ export default function FilterPanelContent({ filtersApi }) {
         ))}
       </FilterSection>
 
-      <FilterSection title="Material" defaultOpen={false}>
+      {/* <FilterSection title="Material" defaultOpen={false}>
         {FILTER_OPTIONS.materials.map((m) => (
           <FilterCheckbox
             key={m}
@@ -73,9 +73,9 @@ export default function FilterPanelContent({ filtersApi }) {
             onChange={() => toggleFilter('materials', m)}
           />
         ))}
-      </FilterSection>
+      </FilterSection> */}
 
-      <FilterSection title="Stone" defaultOpen={false}>
+      {/* <FilterSection title="Stone" defaultOpen={false}>
         {FILTER_OPTIONS.stones.map((s) => (
           <FilterCheckbox
             key={s}
@@ -84,9 +84,9 @@ export default function FilterPanelContent({ filtersApi }) {
             onChange={() => toggleFilter('stones', s)}
           />
         ))}
-      </FilterSection>
+      </FilterSection> */}
 
-      <FilterSection title="Color" defaultOpen={false}>
+      {/* <FilterSection title="Color" defaultOpen={false}>
         {FILTER_OPTIONS.colors.map((c) => (
           <FilterCheckbox
             key={c}
@@ -95,7 +95,7 @@ export default function FilterPanelContent({ filtersApi }) {
             onChange={() => toggleFilter('colors', c)}
           />
         ))}
-      </FilterSection>
+      </FilterSection> */}
 
       <FilterSection title="Occasion" defaultOpen={false}>
         {FILTER_OPTIONS.occasions.map((o) => (

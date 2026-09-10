@@ -3,6 +3,7 @@ import { HiOutlineTicket, HiOutlineXMark } from 'react-icons/hi2';
 import { formatPrice } from '@/utils/format';
 import { useCart } from '@/context/CartContext';
 import GoldButton from '@/components/buttons/GoldButton';
+import { SHIPPING_POLICY } from '@/data/shippingPolicy';
 
 export default function OrderSummary({ showCheckoutButton = true }) {
   const {
@@ -14,7 +15,6 @@ export default function OrderSummary({ showCheckoutButton = true }) {
     couponError,
     applyCoupon,
     removeCoupon,
-    freeShippingThreshold,
   } = useCart();
   const [code, setCode] = useState('');
 
@@ -23,8 +23,6 @@ export default function OrderSummary({ showCheckoutButton = true }) {
     if (!code.trim()) return;
     if (applyCoupon(code)) setCode('');
   };
-
-  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - (subtotal - discount));
 
   return (
     <div className="rounded-2xl border border-border bg-white p-6">
@@ -56,11 +54,7 @@ export default function OrderSummary({ showCheckoutButton = true }) {
       {couponError && <p className="mt-2 text-xs text-red-500">{couponError}</p>}
       <p className="mt-2 text-[11px] text-text/40">Try KHAYAAL10 or WELCOME200</p>
 
-      {remainingForFreeShipping > 0 && (
-        <p className="mt-4 rounded-lg bg-beige px-3 py-2 text-xs text-brown">
-          Add {formatPrice(remainingForFreeShipping)} more for free shipping
-        </p>
-      )}
+      <p className="mt-4 rounded-lg bg-beige px-3 py-2 text-xs text-brown">{SHIPPING_POLICY.freeShipping}</p>
 
       <div className="mt-5 space-y-2.5 border-t border-border pt-5 text-sm">
         <div className="flex justify-between text-text/70">

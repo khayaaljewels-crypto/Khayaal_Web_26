@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { HiOutlineMapPin, HiOutlineTruck, HiOutlineArrowPath, HiOutlineBanknotes } from 'react-icons/hi2';
+import { SHIPPING_POLICY } from '@/data/shippingPolicy';
 
-export default function PincodeChecker({ deliveryDays, codAvailable, returnDays }) {
+export default function PincodeChecker({ returnDays }) {
   const [pincode, setPincode] = useState('');
   const [result, setResult] = useState(null);
 
@@ -41,21 +42,29 @@ export default function PincodeChecker({ deliveryDays, codAvailable, returnDays 
         <p className="mt-3 text-xs text-red-500">Please enter a valid 6-digit pincode.</p>
       )}
       {result?.valid && (
-        <p className="mt-3 text-xs text-gold">Delivery available at this pincode.</p>
+        <p className="mt-3 text-xs text-gold">Free delivery is available at this pincode.</p>
       )}
 
       <div className="mt-4 space-y-2.5 border-t border-border pt-4">
         <div className="flex items-center gap-2.5 text-xs text-text/70">
           <HiOutlineTruck className="text-gold" />
-          Estimated delivery in {deliveryDays} days
+          {SHIPPING_POLICY.freeShipping}
         </div>
         <div className="flex items-center gap-2.5 text-xs text-text/70">
           <HiOutlineBanknotes className="text-gold" />
-          {codAvailable ? 'Cash on Delivery available' : 'Prepaid orders only'}
+          {SHIPPING_POLICY.payment}
         </div>
         <div className="flex items-center gap-2.5 text-xs text-text/70">
           <HiOutlineArrowPath className="text-gold" />
           {returnDays}-day easy returns
+        </div>
+        <div className="flex items-center gap-2.5 text-xs text-text/70">
+          <HiOutlineTruck className="text-gold" />
+          {SHIPPING_POLICY.deliveryTimeline}
+        </div>
+        <div className="flex items-center gap-2.5 text-xs text-text/70">
+          <HiOutlineTruck className="text-gold" />
+          {SHIPPING_POLICY.packaging}
         </div>
       </div>
     </div>

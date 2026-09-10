@@ -76,7 +76,7 @@ BrowserRouter
 - **Consumed by**: Checkout (write), OrderSuccess (read the just-created order via router state, not this context), Profile/Orders pages (read, filtered by email), and the entire admin Orders + Customers sections.
 
 ### `SettingsContext` (`src/context/SettingsContext.jsx`)
-- **Storage key**: `khayaal_settings_v1`. Defaults defined inline (`DEFAULT_SETTINGS`) rather than a separate seed file, since it's a single object, not a list.
+- **Storage key**: `khayaal_settings_v2`. Defaults defined inline (`DEFAULT_SETTINGS`) rather than a separate seed file, since it's a single object, not a list.
 - Shape: `storeName`, `contactNumber`, `whatsappNumber`, `email`, `address`, `instagram`, `facebook`, `pinterest`.
 - **Consumed by**: `WhatsAppButton` (float button + checkout deep link both read `whatsappNumber`), `Footer` (social links).
 
@@ -85,7 +85,7 @@ BrowserRouter
 - Cart items: `{ key, product, variant, quantity }` where `key` is `${product.id}-${variant ?? 'default'}` (so the same product in two different colors is tracked as two distinct line items).
 - Exports a standalone helper `getItemPrice(item)` (not just an internal function) — it accounts for the selected variant's `priceDelta` — reused outside the context by `OrdersContext.createOrder` and `buildWhatsAppOrderMessage.js`.
 - **Coupons**: hardcoded in-code (`COUPONS = { KHAYAAL10: 10% off, WELCOME200: ₹200 off }`) — not admin-editable.
-- **Shipping**: free above `FREE_SHIPPING_THRESHOLD = ₹2999`, else a flat `₹99` (also hardcoded, not admin-editable).
+- **Shipping**: free across India for every order. The shared `data/shippingPolicy.js` policy also states that delivery timelines vary by destination, orders are carefully packaged, and cash on delivery is unavailable.
 - **Mutators**: `addItem`, `removeItem`, `updateQuantity`, `clearCart`, `saveForLater`, `moveToCart`, `removeSaved`, `applyCoupon`, `removeCoupon`.
 - **Derived**: `count`, `subtotal`, `discount`, `shippingFee`, `grandTotal`.
 

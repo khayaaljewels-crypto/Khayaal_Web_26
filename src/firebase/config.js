@@ -24,4 +24,4 @@ export const auth = app ? getAuth(app) : null;
 export const db = app ? getFirestore(app) : null;
 export const storage = app ? getStorage(app) : null;
 
-export const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL ?? 'Khayaaljewels@gmail.com';
+export const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL ?? 'khayaaljewels@gmail.com';

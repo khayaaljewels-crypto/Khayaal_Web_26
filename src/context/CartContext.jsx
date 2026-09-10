@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { SHIPPING_POLICY } from '@/data/shippingPolicy';
 
 const CartContext = createContext(null);
 
@@ -10,9 +11,6 @@ export const COUPONS = {
   KHAYAAL10: { type: 'percent', value: 10, label: '10% off your order' },
   WELCOME200: { type: 'flat', value: 200, label: '₹200 off your order' },
 };
-
-const FREE_SHIPPING_THRESHOLD = 2999;
-const SHIPPING_FEE = 99;
 
 function readStored(key) {
   try {
@@ -127,7 +125,7 @@ export function CartProvider({ children }) {
     return coupon.type === 'percent' ? Math.round((subtotal * coupon.value) / 100) : Math.min(coupon.value, subtotal);
   }, [coupon, subtotal]);
 
-  const shippingFee = subtotal === 0 || subtotal - discount >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+  const shippingFee = SHIPPING_POLICY.fee;
   const grandTotal = Math.max(0, subtotal - discount) + shippingFee;
 
   const value = {
@@ -149,7 +147,6 @@ export function CartProvider({ children }) {
     removeCoupon,
     discount,
     shippingFee,
-    freeShippingThreshold: FREE_SHIPPING_THRESHOLD,
     grandTotal,
   };
 

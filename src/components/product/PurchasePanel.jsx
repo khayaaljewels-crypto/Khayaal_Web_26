@@ -182,8 +182,6 @@ export default function PurchasePanel({
 
       <div className="mt-6">
         <PincodeChecker
-          deliveryDays={product.deliveryDays}
-          codAvailable={product.codAvailable}
           returnDays={product.returnDays}
         />
       </div>

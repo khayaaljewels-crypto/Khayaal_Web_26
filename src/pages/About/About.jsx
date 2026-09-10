@@ -4,7 +4,7 @@ import Reveal from '@/components/animations/Reveal';
 import GoldButton from '@/components/buttons/GoldButton';
 
 const PRINCIPLES = [
-  { number: '01', title: 'Thoughtful by design', copy: 'Every detail is considered for the way a piece looks, feels, and lives with you.' },
+  { number: '01', title: 'Thoughtful by design', copy: 'Every detail, thoughtfully considered.' },
   { number: '02', title: 'Made for the moment', copy: 'From a quiet personal milestone to a room full of celebration, jewellery gives a moment something to hold on to.' },
   { number: '03', title: 'Elegance that endures', copy: 'We look to the richness of Indian adornment through a contemporary lens—so each choice feels lasting, never fleeting.' },
 ];
@@ -17,7 +17,16 @@ export default function About() {
         <div className="absolute -right-20 top-16 h-72 w-72 rounded-full border border-gold/30 sm:h-112 sm:w-112" />
         <div className="absolute -right-8 top-24 h-56 w-56 rounded-full border border-white/10 sm:h-88 sm:w-88" />
         <div className="container-luxury relative z-10">
-          <Reveal direction="none"><p className="eyebrow !text-gold-hover">The House of Khayaal</p></Reveal>
+          <Reveal direction="none">
+            <p className="text-2xl font-medium tracking-wide !text-gold-hover sm:text-3xl lg:text-4xl">
+              The House of Khayaal
+            </p>Khayaal began with a simple thought shared between two engineers — and a dream we chose to make real.
+
+            Born from countless ideas, quiet excitement, a little nervousness, and a whole lot of heart, Khayaal is a small piece of our imagination brought to life.
+
+            Every detail carries a part of our journey, created with the hope that Khayaal becomes a part of yours — celebrating the beautiful moments, little joys, and memories that make life truly your own.
+
+          </Reveal>
           <Reveal delay={0.08}><h1 className="mt-5 max-w-4xl font-heading text-5xl leading-[1.05] sm:text-6xl lg:text-8xl">Our Story</h1></Reveal>
           <Reveal delay={0.16}><p className="mt-7 max-w-2xl text-base leading-8 text-white/75 sm:text-lg">Khayaal is an expression of the thoughts, memories and little celebrations that make a life feel entirely your own.</p></Reveal>
         </div>
@@ -30,8 +39,10 @@ export default function About() {
             <h2 className="mt-4 font-heading text-4xl leading-tight text-brown sm:text-5xl">The meaning of <span className="font-script text-5xl text-gold sm:text-6xl">Khayaal</span></h2>
           </Reveal>
           <Reveal delay={0.12} className="lg:col-span-6 lg:col-start-7">
-            <p className="text-lg leading-8 text-text/80">Khayaal is a word held close in the languages of home: a thought, a care, a tender remembrance. It is the feeling behind a gesture that says, <em>this made me think of you.</em></p>
-            <p className="mt-5 leading-8 text-text/65">We created Khayaal around that feeling. Jewellery is never merely an ornament. It can hold the warmth of a relationship, mark a beginning, remember a promise, or become the piece you reach for when you want to feel most like yourself.</p>
+            <p className="text-lg leading-8 text-text/80">
+              Khayaal is a word held close in our language of home — a thought, a feeling, a tender remembrance.
+            </p>
+            <p className="mt-5 leading-8 text-text/65">We created Khayaal around that feeling. To us, jewellery is never merely an ornament. It can hold the warmth of a relationship, mark a beginning, carry a memory, or become the piece you reach for when you want to feel most like yourself.</p>
           </Reveal>
         </div>
       </section>
@@ -78,7 +89,7 @@ export default function About() {
       </section>
 
       <section className="bg-bg py-20 sm:py-28 lg:py-36">
-        <div className="container-luxury text-center"><Reveal className="mx-auto max-w-3xl"><p className="eyebrow">Our vision</p><h2 className="mt-4 font-heading text-4xl leading-tight text-brown sm:text-5xl">To be part of the moments you never want to forget.</h2><p className="mx-auto mt-6 max-w-2xl leading-8 text-text/70">As Khayaal grows, our vision remains rooted in meaningful design: creating jewellery that connects heritage with the present, earns your trust through care and quality, and stays close long after the occasion has passed.</p><GoldButton to="/shop" icon={HiOutlineArrowRight} className="mt-9">Explore the collection</GoldButton><p className="mt-8 text-sm text-text/55">Or <Link to="/contact" className="border-b border-gold pb-0.5 text-brown transition-colors hover:text-gold">get in touch</Link>—we would love to hear your story.</p></Reveal></div>
+        <div className="container-luxury text-center"><Reveal className="mx-auto max-w-3xl"><p className="eyebrow">Our vision</p><h2 className="mt-4 font-heading text-4xl leading-tight text-brown sm:text-5xl">To make every Khayaal worth keeping.</h2><p className="mx-auto mt-6 max-w-2xl leading-8 text-text/70">As Khayaal grows, our vision remains rooted in meaningful design — creating jewellery that feels considered, versatile, and beautifully relevant to the way you live today. With care and quality at every step, we create pieces that stay close, long after the moment has passed.</p><GoldButton to="/shop" icon={HiOutlineArrowRight} className="mt-9">Explore the collection</GoldButton><p className="mt-8 text-sm text-text/55">Or <Link to="/contact" className="border-b border-gold pb-0.5 text-brown transition-colors hover:text-gold">get in touch</Link>—we would love to hear your story.</p></Reveal></div>
       </section>
     </>
   );

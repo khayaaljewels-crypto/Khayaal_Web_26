@@ -6,7 +6,7 @@ import { clearProductListCache } from '@/hooks/useProductList';
 import { useCategories } from '@/context/CategoriesContext';
 import { useCollections } from '@/context/CollectionsContext';
 import { fetchOccasions } from '@/services/occasionsApi';
-import { MATERIALS, STONES, COLORS, COLOR_HEX } from '@/data/constants';
+// import { MATERIALS, STONES, COLORS, COLOR_HEX } from '@/data/constants';
 import { Field, inputClass, Toggle, ToggleList } from '@/admin/components/AdminField';
 import ImageUploader from '@/admin/components/ImageUploader';
 import { api } from '@/utils/apiClient';
@@ -18,7 +18,7 @@ const emptyForm = {
   material: MATERIALS[0], stone: STONES[0], color: COLORS[0],
   description: '', shortDescription: '', careInstructions: '', tags: '',
   weight: '', dimensions: '', packageIncludes: '', warranty: '6 Months Against Manufacturing Defects', countryOfOrigin: 'India',
-  deliveryDays: 5, returnDays: 7, codAvailable: true,
+  returnDays: 7,
   isFeatured: false, isTrending: false, isNewArrival: false, isBestSeller: false, isComingSoon: false, isPublished: true,
 };
 
@@ -141,16 +141,14 @@ export default function ProductForm() {
       oldPrice: form.oldPrice ? Number(form.oldPrice) : null,
       costPrice: Number(form.costPrice) || 0,
       stockQty: Number(form.stockQty) || 0,
-      material: form.material,
-      stone: form.stone,
-      color: form.color,
+      // material: form.material,
+      // stone: form.stone,
+      // color: form.color,
       description: form.description,
       shortDescription: form.shortDescription,
       careInstructions: form.careInstructions,
       tags: form.tags.split(',').map((t) => t.trim()).filter(Boolean),
-      deliveryDays: Number(form.deliveryDays) || 5,
       returnDays: Number(form.returnDays) || 7,
-      codAvailable: form.codAvailable,
       isFeatured: form.isFeatured,
       isTrending: form.isTrending,
       isNewArrival: form.isNewArrival,
@@ -158,8 +156,8 @@ export default function ProductForm() {
       isComingSoon: form.isComingSoon,
       isPublished: form.isPublished,
       specs: {
-        metal: form.material,
-        stone: form.stone,
+        // metal: form.material,
+        // stone: form.stone,
         finish: existing?.specs?.finish ?? 'Glossy',
         weight: form.weight,
         dimensions: form.dimensions,
@@ -271,16 +269,10 @@ export default function ProductForm() {
               <Field label="Stock Quantity">
                 <input required type="number" min="0" className={inputClass} value={form.stockQty} onChange={(e) => set('stockQty', e.target.value)} />
               </Field>
-              <Field label="Delivery Days">
-                <input type="number" min="1" className={inputClass} value={form.deliveryDays} onChange={(e) => set('deliveryDays', e.target.value)} />
-              </Field>
               <Field label="Return Window (days)">
                 <input type="number" min="0" className={inputClass} value={form.returnDays} onChange={(e) => set('returnDays', e.target.value)} />
               </Field>
             </div>
-            <ToggleList>
-              <Toggle label="Cash on Delivery Available" checked={form.codAvailable} onChange={(v) => set('codAvailable', v)} />
-            </ToggleList>
           </section>
 
           <section className="space-y-4 rounded-2xl border border-border bg-white p-6">
@@ -288,8 +280,8 @@ export default function ProductForm() {
             <Field label="Short Description">
               <input className={inputClass} value={form.shortDescription} onChange={(e) => set('shortDescription', e.target.value)} />
             </Field>
-            <Field label="Full Description">
-              <textarea rows={4} className={inputClass} value={form.description} onChange={(e) => set('description', e.target.value)} />
+            <Field label="Description">
+              <textarea required rows={4} className={inputClass} value={form.description} onChange={(e) => set('description', e.target.value)} />
             </Field>
             <Field label="Care Instructions">
               <textarea rows={3} className={inputClass} value={form.careInstructions} onChange={(e) => set('careInstructions', e.target.value)} />

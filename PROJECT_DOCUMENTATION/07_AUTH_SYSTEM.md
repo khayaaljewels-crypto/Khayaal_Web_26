@@ -21,7 +21,7 @@ There are **two completely separate authentication systems** sharing one Firebas
 - `db` — Firestore instance (initialized but **not currently used for any data** — see `16_DATABASE_STRUCTURE.md`)
 - `storage` — Firebase Storage instance (initialized but **not currently used** — reserved for the future media library)
 - `isFirebaseConfigured` — `Boolean(apiKey && projectId)`
-- `ADMIN_EMAIL` — read from `VITE_ADMIN_EMAIL`, falls back to the literal `'Khayaaljewels@gmail.com'` if the env var is absent
+- `ADMIN_EMAIL` — read from `VITE_ADMIN_EMAIL`, falls back to the literal `'khayaaljewels@gmail.com'` if the env var is absent
 
 **Important security note documented in the code and communicated to the project owner**: the Firebase web config values (`apiKey`, `authDomain`, etc.) are *not secrets* — they're meant to be visible in a browser bundle. Real access control comes from (a) Firebase only ever handling the password server-side — it is never written into this codebase — and (b) the admin-email check described below. There are currently no custom Firestore/Storage Security Rules in this project because no Firestore/Storage data is used yet; these will need to be written before Phase 2 (data migration) goes live.
 

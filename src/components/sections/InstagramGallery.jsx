@@ -3,20 +3,23 @@ import Reveal from '@/components/animations/Reveal';
 import StaggerGroup, { staggerItem } from '@/components/animations/StaggerGroup';
 import { motion } from 'framer-motion';
 import { instagramPosts } from '@/data/instagram';
+import { useSettings } from '@/context/SettingsContext';
 
 export default function InstagramGallery() {
+  const { settings } = useSettings();
+
   return (
     <section className="container-luxury py-20 lg:py-28">
       <Reveal className="mx-auto max-w-xl text-center">
         <p className="eyebrow">Follow The Story</p>
-        <h2 className="mt-3 font-heading text-3xl text-brown sm:text-4xl">@khayaaljewels</h2>
+        <h2 className="mt-3 font-heading text-3xl text-brown sm:text-4xl">@{settings.instagramHandle}</h2>
       </Reveal>
 
       <StaggerGroup className="mt-12 grid grid-cols-3 gap-2 sm:gap-4 lg:grid-cols-6" staggerDelay={0.06}>
         {instagramPosts.map((post) => (
           <motion.a
             key={post.id}
-            href={post.link}
+            href={settings.instagram}
             target="_blank"
             rel="noopener noreferrer"
             variants={staggerItem}

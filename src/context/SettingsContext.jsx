@@ -1,16 +1,17 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const SettingsContext = createContext(null);
-const STORAGE_KEY = 'khayaal_settings_v1';
+const STORAGE_KEY = 'khayaal_settings_v2';
 
 const DEFAULT_SETTINGS = {
   storeName: 'Khayaal Jewels',
-  contactNumber: '919037246978',
+  contactNumber: '+919037246978',
   whatsappNumber: '919037246978',
-  email: 'hello@khayaaljewels.com',
+  email: 'khayaaljewels@gmail.com',
   address: 'Kozhikode, Kerala, India',
-  instagram: 'https://instagram.com',
-  facebook: 'https://facebook.com',
+  instagram: 'https://www.instagram.com/khayaal_jewels?stkn=OXNyOWFvZnl6b3Zj',
+  instagramHandle: 'khayaal_jewels',
+  facebook: 'https://www.facebook.com/share/19mWCvhg63/',
   pinterest: 'https://pinterest.com',
 };
 

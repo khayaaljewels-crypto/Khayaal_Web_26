@@ -4,6 +4,7 @@ import { HiOutlineXMark } from 'react-icons/hi2';
 import { FaInstagram, FaFacebookF, FaPinterestP } from 'react-icons/fa';
 import { navLinks } from './navLinks';
 import { useCategories } from '@/context/CategoriesContext';
+import { useSettings } from '@/context/SettingsContext';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 import Logo from '@/components/ui/Logo';
@@ -20,6 +21,7 @@ const itemVariants = {
 
 export default function MobileMenu({ open, onClose }) {
   const { visibleCategories: categories } = useCategories();
+  const { settings } = useSettings();
   useLockBodyScroll(open);
 
   return (
@@ -87,10 +89,10 @@ export default function MobileMenu({ open, onClose }) {
             </motion.div>
 
             <div className="mt-auto flex items-center gap-4 pt-10">
-              <a href="#" aria-label="Instagram" className="text-brown transition-colors hover:text-gold">
+              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-brown transition-colors hover:text-gold">
                 <FaInstagram className="text-xl" />
               </a>
-              <a href="#" aria-label="Facebook" className="text-brown transition-colors hover:text-gold">
+              <a href={settings.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-brown transition-colors hover:text-gold">
                 <FaFacebookF className="text-xl" />
               </a>
               <a href="#" aria-label="Pinterest" className="text-brown transition-colors hover:text-gold">

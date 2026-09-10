@@ -30,7 +30,7 @@ const app = isFirebaseConfigured
 export const auth = app ? getAuth(app) : null;
 export const db = app ? getFirestore(app) : null;
 export const storage = app ? getStorage(app) : null;
-export const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL ?? 'Khayaaljewels@gmail.com';
+export const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL ?? 'khayaaljewels@gmail.com';
 ```
 
 Three Firebase products are initialized (`auth`, `db`/Firestore, `storage`), but **only `auth` is actually used anywhere in the codebase today**. `db` and `storage` are set up ahead of time for Phase 2 (Firestore data migration) and Phase 3 (media library) but have zero reads/writes against them right now — grep confirms no file imports `db` or `storage` from this module except the module itself.
@@ -54,7 +54,7 @@ The only Firebase product actually wired into the app. Two independent auth flow
 - **Email/Password provider** — admin only, restricted post-login to one specific email (`VITE_ADMIN_EMAIL`). See `07_AUTH_SYSTEM.md` for the full flow.
 - **Google provider** — customers only, via `signInWithPopup`.
 
-**Setup still required in the Firebase Console** (cannot be done from code): both the Email/Password and Google sign-in providers need to be manually enabled under Authentication → Sign-in method, and the admin's actual user account needs to be created under Authentication → Users (email `Khayaaljewels@gmail.com`, with its real password) — directly in the console, never through this codebase, so the password is never written to a file.
+**Setup still required in the Firebase Console** (cannot be done from code): both the Email/Password and Google sign-in providers need to be manually enabled under Authentication → Sign-in method, and the admin's actual user account needs to be created under Authentication → Users (email `khayaaljewels@gmail.com`, with its real password) — directly in the console, never through this codebase, so the password is never written to a file.
 
 ## Firestore (Initialized, Not Used)
 

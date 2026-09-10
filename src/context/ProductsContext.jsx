@@ -50,8 +50,6 @@ const NEW_PRODUCT_DEFAULTS = {
     metal: '', stone: '', finish: '', weight: '', dimensions: '', occasion: '',
     packageIncludes: '', warranty: '', countryOfOrigin: 'India',
   },
-  deliveryDays: 5,
-  codAvailable: true,
   returnDays: 7,
   videos: [],
   variants: [],

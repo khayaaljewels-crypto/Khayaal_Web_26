@@ -3,6 +3,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { formatPrice } from '@/utils/format';
 import { getItemPrice } from '@/context/CartContext';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
+import { SHIPPING_POLICY } from '@/data/shippingPolicy';
 
 export default function OrderReview({ customer, items, subtotal, discount, shippingFee, grandTotal, coupon, onEdit, onConfirm, submitting }) {
   return (
@@ -72,7 +73,7 @@ export default function OrderReview({ customer, items, subtotal, discount, shipp
       </div>
 
       <div className="rounded-2xl bg-beige px-6 py-4 text-center text-xs text-text/70">
-        No online payment required. Our team will contact you on WhatsApp to confirm your order and payment method.
+        {SHIPPING_POLICY.freeShipping} {SHIPPING_POLICY.payment} Our team will contact you on WhatsApp to confirm payment details.
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row">

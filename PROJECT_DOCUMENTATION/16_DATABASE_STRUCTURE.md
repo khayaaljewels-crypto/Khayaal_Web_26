@@ -35,7 +35,7 @@ Array of product records. Managed by `src/context/ProductsContext.jsx`.
 | `description`, `shortDescription`, `careInstructions` | string | |
 | `tags` | string[] | |
 | `specs` | object | `{ metal, stone, finish, weight, dimensions, occasion, packageIncludes, warranty, countryOfOrigin }` |
-| `deliveryDays`, `returnDays`, `codAvailable` | number/number/boolean | |
+| `returnDays` | number | Product-specific return window. Shipping and payment policy is site-wide in `data/shippingPolicy.js`. |
 | `videos` | array | Reserved field, always empty — no video support built yet |
 | `variants` | array | `{ id, label, hex, image, priceDelta }[]` — color variants that swap the displayed image and adjust price |
 | `ringSizes` | array or `null` | `{ size, available }[]`, only populated for products in the `rings` category |
@@ -75,18 +75,18 @@ Managed by `src/context/OrdersContext.jsx`.
 | `notes` | string | Customer's order notes |
 | `internalNotes` | array | `{ text, at }[]` — admin-only notes, added after order creation |
 
-### `khayaal_settings_v1` — Settings
+### `khayaal_settings_v2` — Settings
 Managed by `src/context/SettingsContext.jsx`. A **single object**, not an array (there's only ever one settings record):
 
 ```json
 {
   "storeName": "Khayaal Jewels",
-  "contactNumber": "919037246978",
+  "contactNumber": "+919037246978",
   "whatsappNumber": "919037246978",
-  "email": "hello@khayaaljewels.com",
+  "email": "khayaaljewels@gmail.com",
   "address": "Kozhikode, Kerala, India",
-  "instagram": "https://instagram.com",
-  "facebook": "https://facebook.com",
+  "instagram": "https://www.instagram.com/khayaal_jewels?stkn=OXNyOWFvZnl6b3Zj",
+  "facebook": "https://www.facebook.com/share/19mWCvhg63/",
   "pinterest": "https://pinterest.com"
 }
 ```

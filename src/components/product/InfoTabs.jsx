@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiChevronDown } from 'react-icons/hi2';
+import { SHIPPING_POLICY } from '@/data/shippingPolicy';
 
 const FAQS = [
   {
@@ -87,15 +88,7 @@ export default function InfoTabs({ product }) {
 
       <div className="py-8">
         {active === 'Description' && (
-          <div>
-            <p className="text-sm leading-relaxed text-text/70">{product.description}</p>
-            <ul className="mt-5 space-y-2 text-sm text-text/70">
-              <li>• Premium {product.specs.metal.toLowerCase()} finish with hand-set {product.stone.toLowerCase()} stones</li>
-              <li>• Part of the {product.collection?.name} collection</li>
-              <li>• Designed for {product.occasion.replace(/-/g, ' ')} wear</li>
-              <li>• Comes with Khayaal Jewels signature gift box &amp; authenticity card</li>
-            </ul>
-          </div>
+          <p className="text-base leading-8 text-text/80">{product.description}</p>
         )}
 
         {/* {active === 'Specifications' && (
@@ -118,9 +111,10 @@ export default function InfoTabs({ product }) {
 
         {active === 'Shipping' && (
           <div className="space-y-3 text-sm leading-relaxed text-text/70">
-            <p>Orders are dispatched within 1–2 business days and typically arrive in {product.deliveryDays} days.</p>
-            <p>{product.codAvailable ? 'Cash on Delivery is available for this product.' : 'This product ships prepaid only.'}</p>
-            <p>Every order is packed in tamper-proof, gift-ready packaging.</p>
+            <p>{SHIPPING_POLICY.freeShipping}</p>
+            <p>{SHIPPING_POLICY.payment}</p>
+            <p>{SHIPPING_POLICY.deliveryTimeline}</p>
+            <p>{SHIPPING_POLICY.packaging}</p>
           </div>
         )}
 

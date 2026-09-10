@@ -4,7 +4,7 @@ A consolidated punch list of everything still outstanding, gathered from across 
 
 ## Blocking / In-Progress
 
-- [ ] **Finish Firebase Console setup**: create the Firebase project, enable Email/Password + Google sign-in providers, create the admin user (`Khayaaljewels@gmail.com`) directly in the console, set up Firestore + Storage.
+- [ ] **Finish Firebase Console setup**: create the Firebase project, enable Email/Password + Google sign-in providers, create the admin user (`khayaaljewels@gmail.com`) directly in the console, set up Firestore + Storage.
 - [ ] **Fill in `.env`** with the real Firebase web app config once the project exists, then restart the dev server and verify both auth flows end-to-end with real credentials (currently only verified in the "gracefully unconfigured" state).
 
 ## Placeholder Pages That Need Real Implementations

@@ -75,7 +75,7 @@ The **initial demo catalogue** (54 sample products) is generated in `src/data/pr
 - Overall flow/state: `src/pages/Checkout/Checkout.jsx`
 - Thank-you page after order: `src/pages/OrderSuccess/OrderSuccess.jsx`
 - Coupon codes and amounts: `src/context/CartContext.jsx` (the `COUPONS` object — `KHAYAAL10`, `WELCOME200`)
-- Free shipping threshold / flat shipping fee: `src/context/CartContext.jsx` (`FREE_SHIPPING_THRESHOLD`, `SHIPPING_FEE` constants)
+- Site-wide shipping policy: `src/data/shippingPolicy.js` (free shipping across India; destination-dependent delivery timelines; careful packaging; prepaid orders only)
 
 ---
 
@@ -178,7 +178,7 @@ VITE_FIREBASE_PROJECT_ID=
 VITE_FIREBASE_STORAGE_BUCKET=
 VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
-VITE_ADMIN_EMAIL=Khayaaljewels@gmail.com
+VITE_ADMIN_EMAIL=khayaaljewels@gmail.com
 ```
 
 After editing `.env`, you must **restart the dev server** (`npm run dev`) — Vite does not hot-reload environment variable changes. These values are read in `src/firebase/config.js`.
