@@ -18,7 +18,7 @@ const HELP_LINKS = [
   { label: 'Contact Us', to: '/contact' },
   { label: 'FAQ', to: '/faq' },
   { label: 'Track Order', to: '/track-order' },
-  { label: 'Size Guide', to: '/faq#size-guide' },
+  // { label: 'Size Guide', to: '/faq#size-guide' },
   { label: 'Returns', to: '/my-account/orders' },
 ];
 
