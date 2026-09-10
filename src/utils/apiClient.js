@@ -72,7 +72,9 @@ async function request(path, options = {}, isRetry = false) {
   if (res.status === 401) unauthorizedHandler?.();
 
   if (!res.ok) {
-    throw new Error(body?.error || body?.message || `Request failed (${res.status})`);
+    const error = new Error(body?.error || body?.message || `Request failed (${res.status})`);
+    error.status = res.status;
+    throw error;
   }
   return body;
 }

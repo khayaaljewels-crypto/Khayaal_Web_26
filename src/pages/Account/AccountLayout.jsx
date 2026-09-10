@@ -20,7 +20,7 @@ const NAV_ITEMS = [
 ];
 
 export default function AccountLayout() {
-  const { user, checkingAuth, loggingOut, logout } = useCustomerAuth();
+  const { user, checkingAuth, authError, loggingOut, logout, refresh } = useCustomerAuth();
 
   if (checkingAuth) {
     return (
@@ -35,7 +35,16 @@ export default function AccountLayout() {
     return (
       <div className="bg-bg pb-24 pt-28 lg:pt-32">
         <div className="container-luxury">
+          {authError ? (
+            <div className="mx-auto flex max-w-md flex-col items-center py-24 text-center">
+              <p className="text-sm text-red-600">{authError}</p>
+              <button onClick={() => refresh()} className="mt-5 rounded-full border border-border bg-white px-5 py-2.5 text-sm font-medium text-brown hover:border-gold">
+                Try again
+              </button>
+            </div>
+          ) : (
           <GoogleSignInPrompt title="Sign in to your account" description="Manage your profile, orders, and saved addresses." />
+          )}
         </div>
       </div>
     );
