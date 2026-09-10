@@ -16,7 +16,9 @@ function toQueryString(params = {}) {
 
 // Public — published-only, used by the storefront.
 export const fetchProducts = (params) => api.get(`/products${toQueryString(params)}`);
-export const fetchProduct = (slug) => api.get(`/products/${slug}`);
+// A product page is the authoritative view after an admin edit. Do not let a
+// browser/intermediary reuse an older product response when this route reloads.
+export const fetchProduct = (slug) => api.get(`/products/${slug}`, { cache: 'no-store' });
 export const fetchProductsByIds = (ids) =>
   ids?.length ? api.get(`/products/by-ids${toQueryString({ ids })}`).then((r) => r.products) : Promise.resolve([]);
 export const fetchProductFacets = () => api.get('/products/facets');

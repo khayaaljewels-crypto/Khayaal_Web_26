@@ -69,8 +69,8 @@ export default function About() {
 
               <Reveal delay={0.16}>
                 <p className="mt-10 max-w-2xl text-base leading-8 text-white/70 sm:text-lg">
-                   Khayaal began with a thought shared between two engineers, and a dream we decided to make real.
-Born from countless ideas, excitement, nervousness, and a lot of heart, Khayaal is our little piece of imagination brought to life — created to be a part of your beautiful moments.
+                  Khayaal began with a thought shared between two engineers, and a dream we decided to make real.
+                  Born from countless ideas, excitement, nervousness, and a lot of heart, Khayaal is our little piece of imagination brought to life — created to be a part of your beautiful moments.
                 </p>
               </Reveal>
             </div>

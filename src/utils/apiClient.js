@@ -129,7 +129,7 @@ async function uploadWithProgress(path, formData, { method = 'POST', onProgress 
 }
 
 export const api = {
-  get: (path) => request(path),
+  get: (path, options) => request(path, options),
   post: (path, data) => request(path, { method: 'POST', body: data ? JSON.stringify(data) : undefined }),
   put: (path, data) => request(path, { method: 'PUT', body: data ? JSON.stringify(data) : undefined }),
   delete: (path) => request(path, { method: 'DELETE' }),

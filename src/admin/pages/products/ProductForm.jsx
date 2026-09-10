@@ -82,6 +82,12 @@ export default function ProductForm() {
         setForm({
           ...emptyForm,
           ...product,
+          // The API may return null for optional text columns. Keep this a
+          // controlled string input so an administrator can also clear an
+          // existing description and save the empty value.
+          description: product.description ?? '',
+          shortDescription: product.shortDescription ?? '',
+          careInstructions: product.careInstructions ?? '',
           categoryId: product.category?.id ?? '',
           collectionId: product.collection?.id ?? '',
           tags: (product.tags ?? []).join(', '),
@@ -274,7 +280,7 @@ export default function ProductForm() {
               <input className={inputClass} value={form.shortDescription} onChange={(e) => set('shortDescription', e.target.value)} />
             </Field>
             <Field label="Description">
-              <textarea required rows={4} className={inputClass} value={form.description} onChange={(e) => set('description', e.target.value)} />
+              <textarea rows={4} className={inputClass} value={form.description} onChange={(e) => set('description', e.target.value)} />
             </Field>
             <Field label="Care Instructions">
               <textarea rows={3} className={inputClass} value={form.careInstructions} onChange={(e) => set('careInstructions', e.target.value)} />
