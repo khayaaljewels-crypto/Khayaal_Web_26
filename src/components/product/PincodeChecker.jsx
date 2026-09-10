@@ -13,10 +13,10 @@ export default function PincodeChecker({ returnDays }) {
           <HiOutlineBanknotes className="text-gold" />
           {SHIPPING_POLICY.payment}
         </div>
-        <div className="flex items-center gap-2.5 text-xs text-text/70">
+        {/* <div className="flex items-center gap-2.5 text-xs text-text/70">
           <HiOutlineArrowPath className="text-gold" />
           {returnDays}-day easy returns
-        </div>
+        </div> */}
         <div className="flex items-center gap-2.5 text-xs text-text/70">
           <HiOutlineTruck className="text-gold" />
           {SHIPPING_POLICY.deliveryTimeline}
