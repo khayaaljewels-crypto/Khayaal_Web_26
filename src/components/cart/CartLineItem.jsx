@@ -31,7 +31,7 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
           <button
             onClick={() => onRemove(item.key)}
             aria-label="Remove item"
-            className="text-text/40 transition-colors hover:text-red-500"
+            className="flex h-11 w-11 -mr-2 -mt-2 items-center justify-center text-text/40 transition-colors hover:text-red-500"
           >
             <HiOutlineTrash />
           </button>
@@ -42,15 +42,15 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
             <div className="flex items-center rounded-full border border-border">
               <button
                 onClick={() => onQtyChange(item.key, item.quantity - 1)}
-                className="flex h-8 w-8 items-center justify-center text-brown"
+                className="flex h-10 w-10 items-center justify-center text-brown"
                 aria-label="Decrease quantity"
               >
                 <HiOutlineMinus className="text-xs" />
               </button>
-              <span className="w-7 text-center text-sm">{item.quantity}</span>
+              <span className="w-8 text-center text-sm">{item.quantity}</span>
               <button
                 onClick={() => onQtyChange(item.key, item.quantity + 1)}
-                className="flex h-8 w-8 items-center justify-center text-brown"
+                className="flex h-10 w-10 items-center justify-center text-brown"
                 aria-label="Increase quantity"
               >
                 <HiOutlinePlus className="text-xs" />

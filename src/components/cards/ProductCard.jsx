@@ -217,7 +217,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
         </div>
 
         {/* Add to cart / quick buy slide-up bar */}
-        <div className="absolute inset-x-0 bottom-0 flex translate-y-full transition-transform duration-400 ease-luxury group-hover:translate-y-0">
+        <div className="absolute inset-x-0 bottom-0 flex translate-y-0 transition-transform duration-400 ease-luxury sm:translate-y-full sm:group-hover:translate-y-0">
           {outOfStock ? (
             <span className="flex w-full items-center justify-center gap-2 bg-brown/60 py-3 text-xs font-medium tracking-wide text-white">
               Out of Stock
@@ -227,7 +227,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
               <button
                 onClick={() => addItem(product)}
                 data-cursor-hover
-                className="flex flex-1 items-center justify-center gap-2 bg-brown py-3 text-xs font-medium tracking-wide text-white transition-colors hover:bg-gold"
+                className="flex min-h-11 flex-1 items-center justify-center gap-2 bg-brown py-3 text-xs font-medium tracking-wide text-white transition-colors hover:bg-gold"
               >
                 <HiOutlineShoppingBag />
                 Add to Cart
@@ -236,7 +236,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
                 onClick={handleBuyNow}
                 data-cursor-hover
                 aria-label="Buy now"
-                className="w-14 border-l border-white/20 bg-brown text-xs font-medium tracking-wide text-white transition-colors hover:bg-gold"
+                className="min-h-11 w-14 border-l border-white/20 bg-brown text-xs font-medium tracking-wide text-white transition-colors hover:bg-gold"
               >
                 Buy
               </button>

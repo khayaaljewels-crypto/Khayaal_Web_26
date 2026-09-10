@@ -86,12 +86,14 @@
   html {
     scroll-behavior: auto;
     background-color: var(--color-bg);
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-bg text-text antialiased;
     font-family: var(--font-body);
     overflow-x: hidden;
+    min-width: 320px;
   }
 
   h1, h2, h3, h4, h5, h6 {

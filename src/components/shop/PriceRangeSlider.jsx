@@ -47,7 +47,8 @@ export default function PriceRangeSlider({ value, onChange }) {
           onChange={handleLo}
           onMouseUp={commit}
           onTouchEnd={commit}
-          className="range-thumb pointer-events-none absolute inset-0 w-full appearance-none bg-transparent"
+          onPointerUp={commit}
+          className="range-thumb pointer-events-none absolute inset-0 w-full touch-none appearance-none bg-transparent"
         />
         <input
           type="range"
@@ -58,7 +59,8 @@ export default function PriceRangeSlider({ value, onChange }) {
           onChange={handleHi}
           onMouseUp={commit}
           onTouchEnd={commit}
-          className="range-thumb pointer-events-none absolute inset-0 w-full appearance-none bg-transparent"
+          onPointerUp={commit}
+          className="range-thumb pointer-events-none absolute inset-0 w-full touch-none appearance-none bg-transparent"
         />
       </div>
     </div>

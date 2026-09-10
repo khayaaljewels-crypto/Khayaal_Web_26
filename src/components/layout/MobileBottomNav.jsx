@@ -32,7 +32,7 @@ export default function MobileBottomNav() {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      className="fixed inset-x-3 bottom-3 z-50 flex items-center justify-around rounded-full border border-white/40 bg-white/70 px-2 py-2.5 shadow-soft backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-50 flex items-center justify-around rounded-full border border-white/40 bg-white/70 px-2 py-2.5 shadow-soft backdrop-blur-xl lg:hidden"
     >
       {items.map(({ to, label, icon: Icon, activeIcon: ActiveIcon, end, badge }) => (
         <NavLink

@@ -6,6 +6,7 @@ import {
   HiOutlineHeart,
   HiOutlineShoppingBag,
   HiOutlineBars3,
+  HiOutlineUser,
 } from 'react-icons/hi2';
 import { navLinks } from './navLinks';
 import MegaMenu from './MegaMenu';
@@ -93,12 +94,15 @@ export default function Navbar() {
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="hidden transition-transform hover:scale-110 sm:block"
+              className="flex h-11 w-11 items-center justify-center transition-transform hover:scale-110"
             >
               <HiOutlineMagnifyingGlass className="text-xl" />
             </button>
             <AccountDropdown textColor={textColor} />
-            <Link to="/wishlist" aria-label="Wishlist" className="relative transition-transform hover:scale-110">
+            <Link to="/my-account" aria-label="Account" className="flex h-11 w-11 items-center justify-center transition-transform hover:scale-110 lg:hidden">
+              <HiOutlineUser className="text-xl" />
+            </Link>
+            <Link to="/wishlist" aria-label="Wishlist" className="relative hidden transition-transform hover:scale-110 sm:block">
               <HiOutlineHeart className="text-xl" />
               {wishlistCount > 0 && (
                 <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-[9px] font-semibold text-white">
@@ -106,7 +110,7 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <Link to="/cart" aria-label="Cart" className="relative transition-transform hover:scale-110">
+            <Link to="/cart" aria-label="Cart" className="relative hidden transition-transform hover:scale-110 sm:block">
               <HiOutlineShoppingBag className="text-xl" />
               {cartCount > 0 && (
                 <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-[9px] font-semibold text-white">
