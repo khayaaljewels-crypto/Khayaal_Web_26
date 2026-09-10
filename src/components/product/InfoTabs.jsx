@@ -97,9 +97,10 @@ export default function InfoTabs({ product }) {
 
         {active === 'Returns' && (
           <div className="space-y-3 text-sm leading-relaxed text-text/70">
-            <p>Easy returns within {product.returnDays} days of delivery, provided the item is unused and in its original packaging.</p>
-            <p>Refunds are processed within 5–7 business days of us receiving the returned item.</p>
-            <p>To start a return, visit the Track Order page or contact us on WhatsApp.</p>
+            <p>Returns and exchanges are not accepted unless the item is damaged or incorrect.</p>
+            <p>Damaged or incorrect items must be reported within 24 hours of delivery.</p>
+            <p>An unboxing video and clear photos are required for claims.</p>
+            <p>Eligible claims will be reviewed and resolved accordingly.</p>
           </div>
         )}
 
