@@ -146,5 +146,9 @@ export const api = {
   uploadWithProgress: (path, formData, onProgress) => uploadWithProgress(path, formData, { method: 'POST', onProgress }),
 };
 
-export const GOOGLE_LOGIN_URL = `${API_BASE}/auth/google`;
+// Keep the OAuth entry point on the public origin and give the backend a
+// safe, explicit post-login destination. This must remain a relative /api
+// URL in production so the OAuth callback can set a first-party cookie for
+// www.khayaalofficial.in through the Vercel rewrite.
+export const GOOGLE_LOGIN_URL = `${API_BASE}/auth/google?returnTo=/my-account`;
 export { API_BASE };
