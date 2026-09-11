@@ -36,7 +36,7 @@ export default function About() {
         <div className="pointer-events-none absolute inset-y-0 right-[8%] hidden w-px bg-white/10 lg:block" />
 
         <div className="container-luxury relative">
-          <div className="grid min-h-[680px] items-end gap-12 pb-20 pt-36 lg:grid-cols-12 lg:pb-28 lg:pt-48">
+          <div className="grid min-h-[620px] items-end gap-12 pb-20 pt-36 sm:min-h-[640px] lg:min-h-[680px] lg:grid-cols-12 lg:pb-28 lg:pt-48">
             {/* Small editorial label */}
             <Reveal
               direction="none"
@@ -94,7 +94,7 @@ export default function About() {
       ========================================================= */}
       <section
         id="story"
-        className="scroll-mt-24 bg-bg py-20 sm:py-28 lg:py-36"
+        className="scroll-mt-24 bg-bg py-16 sm:py-24 lg:py-32"
       >
         <div className="container-luxury">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-20">
@@ -153,7 +153,7 @@ export default function About() {
       {/* =========================================================
           MEANING
       ========================================================= */}
-      <section className="bg-beige py-20 sm:py-28 lg:py-36">
+      <section className="bg-beige py-16 sm:py-24 lg:py-32">
         <div className="container-luxury">
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
             {/* Quote panel */}
@@ -211,7 +211,7 @@ export default function About() {
       {/* =========================================================
           PHILOSOPHY
       ========================================================= */}
-      <section className="bg-bg py-20 sm:py-28 lg:py-36">
+      <section className="bg-bg py-16 sm:py-24 lg:py-32">
         <div className="container-luxury">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-20">
             <Reveal className="lg:col-span-3">
@@ -242,7 +242,7 @@ export default function About() {
       {/* =========================================================
           PRINCIPLES
       ========================================================= */}
-      <section className="bg-beige py-20 sm:py-28 lg:py-36">
+      <section className="bg-beige py-16 sm:py-24 lg:py-32">
         <div className="container-luxury">
           <Reveal className="max-w-2xl">
             <p className="eyebrow">What guides us</p>
@@ -284,7 +284,7 @@ export default function About() {
       {/* =========================================================
           EXPRESSION
       ========================================================= */}
-      <section className="bg-brown py-20 text-white sm:py-28 lg:py-36">
+      <section className="bg-brown py-16 text-white sm:py-24 lg:py-32">
         <div className="container-luxury">
           <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
             <Reveal className="lg:col-span-8">
@@ -318,7 +318,7 @@ export default function About() {
       {/* =========================================================
           VISION / CTA
       ========================================================= */}
-      <section className="bg-bg py-20 sm:py-28 lg:py-36">
+      <section className="bg-bg py-16 sm:py-24 lg:py-32">
         <div className="container-luxury">
           <Reveal className="mx-auto max-w-4xl text-center">
             <p className="eyebrow">Looking ahead</p>
