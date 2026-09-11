@@ -8,6 +8,13 @@ function StoreSettingsForm() {
   const [form, setForm] = useState(settings);
   const [saved, setSaved] = useState(false);
   const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
+  const setPolicy = (key, value) => setForm((f) => ({
+    ...f,
+    productPolicies: {
+      ...f.productPolicies,
+      [key]: value.split('\n').map((item) => item.trim()).filter(Boolean),
+    },
+  }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,6 +35,20 @@ function StoreSettingsForm() {
         <Field label="Instagram URL"><input className={inputClass} value={form.instagram} onChange={(e) => set('instagram', e.target.value)} /></Field>
         <Field label="Facebook URL"><input className={inputClass} value={form.facebook} onChange={(e) => set('facebook', e.target.value)} /></Field>
         <Field label="Pinterest URL"><input className={inputClass} value={form.pinterest} onChange={(e) => set('pinterest', e.target.value)} /></Field>
+      </div>
+      <div className="border-t border-border pt-4">
+        <p className="mb-4 font-heading text-lg text-brown">Product Policies</p>
+        <div className="grid gap-4">
+          <Field label="Care Guide (one bullet per line)">
+            <textarea rows={4} className={inputClass} value={form.productPolicies.careGuide.join('\n')} onChange={(e) => setPolicy('careGuide', e.target.value)} />
+          </Field>
+          <Field label="Shipping (one bullet per line)">
+            <textarea rows={4} className={inputClass} value={form.productPolicies.shipping.join('\n')} onChange={(e) => setPolicy('shipping', e.target.value)} />
+          </Field>
+          <Field label="Returns (one bullet per line)">
+            <textarea rows={4} className={inputClass} value={form.productPolicies.returns.join('\n')} onChange={(e) => setPolicy('returns', e.target.value)} />
+          </Field>
+        </div>
       </div>
       <div className="flex items-center gap-3">
         <button type="submit" className="rounded-full bg-brown px-6 py-2.5 text-sm font-medium text-white hover:bg-gold">Save Changes</button>

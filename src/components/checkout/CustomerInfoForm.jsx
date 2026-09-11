@@ -120,7 +120,7 @@ export default function CustomerInfoForm({ initialValues, onSubmit }) {
 
       <div className="grid gap-5 sm:grid-cols-3">
         <Field label="City" required error={errors.city}>
-          <input className={inputClass} value={values.city} onChange={(e) => set('city', e.target.value)} placeholder="Kozhikode" />
+          <input className={inputClass} value={values.city} onChange={(e) => set('city', e.target.value)} placeholder="Enter Your City" />
         </Field>
         <Field label="State" required error={errors.state}>
           <select className={inputClass} value={values.state} onChange={(e) => set('state', e.target.value)}>

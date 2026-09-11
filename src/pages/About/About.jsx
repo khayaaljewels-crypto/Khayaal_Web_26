@@ -102,7 +102,7 @@ export default function About() {
             <Reveal className="lg:col-span-4">
               <p className="eyebrow">Where it began</p>
 
-              <h2 className="mt-5 max-w-sm font-heading text-4xl leading-tight text-brown sm:text-5xl">
+              <h2 className="mt-5 max-w-sm font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
                 A simple thought.
                 <span className="block font-script font-normal text-gold">
                   A beautiful beginning.
@@ -182,7 +182,7 @@ export default function About() {
             <Reveal delay={0.12}>
               <p className="eyebrow">The name</p>
 
-              <h2 className="mt-5 font-heading text-4xl leading-tight text-brown sm:text-5xl">
+              <h2 className="mt-5 font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
                 More than a name.
                 <span className="block font-script font-normal text-gold">
                   A feeling.
@@ -248,7 +248,8 @@ export default function About() {
             <p className="eyebrow">What guides us</p>
 
             <h2 className="mt-5 font-heading text-4xl leading-tight text-brown sm:text-5xl">
-              Three ideas at the heart of Khayaal.
+
+              Every detail, thoughtfully considered.
             </h2>
           </Reveal>
 
@@ -291,7 +292,7 @@ export default function About() {
                 Jewellery with meaning
               </p>
 
-              <h2 className="mt-6 max-w-4xl font-heading text-4xl leading-tight sm:text-5xl lg:text-6xl">
+              <h2 className="mt-6 max-w-4xl font-heading text-[2.5rem] leading-tight sm:text-[3.25rem] lg:text-[4rem]">
                 Designed to become part of
                 <span className="font-script font-normal text-gold-hover">
                   {' '}
@@ -322,9 +323,9 @@ export default function About() {
           <Reveal className="mx-auto max-w-4xl text-center">
             <p className="eyebrow">Looking ahead</p>
 
-            <h2 className="mt-5 font-heading text-4xl leading-tight text-brown sm:text-5xl lg:text-6xl">
+            <h2 className="mt-5 font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[4rem]">
               To make every
-              <span className="block font-script font-normal text-gold">
+              <span className="block font-script text-[1.08em] font-normal text-gold">
                 Khayaal
               </span>
               worth keeping.

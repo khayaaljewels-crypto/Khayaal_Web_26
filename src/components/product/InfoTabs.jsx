@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiChevronDown } from 'react-icons/hi2';
-import { SHIPPING_POLICY } from '@/data/shippingPolicy';
+import { useSettings } from '@/context/SettingsContext';
 
 const FAQS = [
   {
@@ -60,6 +60,14 @@ const TABS = ['Description', 'Care Guide', 'Shipping', 'Returns', 'Reviews', 'FA
 
 export default function InfoTabs({ product }) {
   const [active, setActive] = useState('Description');
+  const { settings } = useSettings();
+  const policies = settings.productPolicies;
+
+  const renderPolicyList = (items) => (
+    <ul className="list-disc space-y-3 pl-5 text-sm leading-relaxed text-text/70">
+      {items.map((item) => <li key={item}>{item}</li>)}
+    </ul>
+  );
 
   return (
     <div>
@@ -82,25 +90,15 @@ export default function InfoTabs({ product }) {
         )}
 
         {active === 'Care Guide' && (
-          <p className="text-sm leading-relaxed text-text/70">{product.careInstructions}</p>
+          renderPolicyList(policies.careGuide)
         )}
 
         {active === 'Shipping' && (
-          <div className="space-y-3 text-sm leading-relaxed text-text/70">
-            <p>{SHIPPING_POLICY.freeShipping}</p>
-            <p>{SHIPPING_POLICY.payment}</p>
-            <p>{SHIPPING_POLICY.deliveryTimeline}</p>
-            <p>{SHIPPING_POLICY.packaging}</p>
-          </div>
+          renderPolicyList(policies.shipping)
         )}
 
         {active === 'Returns' && (
-          <div className="space-y-3 text-sm leading-relaxed text-text/70">
-            <p>Returns and exchanges are not accepted unless the item is damaged or incorrect.</p>
-            <p>Damaged or incorrect items must be reported within 24 hours of delivery.</p>
-            <p>An unboxing video and clear photos are required for claims.</p>
-            <p>Eligible claims will be reviewed and resolved accordingly.</p>
-          </div>
+          renderPolicyList(policies.returns)
         )}
 
         {active === 'Reviews' && (

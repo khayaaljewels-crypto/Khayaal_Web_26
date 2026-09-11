@@ -13,6 +13,26 @@ const DEFAULT_SETTINGS = {
   instagramHandle: 'khayaal_jewels',
   facebook: 'https://www.facebook.com/share/19mWCvhg63/',
   pinterest: 'https://pinterest.com',
+  productPolicies: {
+    careGuide: [
+      'Keep away from water, sweat, perfume, lotions, and chemicals.',
+      'Store each piece separately in a soft pouch or jewellery box.',
+      'Handle gently and avoid dropping, pulling, or applying pressure.',
+      'Wipe gently with a soft, dry cloth after use.',
+    ],
+    shipping: [
+      'Free shipping is available across India.',
+      'Cash on delivery is not available. All orders are prepaid.',
+      'Delivery timelines may vary based on the destination.',
+      'Every piece is carefully packaged to ensure it reaches you safely.',
+    ],
+    returns: [
+      'Returns and exchanges are not accepted unless the item is damaged or incorrect.',
+      'Damaged or incorrect items must be reported within 24 hours of delivery.',
+      'An unboxing video and clear photos are required for claims.',
+      'Eligible claims will be reviewed and resolved accordingly.',
+    ],
+  },
 };
 
 function readStored() {
