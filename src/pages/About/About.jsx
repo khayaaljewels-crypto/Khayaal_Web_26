@@ -104,7 +104,7 @@ export default function About() {
 
               <h2 className="mt-5 max-w-sm font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
                 A simple thought.
-                <span className="block font-script font-normal text-gold">
+                <span className="block  font-normal text-gold">
                   A beautiful beginning.
                 </span>
               </h2>
@@ -184,7 +184,7 @@ export default function About() {
 
               <h2 className="mt-5 font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
                 More than a name.
-                <span className="block font-script font-normal text-gold">
+                <span className="block  font-normal text-gold">
                   A feeling.
                 </span>
               </h2>
@@ -294,7 +294,7 @@ export default function About() {
 
               <h2 className="mt-6 max-w-4xl font-heading text-[2.5rem] leading-tight sm:text-[3.25rem] lg:text-[4rem]">
                 Designed to become part of
-                <span className="font-script font-normal text-gold-hover">
+                <span className=" font-normal text-gold-hover">
                   {' '}
                   your story.
                 </span>
