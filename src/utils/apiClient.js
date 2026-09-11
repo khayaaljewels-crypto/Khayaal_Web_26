@@ -49,12 +49,18 @@ async function authHeaders() {
 }
 
 async function request(path, options = {}, isRetry = false) {
+  // A session-restore call needs to decide when a 401 is final. In
+  // particular, immediately after an OAuth redirect the first request can
+  // race the proxy/cookie becoming available. Do not let that transient
+  // response trigger the global logout handler before the caller finishes
+  // its bounded retry window.
+  const { suppressUnauthorizedHandler = false, ...fetchOptions } = options;
   let res;
   try {
     res = await fetch(requestUrl(path), {
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json', ...(await authHeaders()), ...options.headers },
-      ...options,
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()), ...fetchOptions.headers },
+      ...fetchOptions,
     });
   } catch {
     // `fetch` only throws for a genuine network-level failure (server
@@ -69,7 +75,7 @@ async function request(path, options = {}, isRetry = false) {
   const isJson = res.headers.get('content-type')?.includes('application/json');
   const body = isJson ? await res.json() : null;
 
-  if (res.status === 401) unauthorizedHandler?.();
+  if (res.status === 401 && !suppressUnauthorizedHandler) unauthorizedHandler?.();
 
   if (!res.ok) {
     const error = new Error(body?.error || body?.message || `Request failed (${res.status})`);

@@ -23,13 +23,16 @@ export function CustomerAuthProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const refresh = useCallback(async ({ retries = 0 } = {}) => {
+  const refresh = useCallback(async ({ retries = 0, retryUnauthorized = false } = {}) => {
     setCheckingAuth(true);
     setAuthError('');
 
     for (let attempt = 0; attempt <= retries; attempt += 1) {
       try {
-        const { customer } = await api.get('/auth/me', { cache: 'no-store' });
+        const { customer } = await api.get('/auth/me', {
+          cache: 'no-store',
+          suppressUnauthorizedHandler: true,
+        });
         setUser(customer);
         setCheckingAuth(false);
         return customer;
@@ -37,6 +40,12 @@ export function CustomerAuthProvider({ children }) {
         // A 401/403 is a definitive missing or expired session. A network or
         // 5xx error is not: treating it as logout is what sent successfully
         // authenticated customers back to the sign-in screen after OAuth.
+        const shouldRetryUnauthorized = retryUnauthorized && (err.status === 401 || err.status === 403) && attempt < retries;
+        if (shouldRetryUnauthorized) {
+          await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+          continue;
+        }
+
         if (err.status === 401 || err.status === 403) {
           setUser(null);
           setCheckingAuth(false);
@@ -63,7 +72,10 @@ export function CustomerAuthProvider({ children }) {
     // On a cold backend/mobile return it can take a moment before /auth/me is
     // reachable, so use a small, bounded restore window only for that return.
     const returningFromGoogle = Boolean(sessionStorage.getItem(OAUTH_RETURN_TO_KEY));
-    refresh({ retries: returningFromGoogle ? OAUTH_SESSION_RETRIES : 0 });
+    refresh({
+      retries: returningFromGoogle ? OAUTH_SESSION_RETRIES : 0,
+      retryUnauthorized: returningFromGoogle,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
