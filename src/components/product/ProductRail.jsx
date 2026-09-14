@@ -22,7 +22,7 @@ export default function ProductRail({ eyebrow, title, products }) {
         spaceBetween={16}
         breakpoints={{
           640: { slidesPerView: 3, spaceBetween: 20 },
-          1024: { slidesPerView: 4, spaceBetween: 24 },
+          1024: { slidesPerView: 3, spaceBetween: 24 },
         }}
         className="mt-8 !overflow-visible"
       >

@@ -38,7 +38,7 @@ export default function Wishlist() {
             </div>
           </motion.div>
         ) : (
-          <div className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6">
             {items.map((product, i) => (
               <ProductCard key={product.id} product={product} index={i} onQuickView={setQuickViewProduct} />
             ))}

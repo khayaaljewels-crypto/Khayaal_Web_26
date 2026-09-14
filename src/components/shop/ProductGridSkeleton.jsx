@@ -3,14 +3,14 @@ export default function ProductGridSkeleton({ count = 8, view = 'grid' }) {
     <div
       className={
         view === 'grid'
-          ? 'grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4'
+          ? 'grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6'
           : 'flex flex-col gap-5'
       }
     >
       {Array.from({ length: count }).map((_, i) =>
         view === 'grid' ? (
           <div key={i} className="animate-pulse">
-            <div className="aspect-square rounded-2xl bg-beige" />
+            <div className="aspect-[1/1] rounded-2xl bg-beige" />
             <div className="mt-4 h-3.5 w-3/4 rounded bg-beige" />
             <div className="mt-2 h-3 w-1/3 rounded bg-beige" />
             <div className="mt-2 h-3.5 w-1/2 rounded bg-beige" />

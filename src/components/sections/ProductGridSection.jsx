@@ -30,7 +30,7 @@ export default function ProductGridSection({ eyebrow, title, products, viewAllTo
             <ProductGridSkeleton count={8} />
           </div>
         ) : (
-          <div className="mt-12 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6">
             {products.slice(0, 8).map((product, i) => (
               <ProductCard key={product.id} product={product} index={i} onQuickView={setQuickViewProduct} />
             ))}
