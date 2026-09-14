@@ -87,7 +87,7 @@ export default function Shop() {
                     layout
                     className={
                       filtersApi.view === 'grid'
-                        ? 'grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4'
+                        ? 'grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4'
                         : 'flex flex-col gap-5'
                     }
                   >

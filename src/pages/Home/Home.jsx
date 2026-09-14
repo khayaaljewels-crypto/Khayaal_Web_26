@@ -9,6 +9,11 @@ import { useProductList } from '@/hooks/useProductList';
 const BEST_SELLERS_FILTER = { isBestSeller: true, pageSize: 8 };
 const NEW_ARRIVALS_FILTER = { isNewArrival: true, pageSize: 8 };
 
+// Storefront-only temporary switch. Keep the existing section components and
+// their category/occasion data flows intact so they can be restored by setting
+// this to true.
+const SHOW_DISCOVERY_SECTIONS = false;
+
 export default function Home() {
   const bestSellers = useProductList(BEST_SELLERS_FILTER);
   const newArrivals = useProductList(NEW_ARRIVALS_FILTER);
@@ -17,7 +22,7 @@ export default function Home() {
     <>
       <Hero />
       <TrendingCollections />
-      <FeaturedCategories />
+      {SHOW_DISCOVERY_SECTIONS && <FeaturedCategories />}
       <ProductGridSection
         eyebrow="Most Loved"
         title="Best Sellers"
@@ -25,7 +30,7 @@ export default function Home() {
         loading={bestSellers.loading}
         viewAllTo="/shop?filter=bestsellers"
       />
-      <ShopByOccasion />
+      {SHOW_DISCOVERY_SECTIONS && <ShopByOccasion />}
       <ProductGridSection
         eyebrow="Just Landed"
         title="New Arrivals"

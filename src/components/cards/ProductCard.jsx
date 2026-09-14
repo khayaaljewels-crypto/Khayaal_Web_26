@@ -135,13 +135,13 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
     >
       <div className="relative overflow-hidden rounded-2xl bg-beige">
         <Link to={`/product/${product.slug}`} className="block">
-          <div className="relative aspect-4/5 overflow-hidden">
+          <div className="relative aspect-square overflow-hidden">
             <ImageWithFallback
               src={product.images[0]}
               alt={product.name}
               loading="lazy"
               width={600}
-              height={750}
+              height={600}
               sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, 50vw"
               className={`h-full w-full object-cover transition-all duration-700 ease-luxury group-hover:scale-110 group-hover:opacity-0 ${outOfStock ? 'grayscale' : ''}`}
             />
@@ -152,7 +152,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
                 aria-hidden
                 loading="lazy"
                 width={600}
-                height={750}
+                height={600}
                 className={`absolute inset-0 h-full w-full scale-110 object-cover opacity-0 transition-all duration-700 ease-luxury group-hover:scale-100 group-hover:opacity-100 ${outOfStock ? 'grayscale' : ''}`}
               />
             )}
