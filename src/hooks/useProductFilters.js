@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useProductFacets } from '@/hooks/useProductFacets';
 import { fetchProducts } from '@/services/productsApi';
+import { ALL_OCCASIONS_NAME, ALL_OCCASIONS_SLUG } from '@/utils/occasions';
 
 const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
@@ -65,7 +66,17 @@ export function useProductFilters(baseParams = {}, { pageSize = 12 } = {}) {
   }, [facets.loading, facets.priceBounds, filters.priceRange]);
 
   const setSearch = useCallback((search) => setFilters((f) => ({ ...f, search })), []);
-  const toggleFilter = useCallback((key, value) => setFilters((f) => ({ ...f, [key]: toggleInArray(f[key], value) })), []);
+  const toggleFilter = useCallback((key, value) => setFilters((f) => {
+    if (key !== 'occasions') return { ...f, [key]: toggleInArray(f[key], value) };
+
+    // The reserved assignment is mutually exclusive in the UI. Selecting it
+    // means "show all occasions"; selecting a specific occasion restores the
+    // normal backend occasion query (which still includes all-occasion items).
+    if (value === ALL_OCCASIONS_SLUG) {
+      return { ...f, occasions: f.occasions.includes(value) ? [] : [value] };
+    }
+    return { ...f, occasions: toggleInArray(f.occasions.filter((occasion) => occasion !== ALL_OCCASIONS_SLUG), value) };
+  }), []);
   const setAvailability = useCallback((availability) => setFilters((f) => ({ ...f, availability })), []);
   const setMinRating = useCallback((minRating) => setFilters((f) => ({ ...f, minRating })), []);
   const setMinDiscount = useCallback((minDiscount) => setFilters((f) => ({ ...f, minDiscount })), []);
@@ -119,7 +130,10 @@ export function useProductFilters(baseParams = {}, { pageSize = 12 } = {}) {
         search: f.search || undefined,
         category: f.categories,
         collection: f.collections,
-        occasion: f.occasions,
+        // The backend reserves `all-occasions` as a product assignment. For
+        // the customer-facing All Occasions filter, omit the restriction so
+        // every otherwise relevant product is returned exactly once.
+        occasion: f.occasions.includes(ALL_OCCASIONS_SLUG) ? [] : f.occasions,
         availability: f.availability !== 'all' ? f.availability : undefined,
         minRating: f.minRating || undefined,
         minDiscount: f.minDiscount || undefined,
@@ -200,7 +214,11 @@ export function useProductFilters(baseParams = {}, { pageSize = 12 } = {}) {
     if (filters.search.trim()) chips.push({ key: 'search', label: `"${filters.search.trim()}"` });
     filters.categories.forEach((v) => chips.push({ key: 'categories', value: v, label: v.replace(/-/g, ' ') }));
     filters.collections.forEach((v) => chips.push({ key: 'collections', value: v, label: v }));
-    filters.occasions.forEach((v) => chips.push({ key: 'occasions', value: v, label: v.replace(/-/g, ' ') }));
+    filters.occasions.forEach((v) => chips.push({
+      key: 'occasions',
+      value: v,
+      label: v === ALL_OCCASIONS_SLUG ? ALL_OCCASIONS_NAME : v.replace(/-/g, ' '),
+    }));
     if (filters.availability !== 'all') {
       chips.push({ key: 'availability', label: filters.availability === 'in-stock' ? 'In Stock' : 'Out of Stock' });
     }

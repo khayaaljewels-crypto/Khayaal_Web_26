@@ -9,6 +9,7 @@ import { fetchOccasions } from '@/services/occasionsApi';
 import { Field, inputClass, Toggle, ToggleList } from '@/admin/components/AdminField';
 import ImageUploader from '@/admin/components/ImageUploader';
 import { api } from '@/utils/apiClient';
+import { ALL_OCCASIONS_OPTION, ALL_OCCASIONS_SLUG, normalizeAllOccasions } from '@/utils/occasions';
 import { useToast } from '@/admin/context/ToastContext';
 
 const emptyForm = {
@@ -82,6 +83,7 @@ export default function ProductForm() {
         setForm({
           ...emptyForm,
           ...product,
+          occasion: normalizeAllOccasions(product.occasion),
           // The API may return null for optional text columns. Keep this a
           // controlled string input so an administrator can also clear an
           // existing description and save the empty value.
@@ -122,9 +124,10 @@ export default function ProductForm() {
   }, [isEdit, productId]);
 
   const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
-  const occasionOptions = form.occasion && !occasions.some((occasion) => occasion.slug === form.occasion)
-    ? [{ slug: form.occasion, name: `${form.occasion.replace(/-/g, ' ')} (hidden or deleted)` }, ...occasions]
-    : occasions;
+  const managedOccasions = occasions.filter((occasion) => occasion.slug !== ALL_OCCASIONS_SLUG);
+  const occasionOptions = form.occasion && form.occasion !== ALL_OCCASIONS_SLUG && !managedOccasions.some((occasion) => occasion.slug === form.occasion)
+    ? [ALL_OCCASIONS_OPTION, { slug: form.occasion, name: `${form.occasion.replace(/-/g, ' ')} (hidden or deleted)` }, ...managedOccasions]
+    : [ALL_OCCASIONS_OPTION, ...managedOccasions];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
