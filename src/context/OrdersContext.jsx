@@ -38,6 +38,7 @@ export function OrdersProvider({ children }) {
         const price = getItemPrice(item);
         return {
           productId: item.product.id,
+          sku: item.product.sku,
           name: item.product.name,
           image: item.product.images[0],
           quantity: item.quantity,
