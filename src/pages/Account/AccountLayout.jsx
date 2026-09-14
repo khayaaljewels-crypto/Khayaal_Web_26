@@ -53,7 +53,7 @@ export default function AccountLayout() {
   return (
     <div className="bg-bg pb-24 pt-28 lg:pt-32">
       <div className="container-luxury">
-        <Reveal className="flex items-center gap-4 rounded-3xl border border-border bg-white p-6 sm:p-8">
+        <Reveal className="flex min-w-0 items-center gap-3 rounded-3xl border border-border bg-white p-4 xs:gap-4 xs:p-6 sm:p-8">
           {user.profileImage ? (
             <img src={user.profileImage} alt={user.fullName} className="h-14 w-14 rounded-full object-cover" referrerPolicy="no-referrer" />
           ) : (
@@ -61,9 +61,9 @@ export default function AccountLayout() {
               {user.fullName?.[0] ?? 'U'}
             </span>
           )}
-          <div>
+          <div className="min-w-0">
             <p className="font-heading text-lg text-brown">{user.fullName}</p>
-            <p className="text-sm text-text/50">{user.email}</p>
+            <p className="break-all text-sm text-text/50">{user.email}</p>
           </div>
         </Reveal>
 

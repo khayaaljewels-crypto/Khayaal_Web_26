@@ -24,7 +24,7 @@ export default function MobileFilterDrawer({ open, onClose, filtersApi, resultCo
             exit={{ y: '100%' }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+            <div className="flex items-center justify-between border-b border-border px-4 py-4 xs:px-6">
               <p className="font-heading text-lg text-brown">Filters</p>
               <button
                 onClick={onClose}
@@ -34,7 +34,7 @@ export default function MobileFilterDrawer({ open, onClose, filtersApi, resultCo
                 <HiOutlineXMark className="text-brown" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto px-6">
+            <div className="flex-1 overflow-y-auto px-4 xs:px-6">
               <FilterPanelContent filtersApi={filtersApi} />
             </div>
             <div className="flex items-center gap-3 border-t border-border p-4">

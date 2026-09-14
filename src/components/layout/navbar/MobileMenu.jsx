@@ -34,7 +34,7 @@ export default function MobileMenu({ open, onClose }) {
           exit={{ clipPath: 'circle(0% at 100% 0%)' }}
           transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
         >
-          <div className="flex h-full flex-col overflow-y-auto px-8 py-8">
+          <div className="flex h-full flex-col overflow-y-auto px-5 py-6 xs:px-6 xs:py-8 sm:px-8">
             <div className="flex items-center justify-between">
               <Logo className="h-9 w-auto" />
               <button
@@ -47,7 +47,7 @@ export default function MobileMenu({ open, onClose }) {
             </div>
 
             <motion.nav
-              className="mt-12 flex flex-col gap-5"
+              className="mt-9 flex flex-col gap-4 xs:mt-12 xs:gap-5"
               variants={listVariants}
               initial="hidden"
               animate="show"
@@ -57,7 +57,7 @@ export default function MobileMenu({ open, onClose }) {
                   <Link
                     to={link.to}
                     onClick={onClose}
-                    className="font-heading text-3xl text-brown transition-colors hover:text-gold"
+                    className="font-heading text-2xl text-brown transition-colors hover:text-gold xs:text-3xl"
                   >
                     {link.label}
                   </Link>
@@ -69,7 +69,7 @@ export default function MobileMenu({ open, onClose }) {
               variants={listVariants}
               initial="hidden"
               animate="show"
-              className="mt-12"
+              className="mt-9 xs:mt-12"
             >
               <motion.p variants={itemVariants} className="eyebrow mb-4">
                 Shop by Category

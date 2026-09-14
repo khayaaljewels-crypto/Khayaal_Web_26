@@ -59,7 +59,7 @@ export default function QuickViewModal({ product, onClose }) {
               <div className="aspect-square overflow-hidden">
                 <ImageWithFallback src={product?.images[activeImg]} alt={product?.name} className="h-full w-full object-cover" />
               </div>
-              <div className="flex gap-2 p-4">
+              <div className="flex gap-2 overflow-x-auto p-4 no-scrollbar">
                 {product?.images.map((img, i) => (
                   <button
                     key={i}
@@ -74,7 +74,7 @@ export default function QuickViewModal({ product, onClose }) {
               </div>
             </div>
 
-            <div className="relative flex flex-col p-6 sm:p-8">
+            <div className="relative flex min-w-0 flex-col p-4 xs:p-6 sm:p-8">
               <button
                 onClick={onClose}
                 aria-label="Close quick view"

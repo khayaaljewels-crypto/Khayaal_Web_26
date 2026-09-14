@@ -14,17 +14,17 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -40, transition: { duration: 0.3 } }}
-      className="flex gap-4 border-b border-border py-6 last:border-b-0 sm:gap-6"
+      className="flex gap-3 border-b border-border py-5 last:border-b-0 xs:py-6 sm:gap-6"
     >
-      <Link to={`/product/${item.product.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-beige sm:h-32 sm:w-32">
+      <Link to={`/product/${item.product.slug}`} className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-beige xs:h-24 xs:w-24 sm:h-32 sm:w-32">
         <ImageWithFallback src={item.product.images[0]} alt={item.product.name} loading="lazy" width={160} height={160} className="h-full w-full object-cover" />
       </Link>
 
-      <div className="flex flex-1 flex-col justify-between">
+      <div className="flex min-w-0 flex-1 flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <Link to={`/product/${item.product.slug}`}>
-              <p className="font-heading text-sm text-brown sm:text-base">{item.product.name}</p>
+              <p className="line-clamp-2 font-heading text-sm text-brown sm:text-base">{item.product.name}</p>
             </Link>
             <p className="mt-1 font-medium text-brown">{formatPrice(price)}</p>
           </div>
@@ -37,7 +37,7 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
           </button>
         </div>
 
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-3 flex flex-wrap items-center gap-3 sm:justify-between">
           {mode === 'cart' ? (
             <div className="flex items-center rounded-full border border-border">
               <button
@@ -63,7 +63,7 @@ export default function CartLineItem({ item, mode = 'cart', onQtyChange, onRemov
           {mode === 'cart' && onSaveForLater && (
             <button
               onClick={() => onSaveForLater(item.key)}
-              className="flex items-center gap-1.5 text-xs font-medium text-text/50 hover:text-gold"
+              className="flex items-center gap-1.5 text-xs font-medium text-text/50 hover:text-gold sm:ml-auto"
             >
               <HiOutlineBookmark /> Save for Later
             </button>

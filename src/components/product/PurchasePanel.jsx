@@ -74,7 +74,7 @@ export default function PurchasePanel({
         </span>
       </a>
 
-      <div className="mt-5 flex items-baseline gap-3">
+      <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <span className="font-heading text-3xl text-brown">{formatPrice(effectivePrice)}</span>
         {effectiveOldPrice && (
           <span className="text-base text-text/40 line-through">{formatPrice(effectiveOldPrice)}</span>
@@ -162,7 +162,7 @@ export default function PurchasePanel({
         </button>
       </div>
 
-      <div className="mt-4 flex items-center gap-5">
+      <div className="mt-4 flex flex-wrap items-center gap-4 xs:gap-5">
         <button
           onClick={handleShare}
           className="flex items-center gap-1.5 text-xs font-medium text-text/60 hover:text-gold"

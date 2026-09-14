@@ -86,14 +86,27 @@
   html {
     scroll-behavior: auto;
     background-color: var(--color-bg);
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body {
     @apply bg-bg text-text antialiased;
     font-family: var(--font-body);
-    overflow-x: hidden;
+    overflow-x: clip;
     min-width: 320px;
+  }
+
+  #root {
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  img, picture, video, canvas, svg {
+    max-width: 100%;
+  }
+
+  input, textarea, select, button {
+    max-width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -125,7 +138,7 @@
 
 @layer components {
   .container-luxury {
-    @apply mx-auto w-full max-w-[1440px] px-6 sm:px-8 lg:px-16;
+    @apply mx-auto w-full max-w-[1440px] px-4 xs:px-5 sm:px-8 md:px-12 lg:px-16;
   }
 
   .font-script {
@@ -183,5 +196,11 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  @media (max-width: 374px) {
+    .eyebrow {
+      letter-spacing: 0.25em;
+    }
   }
 }

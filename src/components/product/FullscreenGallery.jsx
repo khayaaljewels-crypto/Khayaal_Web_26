@@ -51,7 +51,7 @@ export default function FullscreenGallery({ open, images, activeIndex, onIndexCh
             </Swiper>
           </div>
 
-          <div className="flex justify-center gap-2 pb-6">
+          <div className="flex max-w-full justify-center gap-2 overflow-x-auto px-4 pb-6 no-scrollbar">
             {images.map((_, i) => (
               <button
                 key={i}

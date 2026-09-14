@@ -188,7 +188,7 @@ export default function ReviewsSection({ product }) {
                 <p className="mt-3 text-sm leading-relaxed text-text/70">{review.comment}</p>
 
                 {review.images.length > 0 && (
-                  <div className="mt-3 flex gap-2">
+                  <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar">
                     {review.images.map((img, i) => (
                       <img key={i} src={img} alt="Customer upload" loading="lazy" className="h-16 w-16 rounded-lg object-cover" />
                     ))}

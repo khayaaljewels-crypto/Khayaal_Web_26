@@ -63,7 +63,7 @@ export default function SearchOverlay({ open, onClose }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-4">
-              <form onSubmit={handleSubmit} className="flex flex-1 items-center gap-3 border-b border-border pb-3">
+              <form onSubmit={handleSubmit} className="flex min-w-0 flex-1 items-center gap-3 border-b border-border pb-3">
                 <HiOutlineMagnifyingGlass className="text-xl text-gold" />
                 <input
                   autoFocus
@@ -100,8 +100,8 @@ export default function SearchOverlay({ open, onClose }) {
                           className="flex w-full items-center gap-4 rounded-xl p-2 text-left transition-colors hover:bg-beige"
                         >
                           <ImageWithFallback src={p.images[0]} alt={p.name} loading="lazy" className="h-14 w-14 rounded-lg object-cover bg-beige" />
-                          <div>
-                            <p className="font-heading text-sm text-brown">{p.name}</p>
+                          <div className="min-w-0">
+                            <p className="truncate font-heading text-sm text-brown">{p.name}</p>
                             <p className="text-xs text-gold">₹{p.price.toLocaleString('en-IN')}</p>
                           </div>
                         </button>

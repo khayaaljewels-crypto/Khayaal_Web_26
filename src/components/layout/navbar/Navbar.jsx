@@ -56,7 +56,7 @@ export default function Navbar() {
         }`}
         onMouseLeave={() => setMegaOpen(false)}
       >
-        <div className="container-luxury flex h-20 items-center justify-between lg:h-24">
+        <div className="container-luxury flex h-18 items-center justify-between xs:h-20 lg:h-24">
           <button
             className="flex items-center gap-2 lg:hidden"
             onClick={() => setMobileOpen(true)}
@@ -66,7 +66,7 @@ export default function Navbar() {
           </button>
 
           <Link to="/" className="flex shrink-0 items-center">
-            <Logo className="h-10 w-auto lg:h-12" invert={transparent} />
+            <Logo className="h-8 w-auto xs:h-10 lg:h-12" invert={transparent} />
           </Link>
 
           <nav className="hidden items-center gap-10 lg:flex">
@@ -90,16 +90,16 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className={`flex shrink-0 items-center gap-4 sm:gap-5 ${textColor}`}>
+          <div className={`flex shrink-0 items-center gap-1.5 xs:gap-3 sm:gap-5 ${textColor}`}>
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="flex h-11 w-11 items-center justify-center transition-transform hover:scale-110"
+              className="flex h-10 w-10 items-center justify-center transition-transform hover:scale-110 xs:h-11 xs:w-11"
             >
               <HiOutlineMagnifyingGlass className="text-xl" />
             </button>
             <AccountDropdown textColor={textColor} />
-            <Link to="/my-account" aria-label="Account" className="flex h-11 w-11 items-center justify-center transition-transform hover:scale-110 lg:hidden">
+            <Link to="/my-account" aria-label="Account" className="flex h-10 w-10 items-center justify-center transition-transform hover:scale-110 xs:h-11 xs:w-11 lg:hidden">
               <HiOutlineUser className="text-xl" />
             </Link>
             <Link to="/wishlist" aria-label="Wishlist" className="relative hidden transition-transform hover:scale-110 sm:block">

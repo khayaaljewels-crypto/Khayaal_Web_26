@@ -40,7 +40,7 @@ export default function Cart() {
                   Your bag is empty — items saved for later are below.
                 </div>
               ) : (
-                <div className="rounded-2xl border border-border bg-white px-6">
+                <div className="rounded-2xl border border-border bg-white px-4 xs:px-6">
                   <AnimatePresence initial={false}>
                     {items.map((item) => (
                       <CartLineItem
@@ -59,7 +59,7 @@ export default function Cart() {
               {savedItems.length > 0 && (
                 <div className="mt-10">
                   <p className="font-heading text-lg text-brown">Saved For Later ({savedItems.length})</p>
-                  <div className="mt-4 rounded-2xl border border-border bg-white px-6">
+                  <div className="mt-4 rounded-2xl border border-border bg-white px-4 xs:px-6">
                     <AnimatePresence initial={false}>
                       {savedItems.map((item) => (
                         <CartLineItem

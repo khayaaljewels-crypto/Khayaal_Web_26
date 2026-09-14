@@ -10,14 +10,14 @@ export default function AddressModal({ initial, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-      <div className="w-full max-w-md rounded-2xl bg-white p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="max-h-[calc(100svh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-4 xs:p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <p className="font-heading text-lg text-brown">{initial ? 'Edit Address' : 'Add Address'}</p>
           <button onClick={onClose}><HiOutlineXMark className="text-text/50" /></button>
         </div>
         <div className="mt-4 space-y-3">
           <Field label="Label">
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {['Home', 'Office', 'Other'].map((l) => (
                 <button
                   key={l}
