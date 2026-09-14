@@ -6,7 +6,7 @@ export function buildWhatsAppOrderMessage(order) {
   const productLines = items
     .map((item) => {
       const variantSuffix = item.variantLabel ? ` (${item.variantLabel})` : '';
-      return `${item.name}${variantSuffix} ×${item.quantity} — ${formatPrice(item.lineTotal)}`;
+      return `${item.name}${variantSuffix} ×${item.quantity} — ${formatPrice(item.lineTotal)}\nProduct ID: ${item.productId}`;
     })
     .join('\n');
 
