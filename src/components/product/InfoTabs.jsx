@@ -18,7 +18,7 @@ const FAQS = [
   },
   {
     q: 'Can I return this if it doesn’t fit or match?',
-    a: 'Yes — unused items in original packaging can be returned within the return window shown on this page. Visit Track Order or contact us to start a return.',
+    a: 'Yes — unused items in original packaging can be returned within the return window shown on this page. Contact us to start a return.',
   },
 ];
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaWhatsapp } from 'react-icons/fa';
 import GoldButton from '@/components/buttons/GoldButton';
@@ -73,11 +73,8 @@ export default function OrderSuccess() {
             Check your WhatsApp for order confirmation
           </div>
 
-          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <div className="mt-10">
             <GoldButton to="/shop">Continue Shopping</GoldButton>
-            <Link to="/track-order" className="text-sm font-medium text-gold underline-offset-4 hover:underline">
-              Track Your Order
-            </Link>
           </div>
         </motion.div>
       </div>
