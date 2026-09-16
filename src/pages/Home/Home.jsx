@@ -1,5 +1,5 @@
 import Hero from '@/components/sections/Hero';
-import MegaMenu from '@/components/layout/navbar/MegaMenu';
+import CategoryNavigation from '@/components/sections/CategoryNavigation';
 import TrendingCollections from '@/components/sections/TrendingCollections';
 import FeaturedCategories from '@/components/sections/FeaturedCategories';
 import ProductGridSection from '@/components/sections/ProductGridSection';
@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <MegaMenu />
+      <CategoryNavigation />
       <TrendingCollections />
       {SHOW_DISCOVERY_SECTIONS && <FeaturedCategories />}
       <ProductGridSection
