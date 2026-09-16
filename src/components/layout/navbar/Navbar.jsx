@@ -9,7 +9,6 @@ import {
   HiOutlineUser,
 } from 'react-icons/hi2';
 import { navLinks } from './navLinks';
-import MegaMenu from './MegaMenu';
 import SearchOverlay from './SearchOverlay';
 import MobileMenu from './MobileMenu';
 import AccountDropdown from './AccountDropdown';
@@ -21,7 +20,6 @@ const HERO_ROUTES = ['/'];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -54,7 +52,6 @@ export default function Navbar() {
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           transparent ? 'bg-transparent' : 'bg-white/90 backdrop-blur-xl shadow-[0_1px_0_0_rgba(236,231,226,1)]'
         }`}
-        onMouseLeave={() => setMegaOpen(false)}
       >
         <div className="container-luxury flex h-18 items-center justify-between xs:h-20 lg:h-24">
           <button
@@ -73,7 +70,6 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <div
                 key={link.label}
-                onMouseEnter={() => link.mega && setMegaOpen(true)}
                 className="relative"
               >
                 <NavLink
@@ -120,8 +116,6 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
-
-        <MegaMenu open={megaOpen} onClose={() => setMegaOpen(false)} />
       </motion.header>
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { FaInstagram, FaFacebookF, FaPinterestP } from 'react-icons/fa';
 import { navLinks } from './navLinks';
-import { useCategories } from '@/context/CategoriesContext';
 import { useSettings } from '@/context/SettingsContext';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import Logo from '@/components/ui/Logo';
@@ -19,7 +18,6 @@ const itemVariants = {
 };
 
 export default function MobileMenu({ open, onClose }) {
-  const { visibleCategories: categories } = useCategories();
   const { settings } = useSettings();
   useLockBodyScroll(open);
 
@@ -63,30 +61,6 @@ export default function MobileMenu({ open, onClose }) {
                 </motion.div>
               ))}
             </motion.nav>
-
-            <motion.div
-              variants={listVariants}
-              initial="hidden"
-              animate="show"
-              className="mt-9 xs:mt-12"
-            >
-              <motion.p variants={itemVariants} className="eyebrow mb-4">
-                Shop by Category
-              </motion.p>
-              <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
-                {categories.map((cat) => (
-                  <motion.div key={cat.id} variants={itemVariants}>
-                    <Link
-                      to={`/shop?category=${cat.slug}`}
-                      onClick={onClose}
-                      className="block shrink-0 whitespace-nowrap rounded-full border border-gold/35 bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-brown transition-colors duration-300 hover:border-gold hover:bg-beige/40 hover:text-gold"
-                    >
-                      {cat.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
 
             <div className="mt-auto flex items-center gap-4 pt-10">
               <a href={settings.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-brown transition-colors hover:text-gold">
