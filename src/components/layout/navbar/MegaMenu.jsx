@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useCategories } from '@/context/CategoriesContext';
-import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function MegaMenu({ open, onClose }) {
   const { visibleCategories: categories } = useCategories();
@@ -17,30 +16,25 @@ export default function MegaMenu({ open, onClose }) {
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="container-luxury grid grid-cols-3 gap-8 py-10 lg:grid-cols-9">
-            {categories.map((cat, i) => (
-              <motion.div
-                key={cat.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.04 }}
-              >
-                <Link to={`/shop?category=${cat.slug}`} onClick={onClose} className="group block">
-                  <div className="relative aspect-square overflow-hidden rounded-2xl bg-beige">
-                    <ImageWithFallback
-                      src={cat.image}
-                      alt={cat.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-brown/0 transition-colors duration-500 group-hover:bg-brown/10" />
-                  </div>
-                  <p className="mt-3 text-center font-heading text-sm text-brown group-hover:text-gold transition-colors">
+          <div className="container-luxury py-5">
+            <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
+              {categories.map((cat, i) => (
+                <motion.div
+                  key={cat.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.04 }}
+                >
+                  <Link
+                    to={`/shop?category=${cat.slug}`}
+                    onClick={onClose}
+                    className="block shrink-0 whitespace-nowrap rounded-full border border-gold/35 bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-brown transition-colors duration-300 hover:border-gold hover:bg-beige/40 hover:text-gold"
+                  >
                     {cat.name}
-                  </p>
-                </Link>
-              </motion.div>
-            ))}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
       )}

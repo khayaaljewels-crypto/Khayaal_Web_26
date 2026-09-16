@@ -5,6 +5,7 @@ import {
 } from 'react-icons/hi2';
 import Reveal from '@/components/animations/Reveal';
 import GoldButton from '@/components/buttons/GoldButton';
+import Logo from '@/components/ui/Logo';
 
 const PRINCIPLES = [
   {
@@ -102,7 +103,12 @@ export default function About() {
             <Reveal className="lg:col-span-4">
               <p className="eyebrow">Where it began</p>
 
-              <h2 className="mt-5 max-w-sm font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
+              <div className="mt-5 flex items-center gap-4 sm:gap-5">
+                <span className="h-px w-8 shrink-0 bg-gold/60 sm:w-12" />
+                <Logo className="h-8 w-auto sm:h-9" />
+              </div>
+
+              <h2 className="mt-6 max-w-sm font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
                 A simple thought.
                 <span className="block  font-normal text-gold">
                   A beautiful beginning.

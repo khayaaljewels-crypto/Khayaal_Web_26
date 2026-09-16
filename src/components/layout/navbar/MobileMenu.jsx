@@ -6,7 +6,6 @@ import { navLinks } from './navLinks';
 import { useCategories } from '@/context/CategoriesContext';
 import { useSettings } from '@/context/SettingsContext';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
-import ImageWithFallback from '@/components/ui/ImageWithFallback';
 import Logo from '@/components/ui/Logo';
 
 const listVariants = {
@@ -74,14 +73,15 @@ export default function MobileMenu({ open, onClose }) {
               <motion.p variants={itemVariants} className="eyebrow mb-4">
                 Shop by Category
               </motion.p>
-              <div className="grid grid-cols-3 gap-3">
-                {categories.slice(0, 6).map((cat) => (
+              <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
+                {categories.map((cat) => (
                   <motion.div key={cat.id} variants={itemVariants}>
-                    <Link to={`/shop?category=${cat.slug}`} onClick={onClose} className="block">
-                      <div className="aspect-square overflow-hidden rounded-xl bg-beige">
-                        <ImageWithFallback src={cat.image} alt={cat.name} loading="lazy" className="h-full w-full object-cover" />
-                      </div>
-                      <p className="mt-1.5 text-center text-[11px] text-brown">{cat.name}</p>
+                    <Link
+                      to={`/shop?category=${cat.slug}`}
+                      onClick={onClose}
+                      className="block shrink-0 whitespace-nowrap rounded-full border border-gold/35 bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-brown transition-colors duration-300 hover:border-gold hover:bg-beige/40 hover:text-gold"
+                    >
+                      {cat.name}
                     </Link>
                   </motion.div>
                 ))}
