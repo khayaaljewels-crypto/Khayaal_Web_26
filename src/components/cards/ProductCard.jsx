@@ -135,7 +135,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
     >
       <div className="relative overflow-hidden rounded-2xl bg-beige">
         <Link to={`/product/${product.slug}`} className="block">
-          <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[1/1]">
+          <div className="relative aspect-[2/3] overflow-hidden sm:aspect-[1/1]">
             <ImageWithFallback
               src={product.images[0]}
               alt={product.name}

@@ -103,12 +103,7 @@ export default function About() {
             <Reveal className="lg:col-span-4">
               <p className="eyebrow">Where it began</p>
 
-              <div className="mt-5 flex items-center gap-4 sm:gap-5">
-                <span className="h-px w-8 shrink-0 bg-gold/60 sm:w-12" />
-                <Logo className="h-8 w-auto sm:h-9" />
-              </div>
-
-              <h2 className="mt-6 max-w-sm font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
+              <h2 className="mt-5 max-w-sm font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[3.5rem]">
                 A simple thought.
                 <span className="block  font-normal text-gold">
                   A beautiful beginning.
@@ -331,8 +326,8 @@ export default function About() {
 
             <h2 className="mt-5 font-heading text-[2.5rem] leading-tight text-brown sm:text-[3.25rem] lg:text-[4rem]">
               To make every
-              <span className="block font-script text-[1.08em] font-normal text-gold">
-                Khayaal
+              <span className="mx-auto mt-2 flex w-fit items-center justify-center border-y border-gold/35 px-5 py-3 sm:mt-3 sm:px-7 sm:py-4">
+                <Logo className="h-10 w-auto sm:h-12 lg:h-14" />
               </span>
               worth keeping.
             </h2>
