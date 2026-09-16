@@ -324,16 +324,13 @@ export default function About() {
           <Reveal className="mx-auto max-w-4xl text-center">
             <p className="eyebrow">Looking ahead</p>
 
-            <div className="mx-auto mt-5 flex w-fit items-center justify-center sm:hidden">
-              <Logo className="h-11 w-auto" />
+            <div className="mx-auto mt-5 flex w-fit items-center justify-center sm:mt-6">
+              <Logo className="h-auto w-52 sm:w-60 lg:w-72" />
             </div>
 
-            <h2 className="mt-6 font-heading text-[2.5rem] leading-tight text-brown sm:mt-5 sm:text-[3.25rem] lg:text-[4rem]">
-              To make every
-              <span className="mx-auto mt-2 hidden w-fit items-center justify-center border-y border-gold/35 px-5 py-3 sm:mt-3 sm:flex sm:px-7 sm:py-4">
-                <Logo className="h-10 w-auto sm:h-12 lg:h-14" />
-              </span>
-              <span className="block sm:inline">worth keeping.</span>
+            <h2 className="mt-6 font-heading text-[2.5rem] leading-tight text-brown sm:mt-7 sm:text-[3.25rem] lg:text-[4rem]">
+              <span className="block">To make every</span>
+              <span className="block">worth keeping.</span>
             </h2>
 
             <p className="mx-auto mt-7 max-w-2xl leading-8 text-text/65">
