@@ -18,7 +18,7 @@ export default function CategoryNavigation() {
                 <Link
                   to={`/collections/${category.slug}`}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`block rounded-full border bg-bg px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.12em] transition-colors duration-200 sm:px-5 ${
+                  className={`flex h-11 items-center justify-center rounded-full border bg-bg px-4 text-[11px] font-medium uppercase leading-none tracking-[0.12em] transition-colors duration-200 sm:px-5 ${
                     isActive
                       ? 'border-gold bg-gold/10 text-gold'
                       : 'border-[#E6DED4] text-brown hover:border-gold hover:bg-[#F6F0E9] hover:text-gold'
