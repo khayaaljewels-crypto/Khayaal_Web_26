@@ -1,4 +1,3 @@
-import Hero from '@/components/sections/Hero';
 import ProductGridSection from '@/components/sections/ProductGridSection';
 import InstagramGallery from '@/components/sections/InstagramGallery';
 import { useProductList } from '@/hooks/useProductList';
@@ -10,7 +9,6 @@ export default function Home() {
 
   return (
     <>
-      <Hero />
       <ProductGridSection
         title="Featured Jewellery"
         products={productList.products}
