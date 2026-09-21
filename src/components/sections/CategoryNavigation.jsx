@@ -5,11 +5,11 @@ export default function CategoryNavigation() {
   const { pathname } = useLocation();
 
   return (
-    <section className="border-y border-[#E6DED4] bg-bg pt-18 xs:pt-20 lg:pt-24">
-      <div className="container-luxury">
+    <section className="relative z-40 h-16 border-b border-[#E6DED4] bg-bg">
+      <div className="container-luxury h-full">
         <nav
           aria-label="Jewellery categories"
-          className="no-scrollbar flex max-w-full touch-pan-x flex-nowrap justify-start gap-2.5 overflow-x-auto overscroll-x-contain scroll-smooth whitespace-nowrap py-3.5 lg:justify-center"
+          className="no-scrollbar flex h-full max-w-full touch-pan-x flex-nowrap items-center justify-start gap-2.5 overflow-x-auto overscroll-x-contain scroll-smooth whitespace-nowrap lg:justify-center"
         >
           {STOREFRONT_CATEGORIES.map((category) => {
             const isActive = pathname === `/collections/${category.slug}`;

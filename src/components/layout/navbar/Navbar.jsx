@@ -15,33 +15,21 @@ import AccountDropdown from './AccountDropdown';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import Logo from '@/components/ui/Logo';
-
-const HERO_ROUTES = ['/'];
+import CategoryNavigation from '@/components/sections/CategoryNavigation';
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const { count: cartCount } = useCart();
   const { count: wishlistCount } = useWishlist();
 
-  const isTransparentRoute = HERO_ROUTES.includes(location.pathname);
-  const transparent = isTransparentRoute && !scrolled;
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   useEffect(() => {
     setMobileOpen(false);
     setSearchOpen(false);
   }, [location.pathname]);
 
-  const textColor = transparent ? 'text-white' : 'text-brown';
+  const textColor = 'text-brown';
 
   return (
     <>
@@ -49,11 +37,9 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          transparent ? 'bg-transparent' : 'bg-white/90 backdrop-blur-xl shadow-[0_1px_0_0_rgba(236,231,226,1)]'
-        }`}
+        className="sticky top-0 z-50 border-b border-[#E6DED4] bg-bg shadow-[0_1px_0_0_rgba(230,222,212,0.7)]"
       >
-        <div className="container-luxury flex h-18 items-center justify-between xs:h-20 lg:h-24">
+        <div className="container-luxury flex h-18 items-center justify-between xs:h-20 lg:h-[92px]">
           <button
             className="flex items-center gap-2 lg:hidden"
             onClick={() => setMobileOpen(true)}
@@ -63,7 +49,7 @@ export default function Navbar() {
           </button>
 
           <Link to="/" className="flex shrink-0 items-center">
-            <Logo className="h-8 w-auto xs:h-10 lg:h-12" invert={transparent} />
+            <Logo className="h-8 w-auto xs:h-10 lg:h-12" />
           </Link>
 
           <nav className="hidden items-center gap-10 lg:flex">
@@ -116,6 +102,7 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
+        <CategoryNavigation />
       </motion.header>
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
