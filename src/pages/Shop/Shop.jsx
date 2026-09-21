@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Reveal from '@/components/animations/Reveal';
 import ProductCard from '@/components/cards/ProductCard';
@@ -21,11 +21,12 @@ const HEADINGS = {
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
+  const { slug: collectionSlug } = useParams();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   const filterParam = searchParams.get('filter');
-  const categoryParam = searchParams.get('category');
+  const categoryParam = searchParams.get('category') ?? collectionSlug;
   const occasionParam = searchParams.get('occasion');
   const searchParam = searchParams.get('search');
 

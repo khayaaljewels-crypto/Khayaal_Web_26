@@ -21,8 +21,8 @@ export default function Home() {
 
   return (
     <>
-      <Hero />
       <CategoryNavigation />
+      <Hero />
       <TrendingCollections />
       {SHOW_DISCOVERY_SECTIONS && <FeaturedCategories />}
       <ProductGridSection

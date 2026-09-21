@@ -45,7 +45,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
         transition={{ duration: 0.6, delay: (index % 4) * 0.06, ease: [0.16, 1, 0.3, 1] }}
         className="group flex gap-4 rounded-2xl border border-border bg-white p-3 sm:gap-6 sm:p-4"
       >
-        <Link to={`/product/${product.slug}`} className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl bg-beige sm:h-44 sm:w-44">
+        <Link to={`/product/${product.slug}`} className="relative aspect-square w-32 shrink-0 overflow-hidden bg-beige sm:w-44">
           <ImageWithFallback
             src={product.images[0]}
             alt={product.name}
@@ -133,9 +133,9 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
       className="group relative"
       onPointerEnter={() => setSecondaryImageVisible(true)}
     >
-      <div className="relative overflow-hidden rounded-2xl bg-beige">
+      <div className="relative overflow-hidden bg-beige">
         <Link to={`/product/${product.slug}`} className="block">
-          <div className="relative aspect-[3/5] overflow-hidden">
+          <div className="relative aspect-square w-full overflow-hidden">
             <ImageWithFallback
               src={product.images[0]}
               alt={product.name}
@@ -167,7 +167,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
         </Link>
 
         {/* Gold border glow on hover */}
-        <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent transition-all duration-500 group-hover:shadow-gold-glow group-hover:ring-gold/40" />
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-transparent transition-all duration-500 group-hover:shadow-gold-glow group-hover:ring-gold/40" />
 
         <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
           {product.discount > 0 && (
