@@ -15,7 +15,7 @@ import { useCompare } from '@/context/CompareContext';
 import { formatPrice } from '@/utils/format';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
-function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
+function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRating = true }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
   const { isComparing, toggleCompare } = useCompare();
@@ -256,12 +256,14 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
 
       <Link to={`/product/${product.slug}`} className="mt-4 block">
         <p className="truncate font-heading text-sm text-brown sm:text-base">{product.name}</p>
-        <div className="mt-1 flex items-center gap-1 text-gold">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <HiStar key={i} className={`text-[11px] ${i < Math.round(product.rating) ? '' : 'opacity-25'}`} />
-          ))}
-          <span className="ml-1 text-[11px] text-text/50">({product.reviewCount})</span>
-        </div>
+        {showRating && (
+          <div className="mt-1 flex items-center gap-1 text-gold">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <HiStar key={i} className={`text-[11px] ${i < Math.round(product.rating) ? '' : 'opacity-25'}`} />
+            ))}
+            <span className="ml-1 text-[11px] text-text/50">({product.reviewCount})</span>
+          </div>
+        )}
         <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
           <span className="relative overflow-hidden font-medium text-brown">
             {formatPrice(product.price)}

@@ -1,43 +1,22 @@
 import Hero from '@/components/sections/Hero';
-import TrendingCollections from '@/components/sections/TrendingCollections';
-import FeaturedCategories from '@/components/sections/FeaturedCategories';
 import ProductGridSection from '@/components/sections/ProductGridSection';
-import ShopByOccasion from '@/components/sections/ShopByOccasion';
 import InstagramGallery from '@/components/sections/InstagramGallery';
 import { useProductList } from '@/hooks/useProductList';
 
-const BEST_SELLERS_FILTER = { isBestSeller: true, pageSize: 8 };
-const NEW_ARRIVALS_FILTER = { isNewArrival: true, pageSize: 8 };
-
-// Storefront-only temporary switch. Keep the existing section components and
-// their category/occasion data flows intact so they can be restored by setting
-// this to true.
-const SHOW_DISCOVERY_SECTIONS = false;
+const HOME_PRODUCTS_FILTER = { pageSize: 12 };
 
 export default function Home() {
-  const bestSellers = useProductList(BEST_SELLERS_FILTER);
-  const newArrivals = useProductList(NEW_ARRIVALS_FILTER);
+  const productList = useProductList(HOME_PRODUCTS_FILTER);
 
   return (
     <>
       <Hero />
-      <TrendingCollections />
-      {SHOW_DISCOVERY_SECTIONS && <FeaturedCategories />}
       <ProductGridSection
-        eyebrow="Most Loved"
-        title="Best Sellers"
-        products={bestSellers.products}
-        loading={bestSellers.loading}
-        viewAllTo="/shop?filter=bestsellers"
-      />
-      {SHOW_DISCOVERY_SECTIONS && <ShopByOccasion />}
-      <ProductGridSection
-        eyebrow="Just Landed"
-        title="New Arrivals"
-        products={newArrivals.products}
-        loading={newArrivals.loading}
-        viewAllTo="/shop?filter=new"
-        tint
+        title="Featured Jewellery"
+        products={productList.products}
+        loading={productList.loading}
+        compact
+        showRatings={false}
       />
       <InstagramGallery />
     </>

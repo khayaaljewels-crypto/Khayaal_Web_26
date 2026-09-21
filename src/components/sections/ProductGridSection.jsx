@@ -5,34 +5,53 @@ import ProductCard from '@/components/cards/ProductCard';
 import QuickViewModal from '@/components/shop/QuickViewModal';
 import ProductGridSkeleton from '@/components/shop/ProductGridSkeleton';
 
-export default function ProductGridSection({ eyebrow, title, products, viewAllTo, tint = false, loading = false }) {
+export default function ProductGridSection({
+  eyebrow,
+  title,
+  products,
+  viewAllTo,
+  tint = false,
+  loading = false,
+  compact = false,
+  showRatings = true,
+}) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   if (!loading && !products.length) return null;
 
   return (
-    <section className={`py-20 lg:py-28 ${tint ? 'bg-beige/50' : ''}`}>
+    <section className={`${compact ? 'py-10 lg:py-14' : 'py-20 lg:py-28'} ${tint ? 'bg-beige/50' : ''}`}>
       <div className="container-luxury">
-        <Reveal className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <p className="eyebrow">{eyebrow}</p>
-            <h2 className="mt-3 font-heading text-3xl text-brown sm:text-4xl">{title}</h2>
-          </div>
-          {viewAllTo && (
-            <Link to={viewAllTo} className="text-sm font-medium text-gold underline-offset-4 hover:underline">
-              View All
-            </Link>
-          )}
-        </Reveal>
+        {compact ? (
+          <h2 className="sr-only">{title}</h2>
+        ) : (
+          <Reveal className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="eyebrow">{eyebrow}</p>
+              <h2 className="mt-3 font-heading text-3xl text-brown sm:text-4xl">{title}</h2>
+            </div>
+            {viewAllTo && (
+              <Link to={viewAllTo} className="text-sm font-medium text-gold underline-offset-4 hover:underline">
+                View All
+              </Link>
+            )}
+          </Reveal>
+        )}
 
         {loading ? (
-          <div className="mt-12">
+          <div className={compact ? '' : 'mt-12'}>
             <ProductGridSkeleton count={8} />
           </div>
         ) : (
-          <div className="mt-12 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6">
-            {products.slice(0, 8).map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} onQuickView={setQuickViewProduct} />
+          <div className={`${compact ? '' : 'mt-12'} grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4`}>
+            {products.slice(0, compact ? 12 : 8).map((product, i) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                index={i}
+                onQuickView={setQuickViewProduct}
+                showRating={showRatings}
+              />
             ))}
           </div>
         )}
