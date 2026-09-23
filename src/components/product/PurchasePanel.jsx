@@ -4,7 +4,6 @@ import {
   HiOutlineHeart,
   HiOutlineShare,
   HiOutlineLink,
-  HiOutlineArrowsRightLeft,
   HiOutlineMinus,
   HiOutlinePlus,
   HiStar,
@@ -13,7 +12,6 @@ import {
 } from 'react-icons/hi2';
 import { formatPrice } from '@/utils/format';
 import { useWishlist } from '@/context/WishlistContext';
-import { useCompare } from '@/context/CompareContext';
 import { RingSizeSelector } from './VariantSelector';
 import PincodeChecker from './PincodeChecker';
 
@@ -29,11 +27,9 @@ export default function PurchasePanel({
   effectiveOldPrice,
 }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
-  const { isComparing, toggleCompare } = useCompare();
   const [copied, setCopied] = useState(false);
 
   const wishlisted = isWishlisted(product.id);
-  const comparing = isComparing(product.id);
   const sizeRequired = product.ringSizes && !activeSize;
 
   const handleShare = async () => {
@@ -130,16 +126,6 @@ export default function PurchasePanel({
           className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-brown transition-colors hover:border-gold"
         >
           {wishlisted ? <HiHeart className="text-gold" /> : <HiOutlineHeart />}
-        </button>
-
-        <button
-          onClick={() => toggleCompare(product)}
-          aria-label="Compare"
-          className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
-            comparing ? 'border-gold text-gold' : 'border-border text-brown hover:border-gold'
-          }`}
-        >
-          <HiOutlineArrowsRightLeft />
         </button>
       </div>
 
