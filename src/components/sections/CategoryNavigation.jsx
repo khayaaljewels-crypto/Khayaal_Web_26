@@ -6,10 +6,10 @@ export default function CategoryNavigation() {
 
   return (
     <section className="relative z-40 h-15 border-b border-border bg-bg">
-      <div className="container-luxury h-full">
+      <div className="h-full w-full px-3 sm:px-5 lg:px-8 2xl:px-12">
         <nav
           aria-label="Jewellery categories"
-          className="no-scrollbar flex h-full max-w-full touch-pan-x flex-nowrap items-center justify-start gap-2 overflow-x-auto overscroll-x-contain whitespace-nowrap lg:justify-center"
+          className="no-scrollbar flex h-full w-full touch-pan-x flex-nowrap items-center justify-start gap-2 overflow-x-auto overscroll-x-contain whitespace-nowrap lg:justify-between"
         >
           {STOREFRONT_CATEGORIES.map((category) => {
             const isActive = pathname === `/collections/${category.slug}`;
@@ -18,7 +18,7 @@ export default function CategoryNavigation() {
                 <Link
                   to={`/collections/${category.slug}`}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`flex h-9 items-center justify-center rounded-full border bg-bg px-3.5 text-[10px] font-medium uppercase leading-none tracking-[0.14em] transition-colors duration-200 ease-out sm:px-4 ${
+                  className={`flex h-9 items-center justify-center rounded-full border bg-bg px-3 text-[9px] font-medium uppercase leading-none tracking-[0.12em] transition-colors duration-200 ease-out sm:px-3.5 sm:text-[10px] ${
                     isActive
                       ? 'border-gold bg-gold/10 text-gold'
                       : 'border-border text-brown hover:border-gold hover:bg-beige/50 hover:text-gold'

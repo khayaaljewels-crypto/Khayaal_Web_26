@@ -22,7 +22,13 @@ export default function ProductGridSection({
     <section className={`${compact ? 'py-7 sm:py-9 lg:py-10' : 'py-12 lg:py-16'} ${tint ? 'bg-beige/50' : ''}`}>
       <div className="container-luxury">
         {compact ? (
-          <h2 className="sr-only">{title}</h2>
+          <Reveal className="mb-5 flex items-end justify-between border-b border-border pb-4 sm:mb-6">
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-gold">Curated for you</p>
+              <h2 className="mt-1 font-heading text-2xl text-brown sm:text-3xl">{title}</h2>
+            </div>
+            <Link to="/shop" className="mb-1 text-[10px] font-medium uppercase tracking-[0.14em] text-brown transition-colors hover:text-gold">Shop all</Link>
+          </Reveal>
         ) : (
           <Reveal className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>

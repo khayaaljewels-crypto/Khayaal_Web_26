@@ -39,7 +39,7 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="sticky top-0 z-50 border-b border-border bg-bg"
       >
-        <div className="container-luxury flex h-17 items-center justify-between xs:h-[72px] lg:h-[78px]">
+        <div className="flex h-17 w-full items-center justify-between px-4 xs:h-[72px] sm:px-6 lg:h-[78px] lg:px-10 2xl:px-14">
           <button
             className="flex items-center gap-2 lg:hidden"
             onClick={() => setMobileOpen(true)}
@@ -52,7 +52,7 @@ export default function Navbar() {
             <Logo className="h-8 w-auto xs:h-10 lg:h-12" />
           </Link>
 
-          <nav className="hidden items-center gap-7 xl:gap-9 lg:flex">
+          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 xl:gap-9 lg:flex">
             {navLinks.map((link) => (
               <div
                 key={link.label}

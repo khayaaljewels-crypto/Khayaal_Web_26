@@ -1,12 +1,10 @@
 import { memo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   HiHeart,
   HiOutlineHeart,
-  HiOutlineShoppingBag,
-  HiOutlineEye,
-  HiOutlineArrowsRightLeft,
+  HiArrowUpRight,
 } from 'react-icons/hi2';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
@@ -18,17 +16,10 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
   const { isComparing, toggleCompare } = useCompare();
-  const navigate = useNavigate();
   const wishlisted = isWishlisted(product.id);
   const comparing = isComparing(product.id);
   const outOfStock = !product.inStock;
   const [secondaryImageVisible, setSecondaryImageVisible] = useState(false);
-
-  const handleBuyNow = (e) => {
-    e.preventDefault();
-    addItem(product);
-    navigate('/checkout');
-  };
 
   const handleQuickView = (e) => {
     e.preventDefault();
@@ -180,7 +171,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
           )}
         </div>
 
-        <div className="absolute right-3 top-3 flex flex-col gap-2">
+        <div className="absolute right-3 top-3">
           <button
             onClick={() => toggleWishlist(product)}
             aria-label="Toggle wishlist"
@@ -197,64 +188,20 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
             </motion.span>
           </button>
 
-          <button
-            onClick={handleQuickView}
-            aria-label="Quick view"
-            data-cursor-hover
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-brown opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover:opacity-100 hover:scale-105 hover:text-gold"
-          >
-            <HiOutlineEye />
-          </button>
-
-          <button
-            onClick={() => toggleCompare(product)}
-            aria-label="Compare"
-            data-cursor-hover
-            className={`flex h-9 w-9 items-center justify-center rounded-full shadow-sm backdrop-blur transition-all duration-300 hover:scale-105 opacity-0 group-hover:opacity-100 ${
-              comparing ? 'bg-gold text-white' : 'bg-white/90 text-brown'
-            }`}
-          >
-            <HiOutlineArrowsRightLeft className="text-sm" />
-          </button>
-        </div>
-
-        {/* Add to cart / quick buy slide-up bar */}
-        <div className="absolute inset-x-0 bottom-0 flex translate-y-0 transition-transform duration-400 ease-luxury sm:translate-y-full sm:group-hover:translate-y-0">
-          {outOfStock ? (
-            <span className="flex w-full items-center justify-center gap-2 bg-brown/60 py-3 text-xs font-medium tracking-wide text-white">
-              Out of Stock
-            </span>
-          ) : (
-            <>
-              <button
-                onClick={() => addItem(product)}
-                data-cursor-hover
-                className="flex min-h-11 flex-1 items-center justify-center gap-2 bg-brown py-3 text-xs font-medium tracking-wide text-white transition-colors hover:bg-gold"
-              >
-                <HiOutlineShoppingBag />
-                Add to Cart
-              </button>
-              <button
-                onClick={handleBuyNow}
-                data-cursor-hover
-                aria-label="Buy now"
-                className="min-h-11 w-14 border-l border-white/20 bg-brown text-xs font-medium tracking-wide text-white transition-colors hover:bg-gold"
-              >
-                Buy
-              </button>
-            </>
-          )}
         </div>
       </div>
 
       <Link to={`/product/${product.slug}`} className="mt-3 block">
         <p className="truncate font-heading text-[15px] leading-snug text-brown transition-colors duration-300 group-hover:text-gold sm:text-base">{product.name}</p>
         <p className="mt-1 truncate text-[10px] font-medium uppercase tracking-[0.14em] text-text/50">{product.category?.name || product.collection?.name || 'Fine jewellery'}</p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
           <span className="font-medium text-brown">{formatPrice(product.price)}</span>
           {product.oldPrice && (
             <span className="text-xs text-text/40 line-through">{formatPrice(product.oldPrice)}</span>
           )}
+          </div>
+          <HiArrowUpRight className="shrink-0 text-base text-brown/55 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-gold" aria-hidden />
         </div>
       </Link>
     </motion.div>
