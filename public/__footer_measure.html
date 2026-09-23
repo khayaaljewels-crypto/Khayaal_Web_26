@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>footer measure</title>
+    <style>
+      body { margin: 0; background: #111; color: #fff; font: 13px/1.5 monospace; }
+      #out {
+        position: fixed; inset: 0 0 auto 0; z-index: 20;
+        background: #000; color: #4ade80; padding: 10px 12px; white-space: pre-wrap;
+      }
+      #frames { padding-top: 190px; }
+      .row { margin: 0 0 10px; background: #e8e0d7; }
+      .cap { color: #facc15; padding: 2px 4px; background: #111; }
+      iframe { border: 0; display: block; transform-origin: top left; }
+    </style>
+  </head>
+  <body>
+    <div id="out">measuring…</div>
+    <div id="frames"></div>
+    <script>
+      const WIDTHS = [1440, 1024, 768, 375, 320];
+      const lines = [];
+      let pending = WIDTHS.length;
+
+      const frames = document.getElementById('frames');
+
+      WIDTHS.forEach((w) => {
+        const row = document.createElement('div');
+        row.className = 'row';
+        const cap = document.createElement('div');
+        cap.className = 'cap';
+        cap.textContent = `viewport ${w}px`;
+        const frame = document.createElement('iframe');
+        frame.width = w;
+        frame.height = 320;
+        frame.src = '/';
+        const scale = Math.min(1, 880 / w);
+        frame.style.transform = `scale(${scale})`;
+        row.style.height = `${Math.round(320 * scale) + 22}px`;
+        row.appendChild(cap);
+        row.appendChild(frame);
+        frames.appendChild(row);
+
+        frame.addEventListener('load', () => {
+          const inner = frame.contentWindow;
+          const doc = inner.document;
+          const style = doc.createElement('style');
+          style.textContent =
+            'header,main{display:none!important}' +
+            'a[aria-label*="WhatsApp"],button[aria-label="Back to top"]{display:none!important}';
+          doc.head.appendChild(style);
+          inner.scrollTo(0, 0);
+
+          setTimeout(() => {
+            const footer = doc.querySelector('footer');
+            const rect = footer.getBoundingClientRect();
+            const cs = inner.getComputedStyle(footer);
+            const bar = footer.lastElementChild.firstElementChild.lastElementChild;
+            lines.push(
+              `vw=${w}  footer=${Math.round(rect.height)}px  body=${Math.round(
+                doc.body.getBoundingClientRect().height
+              )}px  pt=${cs.paddingTop} pb=${cs.paddingBottom} bar=${Math.round(
+                bar.getBoundingClientRect().height
+              )}px  overflowX=${doc.documentElement.scrollWidth - w}`
+            );
+            pending -= 1;
+            if (pending === 0) {
+              document.getElementById('out').textContent = lines.join('\n');
+            }
+          }, 2600);
+        });
+      });
+    </script>
+  </body>
+</html>
