@@ -37,9 +37,9 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="sticky top-0 z-50 border-b border-[#E6DED4] bg-bg shadow-[0_1px_0_0_rgba(230,222,212,0.7)]"
+        className="sticky top-0 z-50 border-b border-border bg-bg"
       >
-        <div className="container-luxury flex h-18 items-center justify-between xs:h-20 lg:h-[92px]">
+        <div className="container-luxury flex h-17 items-center justify-between xs:h-[72px] lg:h-[78px]">
           <button
             className="flex items-center gap-2 lg:hidden"
             onClick={() => setMobileOpen(true)}
@@ -52,7 +52,7 @@ export default function Navbar() {
             <Logo className="h-8 w-auto xs:h-10 lg:h-12" />
           </Link>
 
-          <nav className="hidden items-center gap-10 lg:flex">
+          <nav className="hidden items-center gap-7 xl:gap-9 lg:flex">
             {navLinks.map((link) => (
               <div
                 key={link.label}
@@ -61,8 +61,8 @@ export default function Navbar() {
                 <NavLink
                   to={link.to}
                   className={({ isActive }) =>
-                    `relative py-2 text-sm font-medium tracking-wide transition-colors ${textColor} ${
-                      isActive ? 'opacity-100' : 'opacity-90 hover:opacity-100'
+                    `relative py-2 text-[12px] font-medium tracking-[0.08em] transition-colors duration-200 ${textColor} ${
+                      isActive ? 'text-gold' : 'opacity-90 hover:text-gold hover:opacity-100'
                     } after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full`
                   }
                 >
@@ -76,7 +76,7 @@ export default function Navbar() {
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="flex h-10 w-10 items-center justify-center transition-transform hover:scale-110 xs:h-11 xs:w-11"
+              className="flex h-10 w-10 items-center justify-center transition-colors duration-200 hover:text-gold xs:h-11 xs:w-11"
             >
               <HiOutlineMagnifyingGlass className="text-xl" />
             </button>

@@ -52,14 +52,14 @@ export default function Shop() {
   const catalogEmpty = filtersApi.total === 0 && filtersApi.activeChips.length === 0;
 
   return (
-    <div className="bg-bg pb-24 pt-28 lg:pt-32">
+    <div className="bg-bg pb-16 pt-7 sm:pt-9 lg:pt-10">
       <div className="container-luxury">
         <Reveal>
           <p className="eyebrow">{heading.eyebrow}</p>
           <h1 className="mt-3 font-heading text-3xl text-brown sm:text-4xl">{heading.title}</h1>
         </Reveal>
 
-        <div className="mt-10 flex flex-col gap-10 lg:flex-row">
+        <div className="mt-7 flex flex-col gap-7 lg:flex-row lg:gap-9">
           <FilterSidebar filtersApi={filtersApi} />
 
           <div className="min-w-0 flex-1">
@@ -88,7 +88,7 @@ export default function Shop() {
                     layout
                     className={
                       filtersApi.view === 'grid'
-                        ? 'grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6'
+                        ? 'grid grid-cols-2 gap-x-3 gap-y-7 sm:gap-x-5 sm:gap-y-9 lg:grid-cols-3 lg:gap-x-6'
                         : 'flex flex-col gap-5'
                     }
                   >

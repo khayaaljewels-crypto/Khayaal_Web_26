@@ -14,7 +14,6 @@ export default function Home() {
         products={productList.products}
         loading={productList.loading}
         compact
-        showRatings={false}
       />
       <InstagramGallery />
     </>

@@ -39,7 +39,7 @@ export default function ImageGallery({ images, productName, badge }) {
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`aspect-square overflow-hidden rounded-xl border-2 transition-colors ${
+              className={`aspect-square overflow-hidden border-2 transition-colors ${
                 i === active ? 'border-gold' : 'border-transparent hover:border-border'
               }`}
             >
@@ -52,7 +52,7 @@ export default function ImageGallery({ images, productName, badge }) {
         <div className="relative flex-1">
           <div
             ref={imageRef}
-            className="relative aspect-square cursor-zoom-in overflow-hidden rounded-2xl bg-beige"
+            className="relative aspect-square cursor-zoom-in overflow-hidden bg-beige"
             onMouseEnter={() => setZoomActive(true)}
             onMouseLeave={() => setZoomActive(false)}
             onMouseMove={handleMouseMove}
@@ -115,7 +115,7 @@ export default function ImageGallery({ images, productName, badge }) {
           {/* Zoom lens preview panel - desktop only */}
           {zoomActive && (
             <div
-              className="pointer-events-none absolute left-full top-0 z-20 ml-4 hidden aspect-square w-full overflow-hidden rounded-2xl border border-border bg-beige shadow-soft lg:block"
+              className="pointer-events-none absolute left-full top-0 z-20 ml-4 hidden aspect-square w-full overflow-hidden border border-border bg-beige shadow-soft lg:block"
               style={{
                 backgroundImage: `url(${images[active]})`,
                 backgroundSize: '220%',
@@ -133,7 +133,7 @@ export default function ImageGallery({ images, productName, badge }) {
           <button
             key={i}
             onClick={() => setActive(i)}
-            className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-colors ${
+            className={`h-16 w-16 shrink-0 overflow-hidden border-2 transition-colors ${
               i === active ? 'border-gold' : 'border-transparent'
             }`}
           >

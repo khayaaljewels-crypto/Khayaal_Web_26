@@ -13,14 +13,13 @@ export default function ProductGridSection({
   tint = false,
   loading = false,
   compact = false,
-  showRatings = true,
 }) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   if (!loading && !products.length) return null;
 
   return (
-    <section className={`${compact ? 'py-10 lg:py-14' : 'py-20 lg:py-28'} ${tint ? 'bg-beige/50' : ''}`}>
+    <section className={`${compact ? 'py-7 sm:py-9 lg:py-10' : 'py-12 lg:py-16'} ${tint ? 'bg-beige/50' : ''}`}>
       <div className="container-luxury">
         {compact ? (
           <h2 className="sr-only">{title}</h2>
@@ -43,14 +42,13 @@ export default function ProductGridSection({
             <ProductGridSkeleton count={8} />
           </div>
         ) : (
-          <div className={`${compact ? '' : 'mt-12'} grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4`}>
+          <div className={`${compact ? '' : 'mt-8'} grid grid-cols-2 gap-x-3 gap-y-7 sm:gap-x-5 sm:gap-y-9 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4`}>
             {products.slice(0, compact ? 12 : 8).map((product, i) => (
               <ProductCard
                 key={product.id}
                 product={product}
                 index={i}
                 onQuickView={setQuickViewProduct}
-                showRating={showRatings}
               />
             ))}
           </div>

@@ -85,7 +85,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="bg-bg pb-40 pt-28 sm:pb-24 lg:pt-32">
+    <div className="bg-bg pb-40 pt-7 sm:pb-24 sm:pt-9 lg:pt-10">
       <div className="container-luxury">
         <Reveal className="flex flex-wrap items-center gap-1.5 text-xs text-text/50">
           <Link to="/" className="hover:text-gold">Home</Link>
@@ -101,7 +101,7 @@ export default function ProductDetail() {
           <span className="text-brown">{product.name}</span>
         </Reveal>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-14">
+        <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
           <Reveal direction="left">
             <ImageGallery
               images={displayImages}
@@ -125,15 +125,15 @@ export default function ProductDetail() {
           </Reveal>
         </div>
 
-        <div className="mt-16">
+        <div className="mt-12">
           <InfoTabs product={product} />
         </div>
 
-        <div className="mt-16">
+        <div className="mt-12">
           <ReviewsSection product={product} />
         </div>
 
-        <div className="mt-20 space-y-20">
+        <div className="mt-14 space-y-14">
           <ProductRail eyebrow="Pairs Well" title="Complete The Look" products={completeTheLook} />
           <ProductRail eyebrow="You May Also Like" title="Related Products" products={related} />
           <ProductRail eyebrow="Your History" title="Recently Viewed" products={recentlyViewed} />

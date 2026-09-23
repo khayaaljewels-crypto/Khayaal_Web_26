@@ -7,7 +7,6 @@ import {
   HiOutlineShoppingBag,
   HiOutlineEye,
   HiOutlineArrowsRightLeft,
-  HiStar,
 } from 'react-icons/hi2';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
@@ -15,7 +14,7 @@ import { useCompare } from '@/context/CompareContext';
 import { formatPrice } from '@/utils/format';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
-function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRating = true }) {
+function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
   const { isComparing, toggleCompare } = useCompare();
@@ -50,7 +49,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
             src={product.images[0]}
             alt={product.name}
             loading="lazy"
-            className={`h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-110 ${outOfStock ? 'opacity-50 grayscale' : ''}`}
+            className={`h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.03] ${outOfStock ? 'opacity-50 grayscale' : ''}`}
           />
           {product.discount > 0 && (
             <span className="absolute left-2 top-2 rounded-full bg-brown px-2.5 py-0.5 text-[10px] font-semibold text-white">
@@ -64,12 +63,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
               <Link to={`/product/${product.slug}`}>
                 <p className="font-heading text-base text-brown sm:text-lg">{product.name}</p>
               </Link>
-              <div className="mt-1 flex items-center gap-1 text-gold">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <HiStar key={i} className={`text-[11px] ${i < Math.round(product.rating) ? '' : 'opacity-25'}`} />
-                ))}
-                <span className="ml-1 text-[11px] text-text/50">({product.reviewCount})</span>
-              </div>
+              <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.14em] text-text/50">{product.category?.name || product.collection?.name || 'Khayaal Jewels'}</p>
             </div>
             <button
               onClick={() => toggleWishlist(product)}
@@ -143,7 +137,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
               width={600}
               height={600}
               sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, 50vw"
-              className={`h-full w-full object-cover transition-all duration-700 ease-luxury group-hover:scale-110 group-hover:opacity-0 ${outOfStock ? 'grayscale' : ''}`}
+              className={`h-full w-full object-cover transition-all duration-700 ease-luxury group-hover:scale-[1.03] group-hover:opacity-0 ${outOfStock ? 'grayscale' : ''}`}
             />
             {secondaryImageVisible && (
               <ImageWithFallback
@@ -153,7 +147,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
                 loading="lazy"
                 width={600}
                 height={600}
-                className={`absolute inset-0 h-full w-full scale-110 object-cover opacity-0 transition-all duration-700 ease-luxury group-hover:scale-100 group-hover:opacity-100 ${outOfStock ? 'grayscale' : ''}`}
+                className={`absolute inset-0 h-full w-full scale-[1.03] object-cover opacity-0 transition-all duration-700 ease-luxury group-hover:scale-100 group-hover:opacity-100 ${outOfStock ? 'grayscale' : ''}`}
               />
             )}
             {outOfStock && (
@@ -166,22 +160,21 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
           </div>
         </Link>
 
-        {/* Gold border glow on hover */}
-        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-transparent transition-all duration-500 group-hover:shadow-gold-glow group-hover:ring-gold/40" />
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-transparent transition-colors duration-300 group-hover:ring-gold/50" />
 
         <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
           {product.discount > 0 && (
-            <span className="rounded-full bg-brown px-3 py-1 text-[10px] font-semibold tracking-wide text-white">
+            <span className="bg-brown px-2.5 py-1 text-[9px] font-semibold tracking-[0.12em] text-white">
               -{product.discount}%
             </span>
           )}
           {product.isNewArrival && (
-            <span className="rounded-full bg-gold px-3 py-1 text-[10px] font-semibold tracking-wide text-white">
+            <span className="bg-beige/95 px-2.5 py-1 text-[9px] font-semibold tracking-[0.12em] text-gold">
               NEW
             </span>
           )}
           {!outOfStock && product.lowStock && (
-            <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-semibold tracking-wide text-brown">
+            <span className="bg-white/90 px-2.5 py-1 text-[9px] font-semibold tracking-[0.1em] text-brown">
               Only Few Left
             </span>
           )}
@@ -192,7 +185,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
             onClick={() => toggleWishlist(product)}
             aria-label="Toggle wishlist"
             data-cursor-hover
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-brown shadow-sm backdrop-blur transition-transform hover:scale-110"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-brown shadow-sm backdrop-blur transition duration-200 hover:scale-105 hover:text-gold"
           >
             <motion.span
               key={wishlisted ? 'filled' : 'outline'}
@@ -208,7 +201,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
             onClick={handleQuickView}
             aria-label="Quick view"
             data-cursor-hover
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-brown opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover:opacity-100 hover:scale-110"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-brown opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover:opacity-100 hover:scale-105 hover:text-gold"
           >
             <HiOutlineEye />
           </button>
@@ -217,7 +210,7 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
             onClick={() => toggleCompare(product)}
             aria-label="Compare"
             data-cursor-hover
-            className={`flex h-9 w-9 items-center justify-center rounded-full shadow-sm backdrop-blur transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100 ${
+            className={`flex h-9 w-9 items-center justify-center rounded-full shadow-sm backdrop-blur transition-all duration-300 hover:scale-105 opacity-0 group-hover:opacity-100 ${
               comparing ? 'bg-gold text-white' : 'bg-white/90 text-brown'
             }`}
           >
@@ -254,21 +247,11 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView, showRatin
         </div>
       </div>
 
-      <Link to={`/product/${product.slug}`} className="mt-4 block">
-        <p className="truncate font-heading text-sm text-brown sm:text-base">{product.name}</p>
-        {showRating && (
-          <div className="mt-1 flex items-center gap-1 text-gold">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <HiStar key={i} className={`text-[11px] ${i < Math.round(product.rating) ? '' : 'opacity-25'}`} />
-            ))}
-            <span className="ml-1 text-[11px] text-text/50">({product.reviewCount})</span>
-          </div>
-        )}
-        <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
-          <span className="relative overflow-hidden font-medium text-brown">
-            {formatPrice(product.price)}
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/60 to-transparent group-hover:animate-[shimmer_1.2s_ease]" />
-          </span>
+      <Link to={`/product/${product.slug}`} className="mt-3 block">
+        <p className="truncate font-heading text-[15px] leading-snug text-brown transition-colors duration-300 group-hover:text-gold sm:text-base">{product.name}</p>
+        <p className="mt-1 truncate text-[10px] font-medium uppercase tracking-[0.14em] text-text/50">{product.category?.name || product.collection?.name || 'Fine jewellery'}</p>
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+          <span className="font-medium text-brown">{formatPrice(product.price)}</span>
           {product.oldPrice && (
             <span className="text-xs text-text/40 line-through">{formatPrice(product.oldPrice)}</span>
           )}

@@ -3,7 +3,7 @@ export default function ProductGridSkeleton({ count = 8, view = 'grid' }) {
     <div
       className={
         view === 'grid'
-          ? 'grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-x-6'
+          ? 'grid grid-cols-2 gap-x-3 gap-y-7 sm:gap-x-5 sm:gap-y-9 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4'
           : 'flex flex-col gap-5'
       }
     >
@@ -11,9 +11,9 @@ export default function ProductGridSkeleton({ count = 8, view = 'grid' }) {
         view === 'grid' ? (
           <div key={i} className="animate-pulse">
             <div className="aspect-square bg-beige" />
-            <div className="mt-4 h-3.5 w-3/4 rounded bg-beige" />
-            <div className="mt-2 h-3 w-1/3 rounded bg-beige" />
-            <div className="mt-2 h-3.5 w-1/2 rounded bg-beige" />
+            <div className="mt-3 h-3.5 w-3/4 bg-beige" />
+            <div className="mt-2 h-2.5 w-1/3 bg-beige" />
+            <div className="mt-2 h-3.5 w-1/2 bg-beige" />
           </div>
         ) : (
           <div key={i} className="flex animate-pulse gap-4">
