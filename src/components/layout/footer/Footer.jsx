@@ -9,7 +9,7 @@ import {
   STORE_LOCATION,
 } from './footerLinks';
 
-const BRAND_DESCRIPTION = 'Premium imitation jewellery crafted for the modern woman.';
+const BRAND_DESCRIPTION = 'Premium fashion jewellery crafted for the modern woman.';
 
 // Compact editorial footer: one brand block (logo + tagline + location),
 // two short link groups, a Connect block, and a hairline copyright bar.
