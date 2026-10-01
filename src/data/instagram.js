@@ -22,7 +22,7 @@ export const instagramPosts = [
   {
     id: 5,
     image: '/images/image5.png',
-    link: 'https://www.instagram.com/reel/DdY3TGevox9/?stkn=Mng4NnMyYmlnN2Ft',
+    link: 'https://www.instagram.com/reel/DdY3TGevox9/?stkn=Mng4NnMyYmlnN2Ft==',
   },
   {
     id: 6,

@@ -92,7 +92,13 @@ async function request(path, options = {}, isRetry = false) {
   try {
     res = await fetch(requestUrl(path), {
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json', ...(await authHeaders()), ...fetchOptions.headers },
+      headers: {
+        ...(fetchOptions.body !== undefined && fetchOptions.body !== null
+          ? { 'Content-Type': 'application/json' }
+          : {}),
+        ...(await authHeaders()),
+        ...fetchOptions.headers,
+      },
       ...fetchOptions,
     });
   } catch {
