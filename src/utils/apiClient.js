@@ -33,6 +33,39 @@ export function setUnauthorizedHandler(fn) {
   unauthorizedHandler = fn;
 }
 
+// React StrictMode intentionally re-runs mount effects in development. Keep
+// concurrent identical GETs on one network request so providers and hooks do
+// not turn that lifecycle check into a burst against the API. This only
+// shares requests while they are in flight; it does not cache responses.
+const inFlightGetRequests = new Map();
+
+function requestGet(path, options = {}) {
+  const method = options.method || 'GET';
+  // A caller-owned AbortSignal must remain isolated; sharing its request would
+  // let one consumer cancel work another consumer is awaiting.
+  if (method !== 'GET' || options.signal || /^\/api\/admin(?:\/|$)/.test(path)) {
+    return request(path, options);
+  }
+
+  const headers = Object.entries(options.headers || {}).sort(([a], [b]) => a.localeCompare(b));
+  const key = JSON.stringify([
+    requestUrl(path),
+    options.cache || 'default',
+    options.credentials || 'include',
+    Boolean(options.suppressUnauthorizedHandler),
+    headers,
+  ]);
+
+  const existing = inFlightGetRequests.get(key);
+  if (existing) return existing;
+
+  const pending = request(path, options).finally(() => {
+    if (inFlightGetRequests.get(key) === pending) inFlightGetRequests.delete(key);
+  });
+  inFlightGetRequests.set(key, pending);
+  return pending;
+}
+
 // Same pattern, for the admin side: AdminAuthContext registers a function
 // that returns the current Firebase ID token (or null if signed out), and
 // every request below attaches it as a Bearer header when present. Customer
@@ -137,7 +170,7 @@ async function uploadWithProgress(path, formData, { method = 'POST', onProgress 
 }
 
 export const api = {
-  get: (path, options) => request(path, options),
+  get: (path, options) => requestGet(path, options),
   post: (path, data) => request(path, { method: 'POST', body: data ? JSON.stringify(data) : undefined }),
   put: (path, data) => request(path, { method: 'PUT', body: data ? JSON.stringify(data) : undefined }),
   delete: (path) => request(path, { method: 'DELETE' }),
