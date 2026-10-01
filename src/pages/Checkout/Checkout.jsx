@@ -43,6 +43,8 @@ export default function Checkout() {
       notes: customer.notes,
     });
 
+    let whatsappOrder = order;
+
     // If the customer is signed in, also persist this order to their
     // permanent account history via the backend. This is best-effort and
     // additive — WhatsApp remains the actual order-confirmation channel with
@@ -50,7 +52,7 @@ export default function Checkout() {
     // block checkout.
     if (customerUser) {
       try {
-        await api.post('/api/orders', {
+        const response = await api.post('/api/orders', {
           recipientName: customer.name,
           recipientPhone: customer.phone,
           address: customer.address,
@@ -74,15 +76,22 @@ export default function Checkout() {
             lineTotal: getItemPrice(item) * item.quantity,
           })),
         });
+
+        if (response?.orderNumber) {
+          whatsappOrder = {
+            ...order,
+            id: response.orderNumber,
+          };
+        }
       } catch (err) {
         console.warn('Could not save order to account history:', err.message);
       }
     }
 
-    const link = buildWhatsAppOrderLink(order, settings.whatsappNumber);
+    const link = buildWhatsAppOrderLink(whatsappOrder, settings.whatsappNumber);
     window.open(link, '_blank', 'noopener,noreferrer');
 
-    navigate('/order-success', { state: { order } });
+    navigate('/order-success', { state: { order: whatsappOrder } });
   };
 
   return (
