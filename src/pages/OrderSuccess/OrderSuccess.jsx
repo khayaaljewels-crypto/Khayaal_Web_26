@@ -25,7 +25,7 @@ export default function OrderSuccess() {
   const { order } = state;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg px-4 pb-24 pt-28 lg:pt-32">
+    <div className="flex min-h-[calc(100svh-8rem)] items-center justify-center bg-bg px-4 py-12 sm:py-16 lg:pt-32 lg:pb-24">
       <div className="w-full max-w-lg text-center">
         <motion.div
           initial={{ scale: 0 }}

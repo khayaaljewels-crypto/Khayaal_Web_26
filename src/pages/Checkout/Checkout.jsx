@@ -86,7 +86,7 @@ export default function Checkout() {
   };
 
   return (
-    <div className="bg-bg pb-24 pt-28 lg:pt-32">
+    <div className="bg-bg py-12 sm:py-16 lg:pt-32 lg:pb-24">
       <div className="container-luxury max-w-3xl">
         <Reveal className="text-center">
           <p className="eyebrow">Almost There</p>

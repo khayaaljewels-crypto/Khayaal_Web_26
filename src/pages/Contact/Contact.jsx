@@ -14,13 +14,13 @@ export default function Contact() {
   ];
 
   return (
-    <section className="container-luxury py-24 sm:py-32 lg:py-40">
+    <section className="container-luxury py-12 sm:py-24 lg:py-40">
       <Reveal className="mx-auto max-w-2xl text-center">
         <p className="eyebrow">We would love to hear from you</p>
         <h1 className="mt-4 font-heading text-5xl text-brown sm:text-6xl">Contact us</h1>
         <p className="mt-6 leading-8 text-text/70">For styling guidance, order questions, or anything else, reach out through the channel that suits you best.</p>
       </Reveal>
-      <div className="mx-auto mt-14 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:mt-14 sm:grid-cols-2 lg:grid-cols-3">
         {contactOptions.map(({ Icon, label, value, href, external }) => (
           <a key={label} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} className="group rounded-2xl border border-border bg-white p-6 transition-colors hover:border-gold">
             <Icon className="text-xl text-gold" />

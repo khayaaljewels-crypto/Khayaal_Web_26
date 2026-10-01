@@ -49,7 +49,7 @@ export default function Navbar() {
           </button>
 
           <Link to="/" className="flex shrink-0 items-center">
-            <Logo className="h-8 w-auto xs:h-10 lg:h-12" />
+            <Logo className="h-10 w-auto xs:h-11 lg:h-12" />
           </Link>
 
           <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 xl:gap-9 lg:flex">

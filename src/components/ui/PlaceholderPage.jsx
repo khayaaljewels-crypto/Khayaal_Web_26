@@ -3,7 +3,7 @@ import GoldButton from '@/components/buttons/GoldButton';
 
 export default function PlaceholderPage({ title, description }) {
   return (
-    <section className="flex min-h-[70svh] items-center justify-center bg-bg pt-32 pb-20">
+    <section className="flex min-h-[70svh] items-center justify-center bg-bg py-12 lg:pt-32 lg:pb-20">
       <div className="container-luxury text-center">
         <Reveal>
           <p className="eyebrow">Khayaal Jewels</p>

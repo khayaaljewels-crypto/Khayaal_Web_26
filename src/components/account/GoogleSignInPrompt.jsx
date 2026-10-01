@@ -11,7 +11,7 @@ export default function GoogleSignInPrompt({ title = 'Sign in to continue', desc
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="flex flex-col items-center justify-center py-24 text-center"
+      className="flex flex-col items-center justify-center py-16 text-center sm:py-24"
     >
       <span className="flex h-16 w-16 items-center justify-center rounded-full bg-beige">
         <HiOutlineUserCircle className="text-3xl text-gold" />

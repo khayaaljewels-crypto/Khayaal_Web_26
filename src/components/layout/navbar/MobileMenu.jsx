@@ -33,7 +33,7 @@ export default function MobileMenu({ open, onClose }) {
         >
           <div className="flex h-full flex-col overflow-y-auto px-5 py-6 xs:px-6 xs:py-8 sm:px-8">
             <div className="flex items-center justify-between">
-              <Logo className="h-9 w-auto" />
+              <Logo className="h-10 w-auto" />
               <button
                 onClick={onClose}
                 aria-label="Close menu"

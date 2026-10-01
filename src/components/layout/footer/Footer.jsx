@@ -25,8 +25,8 @@ export default function Footer() {
           className="
             grid
             grid-cols-1
-            gap-10
-            py-12
+            gap-8
+            py-10
 
             sm:grid-cols-2
             sm:gap-x-10
@@ -44,7 +44,7 @@ export default function Footer() {
           ========================== */}
           <div className="sm:col-span-2 lg:col-span-5">
             <div className="max-w-md">
-              <Logo className="h-9 w-auto sm:h-10" />
+              <Logo className="h-10 w-auto" />
 
               <p
                 className="

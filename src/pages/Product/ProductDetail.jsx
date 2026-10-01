@@ -51,7 +51,7 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[70svh] items-center justify-center pt-28">
+      <div className="flex min-h-[60svh] items-center justify-center py-8 lg:min-h-[70svh] lg:py-0 lg:pt-28">
         <span className="h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
       </div>
     );
@@ -59,7 +59,7 @@ export default function ProductDetail() {
 
   if (error || !product) {
     return (
-      <div className="flex min-h-[70svh] flex-col items-center justify-center gap-3 pt-28 text-center">
+      <div className="flex min-h-[60svh] flex-col items-center justify-center gap-3 py-8 text-center lg:min-h-[70svh] lg:py-0 lg:pt-28">
         <p className="text-sm text-red-600">{error || 'Something went wrong loading this product.'}</p>
         <Link to="/shop" className="text-sm text-gold underline">Back to Shop</Link>
       </div>
@@ -125,15 +125,15 @@ export default function ProductDetail() {
           </Reveal>
         </div>
 
-        <div className="mt-12">
+        <div className="mt-8 sm:mt-12">
           <InfoTabs product={product} />
         </div>
 
-        <div className="mt-12">
+        <div className="mt-8 sm:mt-12">
           <ReviewsSection product={product} />
         </div>
 
-        <div className="mt-14 space-y-14">
+        <div className="mt-10 space-y-10 sm:mt-14 sm:space-y-14">
           <ProductRail eyebrow="Pairs Well" title="Complete The Look" products={completeTheLook} />
           <ProductRail eyebrow="You May Also Like" title="Related Products" products={related} />
           <ProductRail eyebrow="Your History" title="Recently Viewed" products={recentlyViewed} />

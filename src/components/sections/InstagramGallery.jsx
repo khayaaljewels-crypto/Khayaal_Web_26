@@ -16,7 +16,7 @@ export default function InstagramGallery() {
   const { settings } = useSettings();
 
   return (
-    <section className="container-luxury py-20 lg:py-28">
+    <section className="container-luxury py-12 sm:py-16 lg:py-28">
       {/* Section Heading */}
       <Reveal className="mx-auto max-w-xl text-center">
         <p className="eyebrow">Follow The Story</p>
@@ -28,7 +28,7 @@ export default function InstagramGallery() {
 
       {/* Instagram Gallery */}
       <StaggerGroup
-        className="mt-12 grid grid-cols-3 gap-2 sm:gap-4 lg:grid-cols-6"
+        className="mt-8 grid grid-cols-3 gap-2 sm:mt-12 sm:gap-4 lg:grid-cols-6"
         staggerDelay={0.06}
       >
         {instagramPosts.map((post) => (

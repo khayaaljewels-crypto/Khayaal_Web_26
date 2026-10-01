@@ -13,7 +13,7 @@ export default function Wishlist() {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   return (
-    <div className="bg-bg pb-24 pt-28 lg:pt-32">
+    <div className="bg-bg py-12 sm:py-16 lg:pt-32 lg:pb-24">
       <div className="container-luxury">
         <Reveal>
           <p className="eyebrow">Saved For You</p>
@@ -24,7 +24,7 @@ export default function Wishlist() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center justify-center py-24 text-center"
+            className="flex flex-col items-center justify-center py-16 text-center sm:py-24"
           >
             <span className="flex h-16 w-16 items-center justify-center rounded-full bg-beige">
               <HiOutlineHeart className="text-2xl text-gold" />

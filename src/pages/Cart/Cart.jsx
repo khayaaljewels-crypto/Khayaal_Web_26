@@ -18,7 +18,7 @@ export default function Cart() {
   const recommended = bestSellers.filter((p) => !items.some((i) => i.product.id === p.id));
 
   return (
-    <div className="bg-bg pb-24 pt-28 lg:pt-32">
+    <div className="bg-bg py-12 sm:py-16 lg:pt-32 lg:pb-24">
       <div className="container-luxury">
         <Reveal className="flex items-center justify-between">
           <div>

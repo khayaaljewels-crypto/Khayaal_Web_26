@@ -24,7 +24,7 @@ export default function AccountLayout() {
 
   if (checkingAuth) {
     return (
-      <div className="flex min-h-[70svh] flex-col items-center justify-center gap-3 bg-bg pt-32">
+      <div className="flex min-h-[70svh] flex-col items-center justify-center gap-3 bg-bg py-12 lg:pt-32 lg:pb-0">
         <span className="h-8 w-8 animate-spin rounded-full border-2 border-gold/30 border-t-gold" />
         <p className="text-xs uppercase tracking-[0.3em] text-text/40">Loading your account</p>
       </div>
@@ -33,10 +33,10 @@ export default function AccountLayout() {
 
   if (!user) {
     return (
-      <div className="bg-bg pb-24 pt-28 lg:pt-32">
+      <div className="bg-bg py-12 sm:py-16 lg:pt-32 lg:pb-24">
         <div className="container-luxury">
           {authError ? (
-            <div className="mx-auto flex max-w-md flex-col items-center py-24 text-center">
+            <div className="mx-auto flex max-w-md flex-col items-center py-16 text-center sm:py-24">
               <p className="text-sm text-red-600">{authError}</p>
               <button onClick={() => refresh()} className="mt-5 rounded-full border border-border bg-white px-5 py-2.5 text-sm font-medium text-brown hover:border-gold">
                 Try again
@@ -51,7 +51,7 @@ export default function AccountLayout() {
   }
 
   return (
-    <div className="bg-bg pb-24 pt-28 lg:pt-32">
+    <div className="bg-bg py-12 sm:py-16 lg:pt-32 lg:pb-24">
       <div className="container-luxury">
         <Reveal className="flex min-w-0 items-center gap-3 rounded-3xl border border-border bg-white p-4 xs:gap-4 xs:p-6 sm:p-8">
           {user.profileImage ? (
