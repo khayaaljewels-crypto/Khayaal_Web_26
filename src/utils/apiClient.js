@@ -12,7 +12,17 @@ const API_BASE = configuredApiBase
   .replace(/\/$/, '');
 
 function requestUrl(path) {
-  return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+  // Authentication/admin API requests must stay on the
+  // Khayaal website origin so the auth cookie belongs to
+  // www.khayaalofficial.in.
+  if (normalizedPath.startsWith('/api/')) {
+    return normalizedPath;
+  }
+
+  // Public catalogue APIs continue using the Render backend directly.
+  return `${API_BASE}${normalizedPath}`;
 }
 
 let unauthorizedHandler = null;
@@ -417,6 +427,6 @@ export const api = {
  * Google OAuth.
  */
 export const GOOGLE_LOGIN_URL =
-  `${API_BASE}/auth/google?returnTo=/my-account`;
+  `/api/auth/google?returnTo=/my-account`;
 
 export { API_BASE };

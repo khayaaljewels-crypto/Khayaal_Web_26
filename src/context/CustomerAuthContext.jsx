@@ -29,7 +29,7 @@ export function CustomerAuthProvider({ children }) {
 
     for (let attempt = 0; attempt <= retries; attempt += 1) {
       try {
-        const { customer } = await api.get('/auth/me', {
+        const { customer } = await api.get('/api/auth/me', {
           cache: 'no-store',
           suppressUnauthorizedHandler: true,
         });
@@ -137,7 +137,7 @@ export function CustomerAuthProvider({ children }) {
     if (loggingOut) return;
     setLoggingOut(true);
     try {
-      await api.post('/auth/logout');
+      await api.post('/api/auth/logout');
     } catch {
       // Clearing local state below is what actually matters to the user;
       // the cookie is httpOnly and short-lived server-side regardless.
