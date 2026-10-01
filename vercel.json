@@ -1,18 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/api/admin/:path*",
-      "destination": "https://khayaal-backend.onrender.com/api/admin/:path*"
-    },
-    {
-      "source": "/api/orders/:path*",
-      "destination": "https://khayaal-backend.onrender.com/api/orders/:path*"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "https://khayaal-backend.onrender.com/:path*"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

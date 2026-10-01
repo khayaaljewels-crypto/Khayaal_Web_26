@@ -5,8 +5,7 @@ e-commerce site. This repository is the **frontend only** — it deploys indepen
 and talks to a separate backend repository over HTTP.
 
 > Looking for the backend? It lives in its own repository (Express + PostgreSQL), deployed
-> separately. In production, Vercel proxies browser API requests through the
-> storefront's own `/api` origin so the customer session cookie stays first-party.
+> separately. The frontend calls that backend directly using `VITE_API_URL`.
 
 ## Tech Stack
 
@@ -24,9 +23,10 @@ Most of this app is self-contained and needs **no backend at all**:
   (see `src/context/`), seeded from `src/data/*.js`.
 - `/admin` dashboard auth — Firebase email/password, independent of the backend repo.
 
-Only these features call the separate backend (via `src/utils/apiClient.js`). In production,
-the client uses relative `/api` URLs, which Vercel rewrites to the backend; in local development
-it uses `VITE_API_URL`:
+Only these features call the separate backend (via `src/utils/apiClient.js`). All environments
+use the configured `VITE_API_URL` origin. Public catalog paths begin at the origin root (for
+example `/products`); routes already namespaced by the backend retain `/api` (for example
+`/api/admin/products`):
 
 - Customer-facing Google sign-in (`src/context/CustomerAuthContext.jsx`)
 - Customer orders, addresses, profile (`/my-account/*`, `src/hooks/useMyOrders.js`,
@@ -54,12 +54,12 @@ See `.env.example` for the full list with explanations. Summary:
 |---|---|
 | `VITE_FIREBASE_*` | Firebase web app config, used by `/admin` login |
 | `VITE_ADMIN_EMAIL` | The only account allowed into `/admin` |
-| `VITE_API_URL` | Local-development backend origin, normally `http://localhost:4000`. It is intentionally ignored by the production browser bundle. |
+| `VITE_API_URL` | Backend origin. Use `http://localhost:4000` locally and `https://khayaal-backend.onrender.com` in Vercel production builds. |
 
-**Production:** do not configure a frontend API origin that points browsers directly at Render.
-`vercel.json` proxies `/api/:path*` to the backend while preserving cookies and redirects. This
-keeps `khayaal_token` first-party for `www.khayaalofficial.in`, including Safari and mobile Chrome.
-Do not commit real values to `.env` — it's gitignored.
+**Production:** configure `VITE_API_URL=https://khayaal-backend.onrender.com` in Vercel for every
+production build. Vite embeds this public setting at build time. Customer API requests include
+credentials; the backend must allow the deployed frontend origin and configure its session cookie
+for the cross-site HTTPS setup. Do not commit real values to `.env` — it is gitignored.
 
 ## Scripts
 
@@ -74,10 +74,10 @@ Do not commit real values to `.env` — it's gitignored.
 
 1. Import this repository into Vercel.
 2. Framework preset: **Vite**.
-3. Set the environment variables listed above (all `VITE_*` ones) in the Vercel dashboard.
-4. `vercel.json` rewrites `/api/*` to the Render backend before its final SPA rewrite to
-   `index.html`. Keep that order: OAuth callbacks, cookie headers, and redirects must travel
-   through `/api` on the storefront origin.
+3. Set `VITE_API_URL=https://khayaal-backend.onrender.com` and the required Firebase `VITE_*`
+   values in the Vercel dashboard. Vite reads these at build time, so redeploy after changing
+   them.
+4. `vercel.json` keeps the SPA rewrite to `index.html`; backend API requests go directly to Render.
 
 ## Routes
 
