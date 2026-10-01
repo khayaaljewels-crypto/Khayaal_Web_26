@@ -19,7 +19,7 @@ export default function InstagramGallery() {
         {instagramPosts.map((post) => (
           <motion.a
             key={post.id}
-            href={settings.instagram}
+            href={post.link}
             target="_blank"
             rel="noopener noreferrer"
             variants={staggerItem}
