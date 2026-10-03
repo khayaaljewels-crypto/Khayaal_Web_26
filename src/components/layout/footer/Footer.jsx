@@ -11,7 +11,7 @@ import {
 } from './footerLinks';
 
 const BRAND_DESCRIPTION =
-  'Premium fashion jewellery crafted for the modern woman.';
+  'Premium fashion jewellery crafted for every women.';
 
 export default function Footer() {
   return (
