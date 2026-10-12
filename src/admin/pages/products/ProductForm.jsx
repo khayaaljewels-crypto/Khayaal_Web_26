@@ -226,8 +226,8 @@ export default function ProductForm() {
               <Field label="Brand">
                 <input className={inputClass} value={form.brand} onChange={(e) => set('brand', e.target.value)} />
               </Field>
-              <Field label="Category">
-                <select required className={inputClass} value={form.categoryId} onChange={(e) => set('categoryId', e.target.value)}>
+              <Field label="Category (Optional)">
+                <select className={inputClass} value={form.categoryId} onChange={(e) => set('categoryId', e.target.value)}>
                   <option value="">Select category</option>
                   {visibleCategories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
