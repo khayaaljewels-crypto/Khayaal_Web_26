@@ -9,7 +9,7 @@ const DEFAULT_FALLBACK = '/images/placeholder.svg';
 // reason this exists (see SingleImageUpload.jsx's fix for the root cause),
 // but this is deliberately generic — any image anywhere can use it.
 export default function ImageWithFallback({ src, fallback = DEFAULT_FALLBACK, alt = '', width, height, ...rest }) {
-  const resolvedSrc = optimizedImageUrl(src || fallback, { width, height });
+  const resolvedSrc = optimizedImageUrl(src || fallback);
 
   return (
     <img
@@ -17,6 +17,7 @@ export default function ImageWithFallback({ src, fallback = DEFAULT_FALLBACK, al
       alt={alt}
       width={width}
       height={height}
+      decoding="async"
       onError={(e) => {
         // Guards against looping forever if the fallback asset itself
         // ever fails to load.

@@ -9,11 +9,14 @@
 // + invert), for dark/transparent backgrounds — e.g. the navbar over the
 // hero image — since a raster image can't pick up a `text-white` class the
 // way the old text-based wordmark did.
-export default function Logo({ className = 'h-10 w-auto', invert = false, alt = 'Khayaal Jewels' }) {
+export default function Logo({ className = 'h-10 w-auto', invert = false, alt = 'Khayaal Jewels', priority = false }) {
   return (
     <img
       src="/images/Khayaal_logo_trimmed.png"
       alt={alt}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
+      decoding="async"
       className={`${className} object-contain ${invert ? 'brightness-0 invert' : ''}`}
     />
   );

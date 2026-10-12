@@ -12,7 +12,7 @@ import { useCompare } from '@/context/CompareContext';
 import { formatPrice } from '@/utils/format';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
-function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
+function ProductCard({ product, index = 0, view = 'grid', onQuickView, prioritizeImage = false }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
   const { isComparing, toggleCompare } = useCompare();
@@ -39,7 +39,8 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
           <ImageWithFallback
             src={product.images[0]}
             alt={product.name}
-            loading="lazy"
+            loading={prioritizeImage && index < 4 ? 'eager' : 'lazy'}
+            fetchPriority={prioritizeImage && index === 0 ? 'high' : 'auto'}
             className={`h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.03] ${outOfStock ? 'opacity-50 grayscale' : ''}`}
           />
           {product.discount > 0 && (
@@ -124,13 +125,14 @@ function ProductCard({ product, index = 0, view = 'grid', onQuickView }) {
             <ImageWithFallback
               src={product.images[0]}
               alt={product.name}
-              loading="lazy"
+              loading={prioritizeImage && index < 4 ? 'eager' : 'lazy'}
+              fetchPriority={prioritizeImage && index === 0 ? 'high' : 'auto'}
               width={600}
               height={600}
               sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, 50vw"
               className={`h-full w-full object-cover transition-all duration-700 ease-luxury group-hover:scale-[1.03] group-hover:opacity-0 ${outOfStock ? 'grayscale' : ''}`}
             />
-            {secondaryImageVisible && (
+            {secondaryImageVisible && product.images[1] && product.images[1] !== product.images[0] && (
               <ImageWithFallback
                 src={product.images[1] ?? product.images[0]}
                 alt=""

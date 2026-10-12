@@ -98,6 +98,7 @@ export default function Shop() {
                         product={product}
                         index={i}
                         view={filtersApi.view}
+                        prioritizeImage={filtersApi.view === 'grid'}
                         onQuickView={setQuickViewProduct}
                       />
                     ))}
