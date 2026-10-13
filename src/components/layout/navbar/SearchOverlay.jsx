@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineXMark, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchProducts } from '@/services/productsApi';
-import { STOREFRONT_CATEGORIES } from '@/data/storefrontCategories';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
+import { CategoryNavigationLinks } from '@/components/sections/CategoryNavigation';
 
 const TRENDING = ['Kundan Necklace', 'Bridal Set', 'Temple Jewellery', 'Maang Tikka', 'Jhumkas'];
 
@@ -126,24 +126,12 @@ export default function SearchOverlay({ open, onClose }) {
                       ))}
                     </div>
                   </div>
-                  <div className="mt-6">
-                    <p className="eyebrow mb-3">Shop by Category</p>
-                    <nav
-                      aria-label="Jewellery categories"
-                      className="no-scrollbar -mx-2 flex touch-pan-x flex-nowrap gap-2 overflow-x-auto overscroll-x-contain px-2 pb-1"
-                    >
-                      {STOREFRONT_CATEGORIES.map((category) => (
-                        <Link
-                          key={category.slug}
-                          to={`/collections/${category.slug}`}
-                          onClick={onClose}
-                          className="flex h-9 shrink-0 items-center justify-center rounded-full border border-border bg-bg px-3 text-[9px] font-medium uppercase leading-none tracking-[0.12em] text-brown transition-colors duration-200 ease-out hover:border-gold hover:bg-beige/50 hover:text-gold sm:px-3.5 sm:text-[10px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-                        >
-                          {category.name}
-                        </Link>
-                      ))}
-                    </nav>
-                  </div>
+                  <nav
+                    aria-label="Jewellery categories"
+                    className="no-scrollbar mt-6 flex touch-pan-x flex-nowrap items-center justify-start gap-2 overflow-x-auto overscroll-x-contain whitespace-nowrap"
+                  >
+                    <CategoryNavigationLinks onNavigate={onClose} />
+                  </nav>
                 </>
               )}
             </div>
