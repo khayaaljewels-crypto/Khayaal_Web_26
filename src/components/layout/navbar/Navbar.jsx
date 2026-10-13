@@ -102,7 +102,7 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
-        <CategoryNavigation />
+        <CategoryNavigation hidden={searchOpen} />
       </motion.header>
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />

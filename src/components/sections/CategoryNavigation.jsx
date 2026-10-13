@@ -25,9 +25,9 @@ export function CategoryNavigationLinks({ onNavigate }) {
   });
 }
 
-export default function CategoryNavigation() {
+export default function CategoryNavigation({ hidden = false }) {
   return (
-    <section className="relative z-40 h-15 border-b border-border bg-bg">
+    <section className={`relative z-40 h-15 border-b border-border bg-bg ${hidden ? 'invisible' : ''}`}>
       <div className="h-full w-full px-3 sm:px-5 lg:px-8 2xl:px-12">
         <nav
           aria-label="Jewellery categories"
