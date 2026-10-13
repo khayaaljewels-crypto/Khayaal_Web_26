@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineXMark, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchProducts } from '@/services/productsApi';
-import { useCategories } from '@/context/CategoriesContext';
+import { STOREFRONT_CATEGORIES } from '@/data/storefrontCategories';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
-import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const TRENDING = ['Kundan Necklace', 'Bridal Set', 'Temple Jewellery', 'Maang Tikka', 'Jhumkas'];
 
@@ -14,7 +13,6 @@ export default function SearchOverlay({ open, onClose }) {
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
   const navigate = useNavigate();
-  const { visibleCategories: categories } = useCategories();
   useLockBodyScroll(open);
 
   useEffect(() => {
@@ -128,29 +126,22 @@ export default function SearchOverlay({ open, onClose }) {
                     </div>
                   </div>
                   <div className="mt-6">
-                    <p className="eyebrow mb-3">Popular Categories</p>
-                    <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-                      {categories.slice(0, 4).map((c) => (
-                        <button
-                          key={c.id}
-                          onClick={() => {
-                            navigate(`/shop?category=${c.slug}`);
-                            onClose();
-                          }}
-                          className="group overflow-hidden rounded-xl"
+                    <p className="eyebrow mb-3">Shop by Category</p>
+                    <nav
+                      aria-label="Jewellery categories"
+                      className="no-scrollbar -mx-2 flex touch-pan-x flex-nowrap gap-2 overflow-x-auto overscroll-x-contain px-2 pb-1"
+                    >
+                      {STOREFRONT_CATEGORIES.map((category) => (
+                        <Link
+                          key={category.slug}
+                          to={`/collections/${category.slug}`}
+                          onClick={onClose}
+                          className="flex h-9 shrink-0 items-center justify-center rounded-full border border-border bg-bg px-3 text-[9px] font-medium uppercase leading-none tracking-[0.12em] text-brown transition-colors duration-200 ease-out hover:border-gold hover:bg-beige/50 hover:text-gold sm:px-3.5 sm:text-[10px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
                         >
-                          <div className="aspect-square overflow-hidden rounded-xl bg-beige">
-                            <ImageWithFallback
-                              src={c.image}
-                              alt={c.name}
-                              loading="lazy"
-                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
-                          </div>
-                          <p className="mt-1.5 text-center text-xs text-brown">{c.name}</p>
-                        </button>
+                          {category.name}
+                        </Link>
                       ))}
-                    </div>
+                    </nav>
                   </div>
                 </>
               )}
