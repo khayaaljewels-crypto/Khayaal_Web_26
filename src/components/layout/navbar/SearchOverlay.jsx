@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { fetchProducts } from '@/services/productsApi';
 import { STOREFRONT_CATEGORIES } from '@/data/storefrontCategories';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const TRENDING = ['Kundan Necklace', 'Bridal Set', 'Temple Jewellery', 'Maang Tikka', 'Jhumkas'];
 
