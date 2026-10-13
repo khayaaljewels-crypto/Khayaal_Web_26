@@ -7,8 +7,6 @@ import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 import { CategoryNavigationLinks } from '@/components/sections/CategoryNavigation';
 
-const TRENDING = ['Kundan Necklace', 'Bridal Set', 'Temple Jewellery', 'Maang Tikka', 'Jhumkas'];
-
 export default function SearchOverlay({ open, onClose }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -114,17 +112,6 @@ export default function SearchOverlay({ open, onClose }) {
                 <>
                   <div>
                     <p className="eyebrow mb-3">Trending Searches</p>
-                    <div className="flex flex-wrap gap-2">
-                      {TRENDING.map((t) => (
-                        <button
-                          key={t}
-                          onClick={() => setQuery(t)}
-                          className="rounded-full border border-border px-4 py-1.5 text-xs text-brown transition-colors hover:border-gold hover:text-gold"
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
                   </div>
                   <nav
                     aria-label="Jewellery categories"
